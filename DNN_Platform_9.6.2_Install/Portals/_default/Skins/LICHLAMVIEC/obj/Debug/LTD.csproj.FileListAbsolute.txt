@@ -1,0 +1,5 @@
+F:\GoogleDrive\TAI\Source\DNN 9x\1_1_2018_dnn9_portal\3-Coding\Trunk\bin\LTD.dll
+F:\GoogleDrive\TAI\Source\DNN 9x\1_1_2018_dnn9_portal\3-Coding\Trunk\bin\LTD.pdb
+F:\GoogleDrive\TAI\Source\DNN 9x\1_1_2018_dnn9_portal\3-Coding\Trunk\Portals\_default\Skins\LTD\obj\Debug\LTD.csprojResolveAssemblyReference.cache
+F:\GoogleDrive\TAI\Source\DNN 9x\1_1_2018_dnn9_portal\3-Coding\Trunk\Portals\_default\Skins\LTD\obj\Debug\LTD.dll
+F:\GoogleDrive\TAI\Source\DNN 9x\1_1_2018_dnn9_portal\3-Coding\Trunk\Portals\_default\Skins\LTD\obj\Debug\LTD.pdb

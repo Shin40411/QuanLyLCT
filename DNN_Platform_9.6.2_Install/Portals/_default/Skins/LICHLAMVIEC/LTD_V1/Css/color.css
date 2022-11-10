@@ -1,0 +1,248 @@
+﻿color: #db261b; /*#0072bb*/
+/*Css Module*/
+/*----------*/
+.pgwSlider .ps-caption {
+    background: #1a026bcc;
+}
+
+
+.news_home_tow_colums_container .news_home_tow_colums .news_home_item_title {
+    border: 1px solid #1a026b;
+    background: #1a026b;
+}
+.news_home_tow_colums_container .news_home_tow_colums .news_home_item_first h4 a {
+    color: #1a026b;
+}
+.css_link_TieudeTin_tooltip {
+    color: #1a026b;
+}
+.cms_divTieuDe {
+    color: #db261b;
+}
+.css_tieude_tin a {
+    color: #193996;
+}
+.css_tintuc_link_title_chuyenmuc a:hover {
+    color: #1a026b;
+}
+
+/*----------------------------------*/
+.color-skin {
+    color: #1a026b !important;
+}
+
+.registerGroup a {
+  
+}
+/*DƠN VỊ TRỤC THUỘC*/
+.dvtt-item-icon:before {
+    color: #1a026b;
+}
+
+.dvtt-tab > .dvtt a {
+    color: #1a026b;
+}
+
+h4 .css_tintuc_link_title {
+    color: #1a026b !important;
+}
+
+.footer_container {
+    border-top: 5px solid #1a026b;
+    border-bottom: 1px solid #F0F0F0;
+    border-left: 1px solid #F0F0F0;
+    border-right: 1px solid #F0F0F0;
+}
+.name-website {
+    color: #1a026b;
+}
+.carousel-indicators .active {
+    background: #0071C5;
+}
+.cssTinMoi_link, a.cssTinMoi_link:link,
+a.cssTinMoi_link:active,
+a.cssTinMoi_link:visited {
+    color: #1a026b;
+}
+a.cssTinMoi_link:hover {
+    text-decoration: none;
+    color: #1a026b;
+}
+.news-new-item-icon:before {
+    color: rgba(195, 16, 16, 0.38);
+}
+#featured1 .ui-state-active a,
+#featured1 li.ui-tabs-nav-item a:hover {
+    background: #1a026b;
+}
+
+#to_top {
+    background: #1a026b;
+}
+
+
+
+ul.fixed-menu > li:first-child.active > a:before {
+    color: #fff;
+}
+.dnnGridHeader th a {
+    color: #333;
+}
+.carousel-indicators li {
+    background: #fff;
+}
+.Login a:hover, .Open .Login a:hover {
+    color: #C4C4C4;
+}
+.languageBox {
+    border-left: 1px solid #5A8C62;
+}
+
+
+.navbar-inverse .navbar-toggle {
+    border-color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #fff !important;
+}
+
+.top_menu ul.dropdown-menu > li > a {
+    color: #666666;
+}
+
+
+.top_menu ul.dropdown-menu > li:hover > a, .top_menu ul.dropdown-menu > li.active > a, .top_menu ul.dropdown-menu > li.open > a {
+    color: #db261b;
+    background: #dddddd;
+}
+
+.top_menu ul.dropdown-menu li {
+    border-bottom: 1px solid #d2d2d2;
+}
+
+.loginGroup a {
+    
+}
+.header_top {
+    background: #00b7d0;
+    background: -webkit-linear-gradient(180deg, #db261b, #bb251c);
+    background: -o-linear-gradient(180deg, #db261b, #bb251c);
+    background: -moz-linear-gradient(180deg, #db261b, #bb251c);
+    background: linear-gradient(180deg, #db261b, #bb251c);
+    color: #fff;
+    font-size: 13px;
+    /*border-bottom: 1px solid #FFF;
+    border-bottom: 1px solid rgba(255,255,255,0.2);*/
+}
+.dvtt-tab > .dvtt > li.active > a,
+.dvtt-tab > .dvtt > li.active > a:hover,
+.dvtt-tab > .dvtt > li.active > a:focus {
+    color: #fff;
+    background-color: rgb(75, 146, 219);
+}
+#to_top:hover {
+    background-color: #038643;
+}
+.css_tintuc_link_title, .css_tintuc_link_title a {
+    color: #171515 !important;
+}
+
+input.LabelEditTextClass {
+    color: #000 !important;
+}
+
+    /*btn*/
+
+.btn_step {
+    color: #ffffff !important;
+    background-color: #1a026b !important;
+    border-color: #1a026b !important;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.35) !important;
+}
+
+    .button_step input[disabled], .btn_boqua {
+        color: #333333;
+        background-color: #ffffff;
+        border-color: #cccccc;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    a.btn_button_search:hover {
+        color: #FFF !important;
+    }
+
+    a.thietlap:hover {
+        color: #c40001 !important;
+    }
+
+    .btn_button_search {
+        color: #ffffff;
+        background-color: #1a026b;
+    }
+
+    .btn_button_dr {
+        color: #07436b !important;
+        background-color: #ffffff;
+    }
+
+    .btn_drp_togg:hover {
+        color: #fff !important;
+        background-color: #1a026b !important;
+        border-color: #1a026b !important;
+        text-shadow: none !important;
+    }
+
+    .btn_drp_togg {
+        color: #fff !important;
+        background-color: #1a026b !important;
+        border-color: #1a026b !important;
+        text-shadow: none !important;
+    }
+
+    .thietlap {
+        color: #1a026b;
+    }
+
+    .paping span {
+        background: #a0a0a0;
+    }
+
+    /*camera css*/
+    .camera_pink_skin.camera_wrap .camera_pag .camera_pag_ul li {
+        box-shadow: 0px 0px 2px #1a026b inset;
+    }
+
+        .camera_pink_skin.camera_wrap .camera_pag .camera_pag_ul li.cameracurrent > span {
+            background: #1a026b;
+        }
+
+    /*container*/
+    .green-border-bottom > .panel-heading {
+        border-bottom: 2px solid #1a026b;
+    }
+
+        .green-border-bottom > .panel-heading .panel-title .Head {
+            border-left: 10px solid #1a026b;
+        }
+    /*Video*/
+    .panel.panel-default.container_video .panel-heading {
+        border-bottom: 3px solid #1a026b;
+    }
+
+    .cssPlayList .list-group-item:hover {
+        color: #1a026b;
+    }
+
+        .cssPlayList .list-group-item:hover a {
+            color: #1a026b;
+        }
+
+        .cssPlayList .list-group-item:hover span {
+            color: #1a026b !important;
+        }
+
+        /*Bootstrap Custom*/

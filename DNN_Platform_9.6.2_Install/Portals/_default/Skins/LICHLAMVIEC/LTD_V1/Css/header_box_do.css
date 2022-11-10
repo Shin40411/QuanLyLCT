@@ -1,0 +1,472 @@
+.header_top a:hover, 
+.header_top a:focus,
+.header_top a:visited,
+.header_top a:focus,
+ .header_topa:active,
+.header_top a{
+    color: #ffffff;
+    text-decoration:none
+}
+.language_box a img {
+    border: solid 1px;
+    margin-left: 2px;
+}
+.Login .loginGroup, .Login .registerGroup {
+    display: inline-block;
+    margin-right:15px;
+}
+.rowlk {
+    padding-bottom: 18px !important;
+}
+.language_box {
+    /*border-left: 1px solid #eee;*/
+    float:right;
+    margin-right: 110px;
+    padding:6px;
+}
+
+.headboxg {
+    background-color: #e05951;
+}
+
+
+.Login {
+}
+
+a.social-zalo {
+    background-image: url(../Images/zalo.png) !important;
+    background-position: 0 !important;
+    background-size: cover;
+}
+a.social-skype {
+    background-image: url(../Images/insta.png) !important;
+    background-position: 0 !important;
+    background-size: cover !important;
+}
+
+.head_links.social-icons a:nth-of-type(6n+6):hover {
+    background-color: #00adef;
+    background-image: url(../Images/zalo.png) !important;
+}
+.head_links.social-icons a:nth-of-type(6n+4):hover {
+    background-color: #00adef;
+    background-image: url(../Images/insta.png) !important;
+}
+
+
+
+/**/
+/*--------------TOP----------------*/
+/**/
+
+/*Language*/
+.social-top {
+    float: left;
+    line-height: 34px;
+    padding-left:50px;
+}
+
+
+.languageBox {
+    float: right;
+    white-space: nowrap;
+    height: 36px;
+    padding: 7px 10px 5px 10px;
+}
+
+    .languageBox span.selected img {
+        filter: alpha(opacity=100);
+        opacity: 1;
+        box-shadow: 0 0 2px rgba(255,255,255,0.4);
+        -moz-box-shadow: 0 0 2px rgba(255,255,255,0.4);
+        -webkit-box-shadow: 0 0 2px rgba(255,255,255,0.4);
+    }
+
+    .languageBox span img {
+        margin-right: 7px;
+        filter: alpha(opacity=50);
+        opacity: 0.5;
+        vertical-align: middlea;
+    }
+
+    .languageBox img {
+        width: 18px;
+        height: 12px;
+    }
+
+.header_element .element_box {
+    float: right;
+    line-height: 34px;
+    margin-right: 15px;
+}
+    .header_element .element_box .icon {
+        display: inline-block;
+        font-size: 20px;
+        line-height: 34px;
+        margin-right: 5px;
+    }
+
+    .header_element .element_box a
+    {
+        color:#fff;
+    }
+    /*Email*/
+    .emailBox {
+        float: right;
+        white-space: nowrap;
+        height: 36px;
+        color: #ffffff;
+        padding: 6px 10px 5px 10px;
+        font-size: 14px;
+    }
+/*Phone*/
+.phoneBox {
+    
+}
+
+/*Address*/
+.addressBox {
+ 
+}
+.searchBox #form-search label.title {
+    display:none;
+}
+.searchBox #form-search input[type="text"] {
+    width: 200px;
+    margin: 1px;
+    border: 0px;
+    height: 29px;
+    background: rgba(255, 255, 255, 0.8);
+    padding-left: 5px;
+    color: #000;
+}
+.searchBox #form-search input[type="submit"] {
+    position: absolute;
+    background: transparent;
+    right: 0px;
+    font-size: 14px;
+    line-height: 4px;
+    border: 0px;
+    margin-top: 3px;
+    color: #ffffff;
+    height: 30px;
+    width: 40px;
+    background-color: transparent;
+    background-image: url("/Portals/_default/skins/tintuc_liink/css/images/search_icon.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-size: 0px;
+}
+    .searchBox #form-search input[type="submit"]::before {
+        /*visibility: visible;
+        display: block;
+        position: absolute;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        content: "\f028";
+        font-family: IcoFont !important;
+        speak: none;
+        font-style: normal;
+        font-weight: 400;
+        font-variant: normal;
+        text-transform: none;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        line-height: 1;
+        -webkit-font-feature-settings: "liga";
+        -webkit-font-smoothing: antialiased;*/
+}
+    .phone-content-top .icon, .email-content-top .icon, .address-content-top .icon {
+        /*margin-right: 5px;
+    vertical-align: middle;
+    font-size: 15px;
+    padding-bottom: 2px;*/
+    }
+.email-content-top{
+    display:inline;
+    margin-right: 95px;
+
+}
+.email_text{
+    
+    display:inline;
+    vertical-align:middle;
+
+}
+
+.header_element .element_box .loginGroup {
+    padding-top: 2px;
+}
+ul.buttonGroup {
+    list-style: none;
+}
+span.input-group-btn a {
+    height: 38px !important;
+}
+
+A, A:link {
+    text-decoration: none;
+    transition: color ease 300ms;
+    -moz-transition: color ease 300ms;
+    -webkit-transition: color ease 300ms;
+    -o-transition: color ease 300ms;
+    -ms-transition: color ease 300ms;
+}
+
+.Login, .Login a, .Login a:link, .Login a:active, .Login a:visited, .HeadPane .Normal, .HeadPane a, .HeadPane a:link, .HeadPane a:active, .HeadPane a:visited, .HeadPane a:hover, .header_element .icon {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+@media only screen and (max-width: 767px) {
+    .element_box{
+        
+    }
+
+    .header_element {
+        position: relative;
+        display: inline-block;
+        border-left: 1px solid #e0736c;
+        margin-left: -3px;
+        display: inline-block;
+    }
+
+    * + html .header_element {
+        display: inline;
+    }
+
+    .Logins {
+        border-right: none !important;
+    }
+
+    .emails, address {
+        float: right;
+    }
+
+    .header_element .icon {
+        width: 48px;
+        height: 37px;
+        font-size: 17px;
+        color: #FFF;
+        text-align: center;
+        line-height: 36px;
+        cursor: pointer;
+        vertical-align:middle;
+    }
+
+        .header_element .icon:empty {
+            width: 48px;
+        }
+
+    .header_element .Login_icon {
+        border-right: none;
+    }
+
+    .header_element .email_icon, .header_element .address_icon {
+        float: right;
+    }
+
+    .header_element.Open .icon {
+        background-color: #0877c4;
+    }
+
+    .header_element .element_box {
+        position: absolute;
+        top: 100%;
+        background: #0877c4;
+        filter: alpha(opacity=0);
+        color: #fff;
+        opacity: 0;
+        z-index: -1;
+        height: 0px;
+        white-space: nowrap;
+        margin-top: 5px;
+        border: none;
+        transition: all ease-in 100ms;
+        -moz-transition: all ease-in 100ms; /* Firefox 4 */
+        -webkit-transition: all ease-in 100ms; /* Safari and Chrome */
+        -o-transition: all ease-in 100ms; /* Opera */
+        -ms-transition: all ease-in 100ms; /* IE9? */
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .header_element .HeadPane {
+        left: auto;
+        right: 0;
+    }
+
+    .header_element .Login .loginGroup,
+    .header_element .Login .registerGroup {
+        border: none;
+        padding: 0px !important;
+    }
+
+    .header_element .Login {
+        padding: 0px 10px;
+        line-height: 32px;
+    }
+
+    .header_element.Open .element_box {
+        filter: alpha(opacity=100);
+        opacity: 1;
+        z-index: 1000;
+        height: 36px;
+        font-size: 13px;
+    }
+
+    .header_element .searchBox.element_box {
+        right:0px;
+    }
+        .header_element .searchBox.element_box .side-box .search
+        {
+            margin-left:0px !important;
+        }
+        .header_element .element_box:before {
+            content: " ";
+            border: 4px solid transparent;
+            border-bottom: 4px solid #2e2e2e;
+            position: absolute;
+            top: -8px;
+            left: 123px;
+        }
+    .header_element .element_box:before {
+        left: 20px;
+        right: auto;
+    }
+
+    .header_element .searchBox.element_box:before {
+        right: 5px;
+        left: auto;
+    }
+
+    .header_element .HeadPane:before {
+        left: auto;
+        right: 21px;
+    }
+}
+
+.header_top .fa-square {
+    color: #36608B;
+}
+
+.header_top {
+    background: #e05951 !important;
+    border-bottom: 1px solid #c1c1c1;
+    height: 39px;
+}
+
+
+
+.Login .loginGroup, .Login .registerGroup {
+    /*border-right: 1px solid #eee;*/
+}
+
+
+.Login a:hover, .Open .Login a:hover {
+    color: #ffffff;
+}
+
+/**/
+/*social-icons*/
+/**/
+
+.head_links.social-icons a {
+    display: inline-block;
+    width: 37px;
+    height: 35px;
+    background-image: url(../Images/social-icons-sprite.png);
+    background-repeat: no-repeat;
+    background-color: #df3c33;
+    border-radius: 0px;
+    margin: 0px 1px 0px 0px;
+    float: left;
+}
+
+    .head_links.social-icons a.social-twitter {
+        background-position: 3px 3px;
+    }
+
+    .head_links.social-icons a.social-dribbble {
+        background-position: -27px 3px;
+    }
+
+    .head_links.social-icons a.social-facebook {
+        background-position: -57px 3px;
+    }
+
+    .head_links.social-icons a.social-google-plug {
+        background-position: -176px 3px;
+    }
+
+    .head_links.social-icons a.social-youtube {
+        background-position: -328px -27px;
+    }
+
+    .head_links.social-icons a.social-skype {
+        background-position: -147px -27px;
+    }
+
+    .head_links.social-icons a.social-linkedin {
+        background-position: -297px 3px;
+    }
+
+    .head_links.social-icons a.social-vimeo {
+        background-position: -237px -27px;
+    }
+
+    .head_links.social-icons a.social-rss {
+        background-position: -117px -27px;
+    }
+
+    .head_links.social-icons a:hover {
+        background-image: url(../Images/social-icons-sprite_wite.png) !important;
+    }
+
+    .head_links.social-icons a:nth-of-type(6n+1):hover {
+        background-color: #3a589b;
+    }
+
+    .head_links.social-icons a:nth-of-type(6n+2):hover {
+        background-color: #f977a6;
+    }
+
+    .head_links.social-icons a:nth-of-type(6n+3):hover {
+        background-color: #d0402f;
+    }
+
+    .head_links.social-icons a:nth-of-type(6n+4):hover {
+        background-color: #007ab9;
+    }
+
+    .head_links.social-icons a:nth-of-type(6n+5):hover {
+        background-color: #ff7f00;
+    }
+
+    .head_links.social-icons a:nth-of-type(6n+6):hover {
+        background-color: #00adef;
+    }
+@media(max-width:768px)
+{
+    .header_element .SkinObject {
+        display: none;
+    }
+}
+
+@media(max-width:1024px) {
+    .header_element.social-top {
+        display: none;
+    }
+}
+html #dnn_ctr27649_CMS_Tin_TheLoai_Box_hplTieuDe1 {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 21px;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}

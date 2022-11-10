@@ -1,0 +1,121 @@
+﻿.banner_right_content
+{
+    position: absolute;
+    top: 0px;
+    right: 8.33333333%;
+    padding-top: 10px;
+}
+.containo{
+    padding-top:20px !important;
+}
+.banner-image-1200{
+    display:none;
+}
+.banner-image-1000{
+    display:none;
+}
+.banner-image-1024{
+    
+    height: 90px;
+    padding-top: 8px;
+}
+.banner-image-768{
+    display:none;
+}
+@media(max-width:1700px)
+{
+    .banner_right_content
+    {
+        padding-top: 0px;
+    }
+    .time-work
+    {
+        font-size:14px !important;
+        margin-bottom:3px !important;
+    }
+    .icon-hotline {
+        width: 25px !important;
+        top: 2px !important;
+        position: relative !important;
+    }
+    .text-hothine {
+        font-size: 16px !important;
+        line-height: 16px !important;
+    }
+}
+@media(max-width:1200px)
+{
+    /*#dnn_dnnLOGO_hypLogo
+    {
+        display:none;
+    }*/
+    .banner_right_content
+    {
+        right: 1%;
+    }
+    .banner-image-1200{
+        display:block;
+    }
+}
+@media(max-width:1000px)
+{
+    /*#dnn_dnnLOGO_hypLogo
+    {
+        display:none;
+    }*/
+    .banner-image-1200{
+        display:none;
+    }
+    .banner-image-1000{
+        display:block;
+    }
+}
+@media(max-width:687px)
+{
+    .banner-image-1000{
+        display:none;
+    }
+    .banner-image-768{
+        display:block;
+    }
+}
+@media(max-width:950px)
+{
+    .banner_right_content
+    {
+        display:none;
+    }
+}
+
+@media(max-width:1024px)
+{
+    #dnn_dnnLOGO_hypLogo
+    {
+        display:none;
+    }
+    .dnn_logo{
+        display:none;
+        
+    }
+    .dnn_logo span a image {
+        display:inline;
+    }
+    .banner-image-1024{
+         display:inline;
+         height:82px;
+    }
+}
+@media(max-width:768px)
+{
+    /*#dnn_dnnLOGO_hypLogo
+    {
+        display:block;
+    }
+    .banner-image-1024{
+        display:none;
+         
+    }*/
+    .link_footer{
+        text-align:center !important;
+    }
+}

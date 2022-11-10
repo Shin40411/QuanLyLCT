@@ -1,0 +1,20 @@
+﻿#search-top.pull-right  
+{
+    background-color:transparent;
+    height:auto;
+    text-align: center;
+}
+#search-top.pull-right input
+{
+    font-size:14px;
+    box-shadow: inset 0px 0px 8px #adadad;
+    height: 40px;
+    width:60%;
+}
+#search-top.pull-right a.SearchButton
+{
+        height: 40px;
+        top: 9px;
+        left: -1px;
+        background: url(../../images/search-icon.png) center center no-repeat #1a026b;
+}

@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="lctvue" Class="lctDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=LIINK_SERVER\MSSQLSERVER_2014;Initial Catalog=lctvue;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SiteSqlServer" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.CanBo" Member="CanBos">
+    <Type Name="CanBo">
+      <Column Name="ID_Canbo" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Hovaten" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Sodienthoai" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="Phongban" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Chucvu" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="Ghichu" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Donvi_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="CanBo_LichCongTac" Member="LichCongTacs" ThisKey="ID_Canbo" OtherKey="CanBo_ID" Type="LichCongTac" />
+      <Association Name="DonVi_CanBo" Member="DonVi" ThisKey="Donvi_ID" OtherKey="ID_Donvi" Type="DonVi" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DonVi" Member="DonVis">
+    <Type Name="DonVi">
+      <Column Name="ID_Donvi" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nhom_Donvi" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Ten_Donvi" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Mota_Donvi" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="Thutu_Donvi" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="DonVi_CanBo" Member="CanBos" ThisKey="ID_Donvi" OtherKey="Donvi_ID" Type="CanBo" />
+      <Association Name="DonVi_LichCongTac" Member="LichCongTacs" ThisKey="ID_Donvi" OtherKey="Donvi_ID" Type="LichCongTac" />
+      <Association Name="DonVi_UserInfo" Member="UserInfos" ThisKey="ID_Donvi" OtherKey="ID_Donvi" Type="UserInfo" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LichCongTac" Member="LichCongTacs">
+    <Type Name="LichCongTac">
+      <Column Name="ID_Lich" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Ngay_Giohop" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Donvi_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CanBo_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Diadiem" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Noidung" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ThanhPhan" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Association Name="CanBo_LichCongTac" Member="CanBo" ThisKey="CanBo_ID" OtherKey="ID_Canbo" Type="CanBo" IsForeignKey="true" />
+      <Association Name="DonVi_LichCongTac" Member="DonVi" ThisKey="Donvi_ID" OtherKey="ID_Donvi" Type="DonVi" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsSuperUser" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AffiliateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="DisplayName" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatePassword" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastIPAddress" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="IsDeleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOnDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastModifiedByUserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LastModifiedOnDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PasswordResetToken" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="PasswordResetExpiration" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="User_UserInfo" Member="UserInfos" ThisKey="UserID" OtherKey="UserID" Type="UserInfo" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserInfo" Member="UserInfos">
+    <Type Name="UserInfo">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Matkhau_User" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Nhom_User" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ID_Donvi" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Chucvu_User" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Phongban_User" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Ghichu_User" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Association Name="DonVi_UserInfo" Member="DonVi" ThisKey="ID_Donvi" OtherKey="ID_Donvi" Type="DonVi" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="User_UserInfo" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+</Database>

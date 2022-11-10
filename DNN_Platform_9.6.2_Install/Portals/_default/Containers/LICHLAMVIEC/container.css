@@ -1,0 +1,279 @@
+.red-container-panel > .panel-heading {
+    background-image: linear-gradient(to bottom, #ce1126 0, #ce1126 100%) !important;
+    padding: 6px 15px 7px 15px;
+    border-radius: 2px;
+    /*box-shadow: 0 10px 30px -12px rgba(146, 0, 0, 0.42), 0 4px 25px 0px rgba(146, 0, 0, 0.12), 0 8px 10px -5px rgba(146, 0, 0, 0.2) !important;*/
+    box-shadow: -2px 2px 4px #c5b5b5;
+    margin-top: 10px;
+}
+
+.red-container-panel .panel-body .ModVLQPPLBoxC .news-list li{
+    padding-bottom: 13px;
+}
+    .red-container-panel .panel-body .ModVLQPPLBoxC .news-list li a {
+        font-size: 14px;
+        font-weight: 500;
+        color: #3a3a3a;
+        font-style: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 21px;
+        -webkit-line-clamp: 3;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+    }
+
+.red-container-panel .panel-heading .panel-title .Head {
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: #fff;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.red-container-panel .panel-heading .panel-title {
+    text-align: center;
+}
+
+a#dnn_ctr1632_TT_DANGKYNHANTIN_btnDangKy {
+    color: white !important;
+}
+
+.red-container-panel .dnnPrimaryAction, .dnnFormItem input[type="submit"], a.dnnPrimaryAction {
+    background-color: #dc241b;
+    border-color: #dc241b;
+}
+
+    .red-container-panel .dnnPrimaryAction:hover, .dnnFormItem input[type="submit"]:hover, a.dnnPrimaryAction:hover {
+        background-color: #bb251c;
+        border-color: #bb251c;
+    }
+.red-container-panel .panel-heading .panel-title .icon {
+    font-size: 23px;
+    margin-right: 10px;
+    text-shadow: -1px 1px 2px #696868;
+}
+.panel_head_red_custom {
+    max-width: max-content;
+    width: max-content !important;
+    border-radius: 0px;
+    position: relative;
+    left: 10px;
+    background: #db261b !important;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25), 0 5px 15px rgba(0,0,0,0.20);
+    /*box-shadow: 0 10px 30px -12px rgba(0, 146, 63, 0.42), 0 4px 25px 0px rgba(0, 146, 63, 0.12), 0 8px 10px -5px rgba(0, 146, 63, 0.2);*/
+    border-radius: 3px;
+}
+
+/* Bounce In */
+.LINKCHUYENMUC {
+    color: white;
+    /*display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.5s;
+    transition-duration: 0.5s;*/
+}
+
+    .LINKCHUYENMUC:hover, .LINKCHUYENMUC:focus, .LINKCHUYENMUC:active {
+        color: white;
+        font-size: 14.2px;
+        /*-webkit-transform: scale(1.2);
+        transform: scale(1.2);
+        -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+        transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);*/
+    }
+a#dnn_ctr1632_TT_DANGKYNHANTIN_btnDangKy {
+    color: white !important;
+}
+/* blue */
+
+.blue-container-panel > .panel-heading {
+    background-image: linear-gradient(to bottom, #189bf7 0, #189bf7 100%) !important;
+    padding: 6px 15px 7px 15px;
+    border-radius: 2px;
+    /*box-shadow: 0 10px 30px -12px rgba(146, 0, 0, 0.42), 0 4px 25px 0px rgba(146, 0, 0, 0.12), 0 8px 10px -5px rgba(146, 0, 0, 0.2) !important;*/
+    box-shadow: -2px 2px 4px #c5b5b5;
+    margin-top: 10px;
+}
+
+.blue-container-panel .panel-heading .panel-title .Head {
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: #fff;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.blue-container-panel .panel-heading .panel-title {
+    text-align: center;
+}
+
+
+
+.blue-container-panel .dnnPrimaryAction, .dnnFormItem input[type="submit"], a.dnnPrimaryAction {
+    background-color: #dc241b;
+    border-color: #dc241b;
+}
+
+    .blue-container-panel .dnnPrimaryAction:hover, .dnnFormItem input[type="submit"]:hover, a.dnnPrimaryAction:hover {
+        background-color: #bb251c;
+        border-color: #bb251c;
+    }
+
+.blue-container-panel .panel-heading .panel-title .icon {
+    font-size: 23px;
+    margin-right: 10px;
+    text-shadow: -1px 1px 2px #696868;
+}
+
+.panel_head_blue_custom {
+    max-width: max-content;
+    width: max-content !important;
+    border-radius: 0px;
+    position: relative;
+    left: 10px;
+    background: #db261b !important;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25), 0 5px 15px rgba(0,0,0,0.20);
+    /*box-shadow: 0 10px 30px -12px rgba(0, 146, 63, 0.42), 0 4px 25px 0px rgba(0, 146, 63, 0.12), 0 8px 10px -5px rgba(0, 146, 63, 0.2);*/
+    border-radius: 3px;
+}
+
+/* Bounce In */
+.LINKCHUYENMUC {
+    color: white;
+    /*display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.5s;
+    transition-duration: 0.5s;*/
+}
+
+    .LINKCHUYENMUC:hover, .LINKCHUYENMUC:focus, .LINKCHUYENMUC:active {
+        color: white;
+        font-size: 14.2px;
+        /*-webkit-transform: scale(1.2);
+        transform: scale(1.2);
+        -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+        transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);*/
+    }
+
+
+/*RED*/
+.red-container-panel > .panel-heading {
+    background-image: linear-gradient(to bottom, #db261b 0, #db261b 100%) !important;
+    padding: 4px 10px 4px 10px;
+    border-radius: 2px;
+    /*box-shadow: 0 10px 30px -12px rgba(146, 0, 0, 0.42), 0 4px 25px 0px rgba(146, 0, 0, 0.12), 0 8px 10px -5px rgba(146, 0, 0, 0.2) !important;*/
+    box-shadow: -2px 2px 4px #c5b5b5;
+    margin-top: 10px;
+}
+
+.red-container-panel .panel-heading .panel-title .Head {
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: #fff;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.red-container-panel .panel-heading .panel-title {
+    text-align: center;
+}
+
+
+
+.red-container-panel .dnnPrimaryAction, .dnnFormItem input[type="submit"], a.dnnPrimaryAction {
+    background-color: #dc241b;
+    border-color: #dc241b;
+}
+
+    .red-container-panel .dnnPrimaryAction:hover, .dnnFormItem input[type="submit"]:hover, a.dnnPrimaryAction:hover {
+        background-color: #bb251c;
+        border-color: #bb251c;
+    }
+
+.red-container-panel .panel-heading .panel-title .icon {
+    font-size: 23px;
+    margin-right: 10px;
+    text-shadow: -1px 1px 2px #696868;
+}
+
+.panel_head_red_custom {
+    max-width: max-content;
+    width: max-content !important;
+    border-radius: 0px;
+    position: relative;
+    left: 10px;
+    background: #db261b !important;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25), 0 5px 15px rgba(0,0,0,0.20);
+    /*box-shadow: 0 10px 30px -12px rgba(0, 146, 63, 0.42), 0 4px 25px 0px rgba(0, 146, 63, 0.12), 0 8px 10px -5px rgba(0, 146, 63, 0.2);*/
+    border-radius: 3px;
+}
+
+
+
+
+/*RED*/
+.yellow-container-panel > .panel-heading {
+    background-image: linear-gradient(to bottom, #ff9e00 0, #e89c21 100%) !important;
+    padding: 4px 10px 4px 10px;
+    border-radius: 2px;
+    /*box-shadow: 0 10px 30px -12px rgba(146, 0, 0, 0.42), 0 4px 25px 0px rgba(146, 0, 0, 0.12), 0 8px 10px -5px rgba(146, 0, 0, 0.2) !important;*/
+    box-shadow: -2px 2px 4px #c5b5b5;
+    margin-top: 10px;
+}
+
+.yellow-container-panel .panel-heading .panel-title .Head {
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: #fff;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.yellow-container-panel .panel-heading .panel-title {
+    text-align: center;
+}
+
+
+
+.yellow-container-panel .dnnPrimaryAction, .dnnFormItem input[type="submit"], a.dnnPrimaryAction {
+    background-color: #dc241b;
+    border-color: #dc241b;
+}
+
+    .yellow-container-panel .dnnPrimaryAction:hover, .dnnFormItem input[type="submit"]:hover, a.dnnPrimaryAction:hover {
+        background-color: #bb251c;
+        border-color: #bb251c;
+    }
+
+.yellow-container-panel .panel-heading .panel-title .icon {
+    font-size: 23px;
+    margin-right: 10px;
+    text-shadow: -1px 1px 2px #696868;
+}
+
+.panel_head_yellow_custom {
+    max-width: max-content;
+    width: max-content !important;
+    border-radius: 0px;
+    position: relative;
+    left: 10px;
+    background: #db261b !important;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25), 0 5px 15px rgba(0,0,0,0.20);
+    /*box-shadow: 0 10px 30px -12px rgba(0, 146, 63, 0.42), 0 4px 25px 0px rgba(0, 146, 63, 0.12), 0 8px 10px -5px rgba(0, 146, 63, 0.2);*/
+    border-radius: 3px;
+}

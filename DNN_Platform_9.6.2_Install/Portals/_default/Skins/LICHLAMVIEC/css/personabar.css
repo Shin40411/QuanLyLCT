@@ -1,0 +1,46 @@
+html .personabar-visible {
+    margin-left: 0px !important;
+    margin-top:80px !important;
+}
+
+html .personabar-placeholder {
+    width: 100%;
+    height: 80px;
+    position: fixed;
+}
+html iframe#personaBar-iframe {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 9990;
+    width: 100% !important;
+    height: 80px;
+}
+    /*html iframe#personaBar-iframe:hover {
+        height: calc(100%) !important;
+    }*/
+    html .personabar {
+        width: 100%;
+        background-color: #3d3c3c;
+        height: 80px;
+        position: fixed;
+        top: 0;
+        left: -100px;
+        z-index: 1000;
+        display: none;
+    }
+    html .personabar .personabarLogo {
+        width: 80px;
+        height: 80px;
+        -ms-background-size: 32px auto;
+        background-size: 32px auto;
+        position: fixed;
+        float: left;
+    }
+html .personabarnav > li {
+    float: left;
+}
+    html .personabarnav > li#Logout, html.personabarnav > li#Edit {
+        width:auto;
+    }
