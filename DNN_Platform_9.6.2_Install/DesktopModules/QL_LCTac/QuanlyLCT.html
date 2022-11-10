@@ -1,0 +1,214 @@
+﻿<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+<div id="app">
+    <v-app id="inspire">
+        <v-data-table :headers="headers"
+                      :items="desserts"
+                      sort-by="calories"
+                      class="elevation-1">
+            <template v-slot:top>
+                <v-toolbar flat color="white">
+
+                    <v-spacer></v-spacer>
+                    <v-dialog v-model="dialog" max-width="500px">
+                        <v-card class="mx-auto my-auto" max-width="400">
+
+                        </v-card>
+
+                    </v-dialog>
+                </v-toolbar>
+
+                <v-toolbar flat color="white">
+                    <v-text-field v-model="search" append-icon="mdi-magnify" label="Từ khóa"
+                                  hide-details outlined dense>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-dialog v-model="dialog" max-width="500px">
+                        <template v-slot:activator="{ on }">
+                            <v-btn color="primary" dark class="mb-2" v-on="on">Thêm mới</v-btn>
+                        </template>
+                        <v-card>
+                            <v-card-title>
+                                <span class="headline">{{ formTitle }}</span>
+                            </v-card-title>
+
+                            <v-card-text>
+                                <v-container>
+                                    <v-row>
+                                        <v-col cols="12" sm="6" md="4">
+                                            <v-text-field v-model="editedItem.name" label="Ngày và giờ họp"></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="4">
+                                            <v-text-field v-model="editedItem.calories" label="Đơn vị"></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="4">
+                                            <v-text-field v-model="editedItem.fat" label="Người chủ trì"></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="4">
+                                            <v-text-field v-model="editedItem.carbs" label="Địa điểm"></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="4">
+                                            <v-text-field v-model="editedItem.protein" label="Nội dung"></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="4">
+                                            <v-text-field v-model="editedItem.protein" label="Thành phần"></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+                            </v-card-text>
+
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="save">Lưu</v-btn>
+                                <v-btn color="blue darken-1" text @click="close">Trở về</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                </v-toolbar>
+
+            </template>
+            <template v-slot:item.action="{ item }">
+                <v-icon small
+                        class="mr-2"
+                        @click="editItem(item)">
+                    sửa
+                </v-icon>
+                <v-icon small
+                        @click="deleteItem(item)">
+                    xóa
+                </v-icon>
+            </template>
+            <template v-slot:no-data>
+                <v-btn color="primary" @click="initialize">Reset</v-btn>
+            </template>
+            <template v-slot:[`footer.page-text`]="items">
+                {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
+            </template>
+        </v-data-table>
+    </v-app>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        vuetify: new Vuetify(
+            {
+                lang: {
+                    locales: {
+                        'vi': {
+                            "dataIterator": {
+                                "rowsPerPageText": "Tổng số trang:",
+                                "rowsPerPageAll": "Tất cả",
+                                "pageText": "{0}-{1} trong tổng số {2}",
+                                "noResultsText": "Không tìm thấy dữ liệu",
+                                "nextPage": "Trang tiếp theo",
+                                "prevPage": "Trang trước "
+                            },
+                            "dataTable": {
+                                "rowsPerPageText": "Số dòng hiển thị:"
+                            },
+                            "noDataText": "Dữ liệu chưa sẵn sàng",
+                        }
+                    },
+                    current: 'vi'
+                }
+        }),
+        data: () => ({
+            dialog: false,
+            headers: [
+                {
+                    text: 'STT',
+                    align: 'left',
+                    sortable: false,
+                    value: 'name',
+                },
+                { text: 'Ngày họp', value: 'calories' },
+                { text: 'Giờ họp', value: 'fat' },
+                { text: 'Đơn vị', value: 'carbs' },
+                { text: 'Người chủ trì', value: 'protein' },
+                { text: 'Địa điểm', value: 'protein' },
+                { text: 'Nội dung', value: 'protein' },
+                { text: 'Thành phần', value: 'protein' },
+                { text: 'Hành động', value: 'action', sortable: false },
+            ],
+            desserts: [],
+            editedIndex: -1,
+            editedItem: {
+                name: '',
+                calories: '',
+                fat: '',
+                carbs: '',
+                protein: '',
+            },
+            defaultItem: {
+                name: '',
+                calories: '',
+                fat: '',
+                carbs: '',
+                protein: '',
+            },
+        }),
+
+        computed: {
+            formTitle() {
+                return this.editedIndex === -1 ? 'Thêm mới lịch công tác' : 'Cập nhật lịch công tác'
+            },
+        },
+
+        watch: {
+            dialog(val) {
+                val || this.close()
+            },
+        },
+
+        created() {
+            this.initialize()
+        },
+
+        methods: {
+            initialize() {
+                this.desserts = [
+                    {
+                        name: '1',
+                        calories: 159,
+                        fat: 6.0,
+                        carbs: 24,
+                        protein: 4.0,
+                    },
+                ]
+            },
+
+            editItem(item) {
+                this.editedIndex = this.desserts.indexOf(item)
+                this.editedItem = Object.assign({}, item)
+                this.dialog = true
+            },
+
+            deleteItem(item) {
+                const index = this.desserts.indexOf(item)
+                confirm('Bạn có chắc chắn muốn xóa?') && this.desserts.splice(index, 1)
+            },
+
+            close() {
+                this.dialog = false
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedIndex = -1
+                }, 300)
+            },
+
+            save() {
+                if (this.editedIndex > -1) {
+                    Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                } else {
+                    this.desserts.push(this.editedItem)
+                }
+                this.close()
+            },
+        },
+    })
+</script>
