@@ -1,30 +1,41 @@
 ﻿<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+
+<style>
+    .v-data-table-header {
+        background: 0 -2300px repeat-x #c3d8f1;
+    }
+    tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, .05);
+    }
+</style>
+
 <div id="app">
     <v-app id="inspire">
         <v-data-table :headers="headers"
-                      :items="desserts"
+                      :items="lich"
+                      :search="search"
+                      item-key="name"
                       sort-by="calories"
-                      class="elevation-1">
+                      class="elevation-1"
+                      :footer-props="footerProps" 
+                      :header-props="headerProps">
             <template v-slot:top>
-                <v-toolbar flat color="white">
+                <!--<v-toolbar flat color="white">
 
                     <v-spacer></v-spacer>
-                    <v-dialog v-model="dialog" max-width="500px">
-                        <v-card class="mx-auto my-auto" max-width="400">
 
-                        </v-card>
-
-                    </v-dialog>
-                </v-toolbar>
+                </v-toolbar>-->
 
                 <v-toolbar flat color="white">
-                    <v-text-field v-model="search" append-icon="mdi-magnify" label="Từ khóa"
-                                  hide-details outlined dense>
-                    </v-text-field>
+                    <v-text-field v-model="search"
+                                  append-icon="mdi-magnify"
+                                  label="Tìm kiếm"
+                                  single-line
+                                  hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-dialog v-model="dialog" max-width="500px">
+                    <v-dialog v-model="dialog" max-width="1000px">
                         <template v-slot:activator="{ on }">
                             <v-btn color="primary" dark class="mb-2" v-on="on">Thêm mới</v-btn>
                         </template>
@@ -32,37 +43,100 @@
                             <v-card-title>
                                 <span class="headline">{{ formTitle }}</span>
                             </v-card-title>
-
-                            <v-card-text>
-                                <v-container>
-                                    <v-row>
-                                        <v-col cols="12" sm="6" md="4">
-                                            <v-text-field v-model="editedItem.name" label="Ngày và giờ họp"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6" md="4">
-                                            <v-text-field v-model="editedItem.calories" label="Đơn vị"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6" md="4">
-                                            <v-text-field v-model="editedItem.fat" label="Người chủ trì"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6" md="4">
-                                            <v-text-field v-model="editedItem.carbs" label="Địa điểm"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6" md="4">
-                                            <v-text-field v-model="editedItem.protein" label="Nội dung"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6" md="4">
-                                            <v-text-field v-model="editedItem.protein" label="Thành phần"></v-text-field>
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                            </v-card-text>
-
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="save">Lưu</v-btn>
-                                <v-btn color="blue darken-1" text @click="close">Trở về</v-btn>
-                            </v-card-actions>
+                            <v-form ref="form"
+                                    v-model="valid"
+                                    lazy-validation>
+                                <v-card-text>
+                                    <v-container fluid>
+                                        <v-row>
+                                            <v-col cols="4">
+                                                <v-col cols="12">
+                                                    <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" transition="scale-transition" offset-y
+                                                            max-width="350px" min-width="auto">
+                                                        <template v-slot:activator="{ on, attrs }">
+                                                            <v-text-field v-model="Computed_dateFormatted"
+                                                                          label="Chọn ngày"
+                                                                          append-icon="mdi-calendar"
+                                                                          v-bind="attrs"
+                                                                          @blur="date = parseDate(dateFormatted)"
+                                                                          hint="Định dạng YYYY/MM/DD"
+                                                                          persistent-hint
+                                                                          v-on="on"
+                                                                          :rules="[v => !!v || 'Yêu cầu chọn ngày']" 
+                                                                          required
+                                                                          readonly
+                                                                          outlined dense></v-text-field>
+                                                        </template>
+                                                        <v-date-picker v-model="editedItem.Ngay" no-title @input="menu1 = false"></v-date-picker>
+                                                    </v-menu>
+                                                </v-col>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-menu ref="menu"
+                                                        v-model="menu2"
+                                                        :close-on-content-click="false"
+                                                        :nudge-right="40"
+                                                        :return-value.sync="editedItem.Gio"
+                                                        transition="scale-transition"
+                                                        offset-y
+                                                        max-width="290px"
+                                                        min-width="290px">
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-text-field v-model="editedItem.Gio"
+                                                                      label="Chọn giờ"
+                                                                      prepend-icon="mdi-clock-time-four-outline"
+                                                                      v-bind="attrs"
+                                                                      :rules="[v => !!v || 'Yêu cầu chọn giờ']" 
+                                                                      required
+                                                                      readonly
+                                                                      v-on="on"></v-text-field>
+                                                    </template>
+                                                    <v-time-picker v-if="menu2"
+                                                                   v-model="editedItem.Gio"
+                                                                   full-width
+                                                                   @click:minute="$refs.menu.save(editedItem.Gio)"></v-time-picker>
+                                                </v-menu>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <!--<v-text-field v-model="editedItem.to_lichcongtac.NguoiChuTri" label="Người chủ trì"></v-text-field>-->
+                                                <v-text-field v-model="editedItem.DiaDiem" :counter="10" :rules="locationRules" required label="Địa điểm"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <!--<v-text-field v-model="editedItem.to_lichcongtac.TenDonVi" label="Đơn vị"></v-text-field>-->
+                                                <v-select :items="dv" 
+                                                          v-model="editedItem.Donvi_ID" 
+                                                          item-text="Ten_Donvi" 
+                                                          item-value="ID_Donvi" 
+                                                          :rules="[v => !!v || 'Yêu cầu chọn đơn vị']" 
+                                                          required
+                                                          label="Đơn vị" 
+                                                          outlined dense></v-select>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-select :items="nct" 
+                                                          v-model="editedItem.CanBo_ID" 
+                                                          item-text="HoVaten" 
+                                                          item-value="ID_CanBo" 
+                                                          :rules="[v => !!v || 'Yêu cầu chọn người chủ trì']" 
+                                                          required
+                                                          label="Người chủ trì" 
+                                                          outlined dense></v-select>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-text-field v-model="editedItem.NoiDung" :counter="100" :rules="contentRules" required label="Nội dung"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-text-field v-model="editedItem.ThanhPhan" :counter="50" :rules="componentRules" required label="Thành phần"></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                                </v-form>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="primary" v-on:click="save">Lưu</v-btn>
+                                    <v-btn color="success" @click="close">Trở về</v-btn>
+                                </v-card-actions>
                         </v-card>
                     </v-dialog>
                 </v-toolbar>
@@ -72,15 +146,18 @@
                 <v-icon small
                         class="mr-2"
                         @click="editItem(item)">
-                    sửa
+                    mdi-pencil
                 </v-icon>
                 <v-icon small
                         @click="deleteItem(item)">
-                    xóa
+                    mdi-delete
                 </v-icon>
             </template>
-            <template v-slot:no-data>
-                <v-btn color="primary" @click="initialize">Reset</v-btn>
+            <!--<template v-slot:no-data>
+        <v-btn color="primary" @click="initialize">Reset</v-btn>
+    </template>-->
+            <template v-slot:[`footer.rowsPerPageText`]="items">
+                Số dòng hiển thị:
             </template>
             <template v-slot:[`footer.page-text`]="items">
                 {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
@@ -99,7 +176,7 @@
             {
                 lang: {
                     locales: {
-                        'vi': {
+                        'en': {
                             "dataIterator": {
                                 "rowsPerPageText": "Tổng số trang:",
                                 "rowsPerPageAll": "Tất cả",
@@ -114,100 +191,288 @@
                             "noDataText": "Dữ liệu chưa sẵn sàng",
                         }
                     },
-                    current: 'vi'
+                    current: 'en'
                 }
         }),
-        data: () => ({
-            dialog: false,
-            headers: [
-                {
-                    text: 'STT',
-                    align: 'left',
-                    sortable: false,
-                    value: 'name',
+        data() {
+            return {
+                headerProps: {
+                    sortByText: "Chọn sắp xếp"
                 },
-                { text: 'Ngày họp', value: 'calories' },
-                { text: 'Giờ họp', value: 'fat' },
-                { text: 'Đơn vị', value: 'carbs' },
-                { text: 'Người chủ trì', value: 'protein' },
-                { text: 'Địa điểm', value: 'protein' },
-                { text: 'Nội dung', value: 'protein' },
-                { text: 'Thành phần', value: 'protein' },
-                { text: 'Hành động', value: 'action', sortable: false },
-            ],
-            desserts: [],
-            editedIndex: -1,
-            editedItem: {
-                name: '',
-                calories: '',
-                fat: '',
-                carbs: '',
-                protein: '',
-            },
-            defaultItem: {
-                name: '',
-                calories: '',
-                fat: '',
-                carbs: '',
-                protein: '',
-            },
-        }),
+                /*edit panigation*/
+                footerProps: {
+                    itemsPerPageOptions: [5, 10, 20, 30, 50, -1],
+                    itemsPerPageText: 'Số dòng hiển thị:',
+                    itemsPerPageAllText: 'Tất cả',
+                    showFirstLastPage: true,
+                    showCurrentPage: true,
+                },
+                search: '',
+                menu1: null,
+                //time: null,
+                menu2: false,
+                date: null,
+                dialog: false,
+                valid: true,
+                locationRules: [
+                    v => !!v || 'Yêu cầu nhập địa điểm',
+                    v => (v && v.length <= 10) || 'Địa điểm phải nhỏ hơn 10 ký tự',
+                ],
+                contentRules: [
+                    v => !!v || 'Yêu cầu nhập nội dung',
+                    v => (v && v.length <= 100) || 'Nội dung phải nhỏ hơn 100 ký tự',
+                ],
+                componentRules: [
+                    v => !!v || 'Yêu cầu nhập thành phần',
+                    v => (v && v.length <= 50) || 'Thành phần phải nhỏ hơn 50 ký tự',
+                ],
+                headers: [
+                    {
+                        text: 'STT',
+                        align: 'left',
+                        sortable: false,
+                        value: 'STT',
+                    },
+                    { text: 'Ngày họp', value: 'Ngay' },
+                    { text: 'Giờ họp', value: 'Gio' },
+                    { text: 'Đơn vị', value: 'TenDonVi' },
+                    { text: 'Người chủ trì', value: 'NguoiChuTri' },
+                    { text: 'Địa điểm', value: 'DiaDiem' },
+                    { text: 'Nội dung', value: 'NoiDung' },
+                    { text: 'Thành phần', value: 'ThanhPhan' },
+                    { text: '', value: 'action', sortable: false },
+                ],
+                lich: [],
+                dv: [],
+                nct: [],
+                editedIndex: -1,
+                editedItem: {
+                        STT: null,
+                        ID_Lich: null,
+                        Ngay_Giohop: null,
+                        Ngay: null,
+                        Gio: null,
+                        TenDonVi: null,
+                        Donvi_ID: null, 
+                        CanBo_ID: null,
+                        NguoiChuTri: null,
+                        DiaDiem: null,
+                        NoiDung: null,
+                        ThanhPhan: null,
+                },
+                defaultItem: {
+                    STT:'',
+                    ID_Lich: '',
+                    Ngay_Giohop: '',
+                    Ngay: '',
+                    Gio: '',
+                    TenDonVi: '',
+                    Donvi_ID: '',
+                    CanBo_ID: '',
+                    NguoiChuTri: '',
+                    DiaDiem: '',
+                    NoiDung: '',
+                    ThanhPhan: '',
+                },
+                URL: "/Desktopmodules/lct/api/LichCongTac/",
+                URLdv: "/Desktopmodules/lct/api/Donvi/",
+                URLnct: "/Desktopmodules/lct/api/CanBo/",
+            }
+        },
 
         computed: {
             formTitle() {
                 return this.editedIndex === -1 ? 'Thêm mới lịch công tác' : 'Cập nhật lịch công tác'
             },
+            Computed_dateFormatted() {
+                return this.formatDate(this.editedItem.Ngay);
+            },
         },
 
         watch: {
+            date(val) {
+                this.dateFormatted = this.formatDate(this.editedItem.Ngay)
+            },
             dialog(val) {
                 val || this.close()
             },
         },
 
         created() {
-            this.initialize()
+            this.getLCT();
+            this.GetListDonvi();
+            this.getCanBo();
         },
 
         methods: {
-            initialize() {
-                this.desserts = [
-                    {
-                        name: '1',
-                        calories: 159,
-                        fat: 6.0,
-                        carbs: 24,
-                        protein: 4.0,
-                    },
-                ]
+            async getLCT() {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URL + 'getLCT',
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.lich = result.data;
+            },
+            async getLCTchitiet(value) {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URL + 'getLCTchitiet?lID=' + value.ID_Lich,
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.editedItem = result.data;
+            },
+            async getCanBo() {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URLnct + 'getCanBo',
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.nct = result.data;
+                //this.nct = [];
+                //for (let i = 0; i < result.data.length; i++) {
+                //    this.nct.push(result.data[i].ID_CanBo);
+                //}
+            },
+            async GetListDonvi() {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URLdv + 'GetListDonvi',
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.dv = result.data;
+                //this.dv = [];
+                //for (let i = 0; i < result.data.length; i++) {
+                //    this.dv.push(result.data[i].ID_Donvi);
+                //}
+            },
+            async addLCT() {
+                this.loading = true;
+               /*var nctri = this.editedItem.NguoiChuTri;*/
+                let result = await axios({
+                    method: 'post',
+                    url: this.URL + 'addLCT',
+                    data: {
+                        Ngay: this.editedItem.Ngay,
+                        Gio: this.editedItem.Gio,
+                        Donvi_ID: this.editedItem.Donvi_ID,
+                        CanBo_ID: this.editedItem.CanBo_ID,
+                        DiaDiem: this.editedItem.DiaDiem,
+                        NoiDung: this.editedItem.NoiDung,
+                        ThanhPhan: this.editedItem.ThanhPhan,
+                    }
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
             },
 
+            async updateLCT() {
+                this.loading = true;
+
+                let result = await axios({
+                    method: 'post',
+                    url: this.URL + 'updateLCT',
+                    data: {
+                        ID_Lich: this.editedItem.ID_Lich,
+                        Ngay: this.editedItem.Ngay,
+                        Gio: this.editedItem.Gio,
+                        Donvi_ID: this.editedItem.Donvi_ID,
+                        CanBo_ID: this.editedItem.CanBo_ID,
+                        DiaDiem: this.editedItem.DiaDiem,
+                        NoiDung: this.editedItem.NoiDung,
+                        ThanhPhan: this.editedItem.ThanhPhan,
+                    }
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+            },
+            async deleteLCT(value) {
+                this.loading = true;
+                let result = await axios({
+                    method: 'post',
+                    url: this.URL + 'deleteLCT?lID=' + value.ID_Lich,
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.lich = result.data;
+            },
+            formatDate(date) {
+                if (!date) return null
+                const [year, month, day] = date.substring(0, 10).split('-')
+                return `${year}/${month}/${day}`
+            },
+            parseDate(date) {
+                if (!date) return null
+                const [month, day, year] = date.split('-')
+                return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+            },
             editItem(item) {
-                this.editedIndex = this.desserts.indexOf(item)
-                this.editedItem = Object.assign({}, item)
-                this.dialog = true
+                this.editedIndex = this.lich.indexOf(item);
+                this.getLCTchitiet(Object.assign({}, item));
+                /*this.editedItem = Object.assign({}, item);*/
+                this.dialog = true;
             },
 
             deleteItem(item) {
-                const index = this.desserts.indexOf(item)
-                confirm('Bạn có chắc chắn muốn xóa?') && this.desserts.splice(index, 1)
+                var del = confirm('Bạn có chắc chắn muốn xóa?');
+                if (del == true) {
+                    this.deleteLCT(item);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 300)
+                } else {
+                }
+                return del;
+            },
+
+            save() {
+                var validation = this.$refs.form.validate();
+                if (validation == true) {
+                    if (this.editedIndex > -1) {
+                        //Object.assign(this.lich[this.editedIndex], this.editedItem)
+                        this.updateLCT();
+                        alert("Cập nhật thành công");
+                        setTimeout(() => {
+                            location.reload();
+                        }, 100)
+                    } else {
+                        this.lich.push(this.editedItem)
+                        this.addLCT();
+                        alert("Thêm thành công");
+                        setTimeout(() => {
+                            location.reload();
+                        }, 100)
+                    }
+                    this.close();
+                } else {
+                }
             },
 
             close() {
-                this.dialog = false
+                this.dialog = false;
                 setTimeout(() => {
                     this.editedItem = Object.assign({}, this.defaultItem)
                     this.editedIndex = -1
                 }, 300)
-            },
-
-            save() {
-                if (this.editedIndex > -1) {
-                    Object.assign(this.desserts[this.editedIndex], this.editedItem)
-                } else {
-                    this.desserts.push(this.editedItem)
-                }
-                this.close()
             },
         },
     })

@@ -1,70 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12.75, 11.5" name="lct">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 12.375" name="lct">
   <DataContextMoniker Name="/lctDataContext" />
   <nestedChildShapes>
-    <classShape Id="1c1956b6-1905-41d5-8933-27067949a117" absoluteBounds="1.25, 2.625, 2, 2.3478011067708344">
-      <DataClassMoniker Name="/lctDataContext/CanBo" />
+    <classShape Id="4f0274fa-9cbd-49f5-bb2a-f14e977f84e2" absoluteBounds="6.875, 1, 2, 2.5401025390625">
+      <DataClassMoniker Name="/lctDataContext/Vw_LichCongTac" />
       <nestedChildShapes>
-        <elementListCompartment Id="96168be3-7143-405f-8866-a0fd57e2dad9" absoluteBounds="1.2650000000000006, 3.085, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="daedb63d-fcad-4062-817e-16d59af34b57" absoluteBounds="6.8900000000000006, 1.46, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="7637f8d1-447c-4466-897a-58621c904e61" absoluteBounds="4.875, 2.625, 2, 1.7708968098958335">
-      <DataClassMoniker Name="/lctDataContext/DonVi" />
-      <nestedChildShapes>
-        <elementListCompartment Id="a2e01094-b60b-4147-a489-3b9e12d5ffaa" absoluteBounds="4.8900000000000006, 3.085, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="07008843-249c-4adf-b11f-f324a73222e4" absoluteBounds="4.875, 6.375, 2, 2.1554996744791666">
+    <classShape Id="1f88eeed-9024-45f1-a392-857dd68a60d0" absoluteBounds="6.25, 9.875, 2, 2.1554996744791666">
       <DataClassMoniker Name="/lctDataContext/LichCongTac" />
       <nestedChildShapes>
-        <elementListCompartment Id="b7b2d0b6-7967-4cfb-ae28-bf4573ba1bd5" absoluteBounds="4.8900000000000006, 6.835, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="397c38e1-3de9-460f-9a20-f5d50a7e75b2" absoluteBounds="6.265, 10.335, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="8f92a783-d075-4544-9bc1-001856cbd6ee" absoluteBounds="10.5, 7.125, 2, 4.0785139973958318">
-      <DataClassMoniker Name="/lctDataContext/User" />
+    <classShape Id="764d92be-99a6-4c88-a778-a736c5c58dae" absoluteBounds="0.75, 6.875, 2, 1.7708968098958335">
+      <DataClassMoniker Name="/lctDataContext/DonVi" />
       <nestedChildShapes>
-        <elementListCompartment Id="0527beea-155b-4a9c-b149-9e3baf3c6c47" absoluteBounds="10.515, 7.5850000000000009, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="36d80f9a-2e84-4df3-958f-eee4cb570ea4" absoluteBounds="0.765, 7.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="53445a7e-4053-407e-8c77-931f27320946" absoluteBounds="10, 2.625, 2, 2.1554996744791666">
-      <DataClassMoniker Name="/lctDataContext/UserInfo" />
+    <classShape Id="27ed1ab0-3258-4e99-a31a-1791e41d541e" absoluteBounds="3.5, 9.75, 2, 2.3478011067708344">
+      <DataClassMoniker Name="/lctDataContext/CanBo" />
       <nestedChildShapes>
-        <elementListCompartment Id="47ea557f-9cbe-4d48-9392-7f1d2fe0e99c" absoluteBounds="10.015, 3.085, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="8b61fe38-f6eb-4a84-a415-7c9782d3f7cf" absoluteBounds="3.515, 10.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(4.875 : 3.51044840494792); (3.25 : 3.51044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/lctDataContext/DonVi/DonVi_CanBo" />
-      <nodes>
-        <classShapeMoniker Id="7637f8d1-447c-4466-897a-58621c904e61" />
-        <classShapeMoniker Id="1c1956b6-1905-41d5-8933-27067949a117" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(2.25 : 4.97280110677083); (2.25 : 7.45274983723958); (4.875 : 7.45274983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.5 : 10.9527498372396); (6.25 : 10.9527498372396)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/lctDataContext/CanBo/CanBo_LichCongTac" />
       <nodes>
-        <classShapeMoniker Id="1c1956b6-1905-41d5-8933-27067949a117" />
-        <classShapeMoniker Id="07008843-249c-4adf-b11f-f324a73222e4" />
+        <classShapeMoniker Id="27ed1ab0-3258-4e99-a31a-1791e41d541e" />
+        <classShapeMoniker Id="1f88eeed-9024-45f1-a392-857dd68a60d0" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.875 : 4.39589680989583); (5.875 : 6.375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/lctDataContext/DonVi/DonVi_LichCongTac" />
+    <associationConnector edgePoints="[(1.75 : 8.64589680989583); (1.75 : 10.9239005533854); (3.5 : 10.9239005533854)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/lctDataContext/DonVi/DonVi_CanBo" />
       <nodes>
-        <classShapeMoniker Id="7637f8d1-447c-4466-897a-58621c904e61" />
-        <classShapeMoniker Id="07008843-249c-4adf-b11f-f324a73222e4" />
+        <classShapeMoniker Id="764d92be-99a6-4c88-a778-a736c5c58dae" />
+        <classShapeMoniker Id="27ed1ab0-3258-4e99-a31a-1791e41d541e" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(6.875 : 3.51044840494792); (10 : 3.51044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/lctDataContext/DonVi/DonVi_UserInfo" />
+    <classShape Id="474a8e88-c85f-4521-b04f-a41cccae83cc" absoluteBounds="5, 4.875, 2, 4.0785139973958326">
+      <DataClassMoniker Name="/lctDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="935b703b-c798-45d0-a1ce-a87b7251995f" absoluteBounds="5.0150000000000006, 5.335, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="09b5ab62-e239-4425-aa90-9bfee1bdff0f" absoluteBounds="1.625, 2.125, 2, 3.1170068359375">
+      <DataClassMoniker Name="/lctDataContext/NguoiDungInfo" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e343bc11-b418-4b77-b06a-0e39a1b1991b" absoluteBounds="1.6399999999999997, 2.585, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.1875 : 6.875); (2.1875 : 5.2420068359375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/lctDataContext/DonVi/DonVi_NguoiDungInfo" />
       <nodes>
-        <classShapeMoniker Id="7637f8d1-447c-4466-897a-58621c904e61" />
-        <classShapeMoniker Id="53445a7e-4053-407e-8c77-931f27320946" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(11.25 : 7.125); (11.25 : 4.78049967447917)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/lctDataContext/User/User_UserInfo" />
-      <nodes>
-        <classShapeMoniker Id="8f92a783-d075-4544-9bc1-001856cbd6ee" />
-        <classShapeMoniker Id="53445a7e-4053-407e-8c77-931f27320946" />
+        <classShapeMoniker Id="764d92be-99a6-4c88-a778-a736c5c58dae" />
+        <classShapeMoniker Id="09b5ab62-e239-4425-aa90-9bfee1bdff0f" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>
