@@ -51,7 +51,6 @@
                                 <span class="headline">{{ formTitle }}</span>
                             </v-card-title>
                             <v-form ref="form"
-                                    v-model="valid"
                                     lazy-validation>
                                 <v-card-text>
                                     <v-container fluid>
@@ -79,7 +78,8 @@
                                                 <v-text-field v-model="vMatKhau"
                                                               label="Mật khẩu"
                                                               type="password"
-                                                             v-if="!isFormValid"
+                                                              hint=" Mật khẩu ít nhất 8 ký tự"
+                                                              v-if="!isFormValid"
                                                               :rules="[v => !!v || 'Vui lòng nhập Mật khẩu']"
                                                               required
                                                               dense></v-text-field>
@@ -88,7 +88,7 @@
 
                                                 <v-text-field v-model="vXacNhanMatKhau"
                                                               label="Xác nhận mật khẩu"
-                                                              v-if="!isFormValid" 
+                                                              v-if="!isFormValid"
                                                               type="password"
                                                               :rules="[v => !!v || 'Vui lòng nhập Xác nhận mật khẩu']"
                                                               required
@@ -110,6 +110,7 @@
                                                 <v-text-field v-model="editedItem.item_ndung.Sodienthoai_nd"
                                                               label="Số điện thoại"
                                                               :rules="phoneRules"
+                                                              :counter="10"
                                                               v-if="!isValid"
                                                               required
                                                               dense></v-text-field>
@@ -127,8 +128,7 @@
                                             </v-col>
 
                                             <v-col cols="6" sm="6" md="6">
-                                                <v-select
-                                                          :items="item_donvi"
+                                                <v-select :items="item_donvi"
                                                           v-model="editedItem.item_ndung.ID_Donvi"
                                                           v-if="!isValid"
                                                           :rules="[v => !!v || 'Yêu cầu chọn nhóm đơn vị']"
@@ -164,26 +164,29 @@
                 </v-toolbar>
 
             </template>
+            <template v-slot:group.header="{items, isOpen, toggle}">
+                <th colspan="11">
+                    <v-icon @click="toggle">
+                        {{ isOpen ? 'mdi-menu-down' : 'mdi-menu-up' }}
+                    </v-icon>
+                    {{ items[0].Ten_Donvi }}
+                </th>
+            </template>
             <template v-slot:item.action="{ item }">
-                <template v-slot:group.header="{items, isOpen, toggle}">
-                    <th colspan="8">
-                        <v-icon small @click="toggle">
-                            small
-                            {{ isOpen ? 'mdi-minus' : 'mdi-plus' }}
-                        </v-icon>
-                        {{ items[0].TenDV }}
-                    </th>
-                </template>
                 <v-icon small
                         class="mr-2"
                         @click="editPw(item)">
                     mdi-key
                 </v-icon>
+            </template>
+            <template v-slot:item.action1="{ item }">
                 <v-icon small
                         class="mr-2"
                         @click="editItem(item)">
                     mdi-pencil
                 </v-icon>
+            </template>
+            <template v-slot:item.action2="{ item }">
                 <v-icon small
                         @click="deleteItem(item)">
                     mdi-delete
@@ -196,87 +199,6 @@
                 {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
             </template>
         </v-data-table>
-        <!--<v-container fluid>
-            <v-row>
-                <v-col cols="8">
-                    <v-text-field v-model="search"
-                                  append-icon="mdi-magnify"
-                                  label="Tìm kiếm"
-                                  single-line
-                                  hide-details></v-text-field>
-                </v-col>
-                <v-col cols="4 text-right" style="padding-top:9px">
-
-                    <v-btn color="primary" dark class="mb-2" v-on:click="CreateDV">Thêm mới</v-btn>
-
-                </v-col>
-
-            </v-row>
-            <br />
-        </v-container>
-        <v-data-table :headers="headers"
-                      :items="items"
-                      item-key="name"
-                      :items-per-page="10"
-                      :search="search"
-                      dense
-                      class="elevation-1"
-                      @click:row="handleClick"
-                      :footer-props="{'items-per-page-text':'Số dòng hiển thị'}">
-            <v-toolbar flat color="white">
-            <template v-slot:top>
-
-                <v-dialog v-model="dialog" max-width="800px">
-                    <v-card>
-                        <v-card-title>
-                            <span class="headline">{{ formTitle }}</span>
-                        </v-card-title>
-
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.item_donvi.Ten_Donvi" label="Tên đơn vị"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.item_donvi.Mota_Donvi" label="Mô tả"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                        <v-select :items="itemnhom" label="Nhóm đơn vị" v-model="editedItem.item_donvi.Nhom_Donvi"></v-select>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.item_donvi.Thutu_Donvi" label="Thứ tự"></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" text @click="save">Lưu</v-btn>
-                            <v-btn color="blue darken-1" text @click="close">Trở về</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                </v-toolbar>
-
-            </template>
-            <template v-slot:item.action="{ item }">
-                <v-icon small
-                        class="mr-2"
-                        @click="editItem(item)">
-                    sửa
-                </v-icon>
-                <v-icon small
-                        @click="deleteItem(item)">
-                    xóa
-                </v-icon>
-            </template>
-
-            <template v-slot:[`footer.page-text`]="items">
-                {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
-            </template>
-        </v-data-table>-->
     </v-app>
 </div>
 
@@ -323,6 +245,9 @@
                 isFormValid: true,
                 isValid: false,
                 editMode: true,
+                editMode1: true,
+                editMode2: true,
+
                 search: '',               
                 headers: [
                     {
@@ -339,7 +264,9 @@
                     { text: 'Phòng ban', value: 'Phongban_nd' },
                     { text: 'Chức vụ', value: 'Chucvu_nd' },
                     { text: 'Ghi chú', value: 'Ghichu_nd' },
-                    { text: 'Hành động', value: 'action', width:'120px', sortable: false },
+                    { text: 'Đổi mật khẩu', align: 'center', value: 'action', sortable: false, },
+                    { text: 'Sửa', align: 'center', value: 'action1', sortable: false, },
+                    { text: 'Xóa', align: 'center', value: 'action2', sortable: false, },
                 ],
                 phoneRules: [
                     v => (v && v.length == 10) || 'Số điện thoại phải có 10 số',
@@ -401,6 +328,13 @@
             formTitle() {
                 return this.editedIndex === -1 ? 'Thêm mới người dùng' : 'Cập nhật người dùng'
             },
+            items() {
+                return this.items.map(
+                    (items, index) => ({
+                        ...items,
+                        index: index + 1
+                    }))
+            }
         },
 
         watch: {
@@ -549,6 +483,7 @@
                 this.editMode1 = true;
                 this.editMode2 = false;
 
+
                 this.editedIndex = this.items.indexOf(item)
                 this.editedItem.item_ndung = Object.assign({}, item)
                 this.dialog = true
@@ -561,6 +496,10 @@
                 this.editMode1 = false;
                 this.editMode2 = false;
 
+
+                this.vMatKhau = '';
+                this.vXacNhanMatKhau = '';
+
                 this.editedIndex = this.items.indexOf(item)
                 this.editedItem.item_ndung = Object.assign({}, item)
                 this.dialog = true
@@ -572,6 +511,9 @@
                 this.isValid = false;
                 this.editMode1 = true;
                 this.editMode2 = true;
+
+                this.vMatKhau = '';
+                this.vXacNhanMatKhau = ''; 
 
                 this.editedItem.item_ndung = {};
                 this.dialog = true
@@ -604,7 +546,8 @@
                 
                 var validation = this.$refs.form.validate();
                 if (validation == true) {
-                    if (this.editedItem.item_ndung.ID_Ndung != 0 && this.editedItem.item_ndung.Matkhau_nd != "") {
+                    var x = this.editedItem.item_ndung.ID_Ndung;
+                    if (this.editedItem.item_ndung.ID_Ndung != undefined && this.editedItem.item_ndung.Matkhau_nd != "") {
                         this.UpdatePw();
                     }
                     else {
@@ -615,6 +558,7 @@
                 else {
                     this.$toasted.error('Vui lòng điền thông tin', toastOptions);
                 }
+
             },
            
             handleClick(value) {
