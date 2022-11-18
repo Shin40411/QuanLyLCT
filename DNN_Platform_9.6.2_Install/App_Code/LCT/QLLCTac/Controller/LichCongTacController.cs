@@ -1,4 +1,4 @@
-﻿using DotNetNuke.Web.Api;
+using DotNetNuke.Web.Api;
 using LCT;
 using Newtonsoft.Json;
 using System;
@@ -17,12 +17,14 @@ namespace lct
         lctDataContext db = new lctDataContext();
         [AllowAnonymous]
         [HttpGet]
-        public HttpResponseMessage getLCT()
+        public HttpResponseMessage getLCT(string tungay, string denngay)
         {
             try
             {
+                DateTime startday = DateTime.ParseExact(tungay, "yyyy-MM-d", CultureInfo.InvariantCulture);
+                DateTime endday = DateTime.ParseExact(denngay, "yyyy-MM-d", CultureInfo.InvariantCulture);
                 int stt = 1;
-                List<LichCongTac> lichCongTacs = db.LichCongTacs.ToList();
+                List<LichCongTac> lichCongTacs = db.LichCongTacs.Where(x => x.Ngay_Giohop.Value.Date >= startday.Date && x.Ngay_Giohop.Value.Date <= endday.Date).OrderBy(x=>x.Ngay_Giohop.Value.Date).ToList();
                 List<ModelLCT> lstlct = new List<ModelLCT>();
                 foreach(var lich in lichCongTacs)
                 {
@@ -30,9 +32,46 @@ namespace lct
                     modelLCT.STT = Convert.ToInt32(stt++);
                     modelLCT.ID_Lich = lich.ID_Lich;
                     modelLCT.Ngay_Giohop = (DateTime)lich.Ngay_Giohop;
-                    modelLCT.Ngay = modelLCT.Ngay_Giohop.ToString("yyyy-MM-dd");
+                    modelLCT.Ngay = modelLCT.Ngay_Giohop.ToString("dd/MM/yyyy");
                     modelLCT.Gio = modelLCT.Ngay_Giohop.ToString("HH:mm");
-                    modelLCT.TenDonVi = lich.CanBo.DonVi.Ten_Donvi;
+                    modelLCT.TenDonVi = lich.DonVi.Ten_Donvi;
+                    modelLCT.Donvi_ID = Convert.ToInt32(lich.Donvi_ID);
+                    modelLCT.NguoiChuTri = lich.CanBo.Hovaten;
+                    modelLCT.CanBo_ID = Convert.ToInt32(lich.CanBo_ID);
+                    modelLCT.DiaDiem = lich.Diadiem;
+                    modelLCT.NoiDung = lich.Noidung;
+                    modelLCT.ThanhPhan = lich.ThanhPhan;
+                    lstlct.Add(modelLCT);
+                }
+                var res = Request.CreateResponse(HttpStatusCode.OK);
+                res.Content = new StringContent(JsonConvert.SerializeObject(lstlct), System.Text.Encoding.UTF8, "application/json");
+                return res;
+            }
+            catch (Exception Ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public HttpResponseMessage getLichCongTac(string Day)
+        {
+            try
+            {
+                DateTime date_search = DateTime.ParseExact(Day, "d/MM/yyyy", CultureInfo.InvariantCulture);
+                int stt = 1;
+                List<LichCongTac> lichCongTacs = db.LichCongTacs.Where(x => x.Ngay_Giohop.Value.Date == date_search.Date).OrderByDescending(x=>x.Donvi_ID).ToList();
+                List<ModelLCT> lstlct = new List<ModelLCT>();
+                foreach (var lich in lichCongTacs)
+                {
+                    ModelLCT modelLCT = new ModelLCT();
+                    modelLCT.STT = Convert.ToInt32(stt++);
+                    modelLCT.ID_Lich = lich.ID_Lich;
+                    modelLCT.Ngay_Giohop = (DateTime)lich.Ngay_Giohop;
+                    modelLCT.Ngay = modelLCT.Ngay_Giohop.ToString("dd/MM/yyyy");
+                    modelLCT.Gio = modelLCT.Ngay_Giohop.ToString("HH:mm");
+                    modelLCT.TenDonVi = lich.DonVi.Ten_Donvi;
                     modelLCT.Donvi_ID = Convert.ToInt32(lich.Donvi_ID);
                     modelLCT.NguoiChuTri = lich.CanBo.Hovaten;
                     modelLCT.CanBo_ID = Convert.ToInt32(lich.CanBo_ID);
@@ -62,7 +101,7 @@ namespace lct
                     lstlctCT.ID_Lich = chitietlich.ID_Lich;
                     lstlctCT.Ngay = Convert.ToDateTime(chitietlich.Ngay_Giohop).ToString("yyyy-MM-dd");
                     lstlctCT.Gio =  Convert.ToDateTime(chitietlich.Ngay_Giohop).ToString("HH:mm");
-                    lstlctCT.TenDonVi = chitietlich.CanBo.DonVi.Ten_Donvi;
+                    lstlctCT.TenDonVi = chitietlich.DonVi.Ten_Donvi;
                     lstlctCT.Donvi_ID = Convert.ToInt32(chitietlich.Donvi_ID);
                     lstlctCT.NguoiChuTri = chitietlich.CanBo.Hovaten;
                     lstlctCT.CanBo_ID = Convert.ToInt32(chitietlich.CanBo_ID);

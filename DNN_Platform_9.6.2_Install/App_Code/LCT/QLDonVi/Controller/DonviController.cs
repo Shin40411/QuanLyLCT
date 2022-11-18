@@ -1,4 +1,4 @@
-﻿using LCT;
+using LCT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
