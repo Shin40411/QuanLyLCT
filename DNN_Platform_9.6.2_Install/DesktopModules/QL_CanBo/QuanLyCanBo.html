@@ -1,0 +1,401 @@
+﻿<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vuetify@2.0.17/dist/vuetify.min.css'>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+<style>
+    .v-data-table-header {
+        background-image: -webkit-linear-gradient(#c3d8f1, #2fa4e7 60%, #1d9ce5);
+    }
+
+    table tr > td {
+        border-left: 1px solid #dddddd;
+    }
+
+    table > tbody > tr > th {
+        background: #d7e6f7;
+    }
+
+    table tr > th {
+        border-left: 1px solid #fff;
+    }
+</style>
+<div id="app">
+    <v-app>
+        <v-data-table :headers="headers"
+                      :items="canbo"
+                      :search="search"
+                      item-key="ID_Canbo"
+                      group-by="TenDV"
+                      class="elevation-1"
+                      :footer-props="footerProps"
+                      :header-props="headerProps">
+            <template v-slot:top>
+                <v-toolbar flat color="white">
+                    <v-text-field append-icon="mdi-magnify"
+                                  v-model="search"
+                                  label="Tìm kiếm"
+                                  single-line
+                                  hide-details></v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-dialog v-model="dialog" max-width="1000px">
+                        <template v-slot:activator="{ on }">
+                            <v-btn color="primary" dark class="mb-2" @click="createnew">Thêm mới</v-btn>
+                        </template>
+                        <v-card>
+                            <v-card-title>
+                                <span class="headline">{{ formTitle }}</span>
+                            </v-card-title>
+                            <v-form ref="form"
+                                    v-model="valid"
+                                    lazy-validation>
+                                <v-card-text>
+                                    <v-container fluid>
+                                        <v-row>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-text-field v-model="editedItem.HoVaten" :counter="30" :rules="nameRules" required label="Họ và tên"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-text-field v-model="editedItem.Email" :rules="emailRules" required label="Email"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-text-field v-model="editedItem.Sodienthoai" :counter="12" :rules="phoneRules" required label="Số điện thoại"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-select :items="dv"
+                                                          v-model="editedItem.Donvi_ID"
+                                                          item-text="Ten_Donvi"
+                                                          item-value="ID_Donvi"
+                                                          :rules="[v => !!v || 'Yêu cầu chọn đơn vị']"
+                                                          required
+                                                          label="Đơn vị"
+                                                          outlined dense></v-select>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-text-field v-model="editedItem.Chucvu" :counter="50" :rules="roleRules" required label="Chức vụ"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="4">
+                                                <v-text-field v-model="editedItem.Phongban" :counter="50" :rules="pbRules" required label="Phòng ban"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="12" md="12">
+                                                <v-text-field v-model="editedItem.Ghichu" :rules="noteRules" required label="Ghi chú"></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                            </v-form>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="primary" v-on:click="save">Lưu</v-btn>
+                                <v-btn color="success" @click="close">Trở về</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                </v-toolbar>
+            </template>
+            <template v-slot:group.header="{items, isOpen, toggle}">
+                <th colspan="9">
+                    <v-icon @click="toggle">
+                        {{ isOpen ? 'mdi-menu-down' : 'mdi-menu-up' }}
+                    </v-icon>
+                    {{ items[0].TenDV }}
+                </th>
+            </template>
+            <template v-slot:item.action1="{ item }">
+                <v-icon small
+                        class="mr-2"
+                        @click="editItem(item)">
+                    mdi-pencil
+                </v-icon>
+            </template>
+            <template v-slot:item.action2="{ item }">
+                <v-icon small
+                        @click="deleteItem(item)">
+                    mdi-delete
+                </v-icon>
+            </template>
+            <template v-slot:[`footer.rowsPerPageText`]="items">
+                Số dòng hiển thị:
+            </template>
+            <template v-slot:[`footer.page-text`]="items">
+                {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
+            </template>
+        </v-data-table>
+    </v-app>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/vuetify@2.2.8/dist/vuetify.min.js'></script>
+<script src="https://unpkg.com/vue-toasted"></script>
+<script type="text/javascript">
+    const toastOptions = {
+        position: 'bottom-right',
+        duration: 2000,
+        theme: "toasted-primary"
+    }
+    Vue.use(Toasted, toastOptions);
+
+    new Vue({
+        el: '#app',
+        vuetify: new Vuetify({
+            lang: {
+                locales: {
+                    'en': {
+                        "dataIterator": {
+                            "rowsPerPageText": "Tổng số trang:",
+                            "rowsPerPageAll": "Tất cả",
+                            "pageText": "{0}-{1} trong tổng số {2}",
+                            "noResultsText": "Không tìm thấy dữ liệu",
+                            "nextPage": "Trang tiếp theo",
+                            "prevPage": "Trang trước "
+                        },
+                        "dataTable": {
+                            "rowsPerPageText": "Số dòng hiển thị:"
+                        },
+                        "noDataText": "Dữ liệu chưa sẵn sàng",
+                    }
+                },
+                current: 'en'
+            }
+        }),
+        data() {
+            return {
+                headerProps: {
+                    sortByText: "Chọn sắp xếp"
+                },
+                /*edit panigation*/
+                footerProps: {
+                    itemsPerPageOptions: [5, 10, 20, 30, 50, -1],
+                    itemsPerPageText: 'Số dòng hiển thị:',
+                    itemsPerPageAllText: 'Tất cả',
+                    showFirstLastPage: true,
+                    showCurrentPage: true,
+                },
+                headers: [
+                    { text: 'STT', align: 'center', value: 'STT', sortable: false, },
+                    { text: 'Họ và tên', align: 'center', value: 'HoVaten' },
+                    { text: 'Email', align: 'center', value: 'Email' },
+                    { text: 'Số điện thoại', align: 'center', value: 'Sodienthoai' },
+                    { text: 'Phòng ban', align: 'center', value: 'Phongban' },
+                    { text: 'Chức vụ', align: 'center', value: 'Chucvu' },
+                    { text: 'Ghi chú', align: 'center', value: 'Ghichu' },
+                    { text: 'Sửa', align: 'center', value: 'action1', sortable: false, },
+                    { text: 'Xóa', align: 'center', value: 'action2', sortable: false, },
+                ],
+                search: '',
+                valid: true,
+                nameRules: [
+                    v => !!v || 'Yêu cầu nhập đầy đủ họ và tên',
+                    v => (v && v.length <= 30) || 'Họ và tên phải nhỏ hơn 30 ký tự',
+                ],
+                emailRules: [
+                    v => !!v || 'Yêu cầu nhập email',
+                    v => /.+@.+\..+/.test(v) || 'Email phải đúng định dạng',
+                ],
+                phoneRules: [
+                    v => !!v || 'Yêu cầu nhập đầy đủ số điện thoại',
+                    v => Number.isInteger(Number(v)) || 'Số điện thoại phải đúng định dạng số',
+                    v => (v && v.length <= 12) || 'Số điện thoại phải nhỏ hơn 12 số',
+                ],
+                roleRules: [
+                    v => !!v || 'Yêu cầu nhập chức vụ',
+                    v => (v && v.length <= 50) || 'Chức vụ phải nhỏ hơn 50 ký tự',
+                ],
+                pbRules: [
+                    v => !!v || 'Yêu cầu nhập phòng ban',
+                    v => (v && v.length <= 50) || 'Phòng ban phải nhỏ hơn 50 ký tự',
+                ],
+                noteRules: [
+                    v => !!v || 'Yêu cầu nhập ghi chú',
+                ],
+                canbo: [],
+                dv: [],
+                editedIndex: -1,
+                editedItem: {
+                    STT: null,
+                    ID_Canbo: null,
+                    HoVaten: null,
+                    Email: null,
+                    Sodienthoai: null,
+                    TenDV: null,
+                    Donvi_ID: null,
+                    Phongban: null,
+                    Chucvu: null,
+                    Ghichu: null,
+                },
+                defaultItem: {
+                    STT: '',
+                    ID_Canbo: '',
+                    HoVaten: '',
+                    Email: '',
+                    Sodienthoai: '',
+                    TenDV: '',
+                    Donvi_ID: '',
+                    Phongban: '',
+                    Chucvu: '',
+                    Ghichu: '',
+                },
+                dialog: false,
+                URL: "/Desktopmodules/lct/api/CanBo/",
+                URLdv: "/Desktopmodules/lct/api/Donvi/",
+            }
+        },
+
+        computed: {
+            formTitle() {
+                return this.editedIndex === -1 ? 'Thêm mới cán bộ' : 'Cập nhật cán bộ'
+            },
+        },
+
+        watch: {
+            dialog(val) {
+                val || this.close()
+            },
+        },
+        created() {
+            this.getCanBo();
+            this.GetListDonvi();
+        },
+        methods: {
+            async getCanBo() {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URL + 'getCanBo',
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.canbo = result.data;
+            },
+            async getCanBochitiet(value) {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URL + 'getCanBochitiet?cID=' + value.ID_Canbo,
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.editedItem = result.data;
+            },
+            async GetListDonvi() {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URLdv + 'GetListDonvi',
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.dv = result.data;
+            },
+            async addCanBo() {
+                this.loading = true;
+                let result = await axios({
+                    method: 'post',
+                    url: this.URL + 'addCanBo',
+                    data: {
+                        HoVaten: this.editedItem.HoVaten,
+                        Email: this.editedItem.Email,
+                        Sodienthoai: this.editedItem.Sodienthoai,
+                        Donvi_ID: this.editedItem.Donvi_ID,
+                        Chucvu: this.editedItem.Chucvu,
+                        Phongban: this.editedItem.Phongban,
+                        Ghichu: this.editedItem.Ghichu,
+                    }
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+            },
+            async updateCanBo() {
+                this.loading = true;
+                let result = await axios({
+                    method: 'post',
+                    url: this.URL + 'updateCanBo',
+                    data: {
+                        ID_Canbo: this.editedItem.ID_Canbo,
+                        HoVaten: this.editedItem.HoVaten,
+                        Email: this.editedItem.Email,
+                        Sodienthoai: this.editedItem.Sodienthoai,
+                        Donvi_ID: this.editedItem.Donvi_ID,
+                        Chucvu: this.editedItem.Chucvu,
+                        Phongban: this.editedItem.Phongban,
+                        Ghichu: this.editedItem.Ghichu,
+                    }
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+            },
+            async deleteCanBo(value) {
+                this.loading = true;
+                let result = await axios({
+                    method: 'post',
+                    url: this.URL + 'deleteCanBo?cID=' + value.ID_Canbo,
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.canbo = result.data;
+            },
+            editItem(item) {
+                this.editedIndex = this.canbo.indexOf(item);
+                this.getCanBochitiet(Object.assign({}, item));
+                this.dialog = true;
+            },
+            close() {
+                this.dialog = false;
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedIndex = -1
+                }, 300)
+            },
+            resetValidation() {
+                this.$refs.form.resetValidation()
+            },
+            createnew() {
+                this.dialog = true;
+                this.resetValidation();
+            },
+            save() {
+                var validation = this.$refs.form.validate();
+                if (validation == true) {
+                    if (this.editedIndex > -1) {
+                        this.updateCanBo();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 500)
+                        this.$toasted.success('Cập nhật thành công. vui lòng đợi trong giây lát', toastOptions);
+                    } else {
+                        this.canbo.push(this.editedItem)
+                        this.addCanBo();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 500)
+                        this.$toasted.success('Thêm thành công. vui lòng đợi trong giây lát', toastOptions);
+                    }
+                    this.close();
+                }
+                else {
+                }
+            },
+            deleteItem(item) {
+                var del = confirm('Bạn có chắc chắn muốn xóa?');
+                if (del == true) {
+                    this.deleteCanBo(item);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 300)
+                } else {
+                }
+                return del;
+            },
+        },
+    })
+</script>
+
