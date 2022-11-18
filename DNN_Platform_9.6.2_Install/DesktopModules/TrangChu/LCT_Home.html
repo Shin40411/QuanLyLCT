@@ -85,7 +85,7 @@
                 <template v-for="(lich, index) in NgayDanhSach">
                     <div @click="getLichCongTacByNgay(lich)" :class="`${Ngay == lich ? 'btn btn-primary day-width' : 'btn btn-default day-width'}`" style="border-radius: 4px 4px 0px 0px;">
                         {{index ==0?'Thứ hai':index ==1?'Thứ ba':index ==2?'Thứ tư':index ==3?'Thứ năm':index ==4?'Thứ sáu':index ==5?'Thứ bảy':'Chủ nhật'}} <br />
-                       {{lich}}
+                        {{lich}}
                     </div>
                 </template>
             </div>
@@ -341,7 +341,7 @@
             startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
             endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
             $('#weekpicker').datepicker("setDate", startDate);
-            $('#weekpicker').val(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear() + ' - ' + endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear());	
+            $('#weekpicker').val(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear() + ' - ' + endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear());
         },
         watch: {}
     })

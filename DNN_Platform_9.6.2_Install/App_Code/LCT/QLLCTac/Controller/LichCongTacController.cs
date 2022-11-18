@@ -34,7 +34,7 @@ namespace lct
                     modelLCT.Ngay_Giohop = (DateTime)lich.Ngay_Giohop;
                     modelLCT.Ngay = modelLCT.Ngay_Giohop.ToString("dd/MM/yyyy");
                     modelLCT.Gio = modelLCT.Ngay_Giohop.ToString("HH:mm");
-                    modelLCT.TenDonVi = lich.DonVi.Ten_Donvi;
+                    modelLCT.TenDonVi = lich.CanBo.DonVi.Ten_Donvi;
                     modelLCT.Donvi_ID = Convert.ToInt32(lich.Donvi_ID);
                     modelLCT.NguoiChuTri = lich.CanBo.Hovaten;
                     modelLCT.CanBo_ID = Convert.ToInt32(lich.CanBo_ID);
@@ -71,7 +71,7 @@ namespace lct
                     modelLCT.Ngay_Giohop = (DateTime)lich.Ngay_Giohop;
                     modelLCT.Ngay = modelLCT.Ngay_Giohop.ToString("dd/MM/yyyy");
                     modelLCT.Gio = modelLCT.Ngay_Giohop.ToString("HH:mm");
-                    modelLCT.TenDonVi = lich.DonVi.Ten_Donvi;
+                    modelLCT.TenDonVi = lich.CanBo.DonVi.Ten_Donvi;
                     modelLCT.Donvi_ID = Convert.ToInt32(lich.Donvi_ID);
                     modelLCT.NguoiChuTri = lich.CanBo.Hovaten;
                     modelLCT.CanBo_ID = Convert.ToInt32(lich.CanBo_ID);
@@ -101,7 +101,7 @@ namespace lct
                     lstlctCT.ID_Lich = chitietlich.ID_Lich;
                     lstlctCT.Ngay = Convert.ToDateTime(chitietlich.Ngay_Giohop).ToString("yyyy-MM-dd");
                     lstlctCT.Gio =  Convert.ToDateTime(chitietlich.Ngay_Giohop).ToString("HH:mm");
-                    lstlctCT.TenDonVi = chitietlich.DonVi.Ten_Donvi;
+                    lstlctCT.TenDonVi = chitietlich.CanBo.DonVi.Ten_Donvi;
                     lstlctCT.Donvi_ID = Convert.ToInt32(chitietlich.Donvi_ID);
                     lstlctCT.NguoiChuTri = chitietlich.CanBo.Hovaten;
                     lstlctCT.CanBo_ID = Convert.ToInt32(chitietlich.CanBo_ID);

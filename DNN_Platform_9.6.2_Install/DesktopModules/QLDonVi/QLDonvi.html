@@ -107,87 +107,6 @@
                 {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
             </template>
         </v-data-table>
-        <!--<v-container fluid>
-            <v-row>
-                <v-col cols="8">
-                    <v-text-field v-model="search"
-                                  append-icon="mdi-magnify"
-                                  label="Tìm kiếm"
-                                  single-line
-                                  hide-details></v-text-field>
-                </v-col>
-                <v-col cols="4 text-right" style="padding-top:9px">
-
-                    <v-btn color="primary" dark class="mb-2" v-on:click="CreateDV">Thêm mới</v-btn>
-
-                </v-col>
-
-            </v-row>
-            <br />
-        </v-container>
-        <v-data-table :headers="headers"
-                      :items="items"
-                      item-key="name"
-                      :items-per-page="10"
-                      :search="search"
-                      dense
-                      class="elevation-1"
-                      @click:row="handleClick"
-                      :footer-props="{'items-per-page-text':'Số dòng hiển thị'}">
-            <v-toolbar flat color="white">
-            <template v-slot:top>
-
-                <v-dialog v-model="dialog" max-width="800px">
-                    <v-card>
-                        <v-card-title>
-                            <span class="headline">{{ formTitle }}</span>
-                        </v-card-title>
-
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.item_donvi.Ten_Donvi" label="Tên đơn vị"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.item_donvi.Mota_Donvi" label="Mô tả"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                        <v-select :items="itemnhom" label="Nhóm đơn vị" v-model="editedItem.item_donvi.Nhom_Donvi"></v-select>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.item_donvi.Thutu_Donvi" label="Thứ tự"></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" text @click="save">Lưu</v-btn>
-                            <v-btn color="blue darken-1" text @click="close">Trở về</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                </v-toolbar>
-
-            </template>
-            <template v-slot:item.action="{ item }">
-                <v-icon small
-                        class="mr-2"
-                        @click="editItem(item)">
-                    sửa
-                </v-icon>
-                <v-icon small
-                        @click="deleteItem(item)">
-                    xóa
-                </v-icon>
-            </template>
-
-            <template v-slot:[`footer.page-text`]="items">
-                {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
-            </template>
-        </v-data-table>-->
     </v-app>
 </div>
 
@@ -396,9 +315,9 @@
                 this.$refs.form.resetValidation()
             },
             CreateDV() {
-                this.resetValidation();
                 this.editedItem.item_donvi = {};
                 this.dialog = true
+                this.resetValidation();
             },
             handleClick(value) {
                 this.editedItem.item_donvi(value);
