@@ -1,57 +1,104 @@
-﻿using DotNetNuke.Web.Api;
 using LCT;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web;
-using System.Web.Http;
+
 
 /// <summary>
 /// Summary description for DonviController
 /// </summary>
 namespace lct
 {
-    public class DonviController : DnnApiController
+    public class DonviController
     {
         lctDataContext db = new lctDataContext();
-        [AllowAnonymous]
-        [HttpGet]
-        public HttpResponseMessage GetListDonvi()
+        public List<DonviInfo> GetListDonvi()
         {
-            try
-            {
-                List<DonVi> donvi = db.DonVis.ToList();
-                List<DonviInfo> donviInfo = new List<DonviInfo>();
-                foreach (var i in donvi)
-                {
-                    DonviInfo dv = new DonviInfo();
-                    dv.ID_Donvi = i.ID_Donvi;
-                    dv.Ten_Donvi = i.Ten_Donvi;
-                    dv.Nhom_Donvi = i.Nhom_Donvi;
-                    dv.Mota_Donvi = i.Mota_Donvi;
-                    dv.Thutu_Donvi = Convert.ToString(i.Thutu_Donvi);
-                    donviInfo.Add(dv);
-                }
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(donviInfo), System.Text.Encoding.UTF8, "application/json");
-                return res;
+            int stt = 1;
+            List<DonVi> donvi = db.DonVis.ToList();
+            List<DonviInfo> donviInfo = new List<DonviInfo>();
+            foreach (var i in donvi)
+            {   
+                DonviInfo dv = new DonviInfo();
+                dv.STT_Donvi = stt++;
+                dv.ID_Donvi = i.ID_Donvi;
+                dv.Ten_Donvi = i.Ten_Donvi;
+                dv.Nhom_Donvi = i.Nhom_Donvi;
+                dv.Mota_Donvi = i.Mota_Donvi;
+                dv.Thutu_Donvi = Convert.ToInt32(i.Thutu_Donvi);
+                donviInfo.Add(dv);
             }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+
+            return donviInfo;
         }
-        public class RouteMapper : IServiceRouteMapper
+        public DonviInfo GetDonvi(int ID)
         {
-            public void RegisterRoutes(IMapRoute mapRouteManager)
-            {
-                mapRouteManager.MapHttpRoute("lct", "default", "{controller}/{action}", new[] { "lct" });
+            DonviInfo dv = new DonviInfo();
+            var obj = db.DonVis.Where(x => x.ID_Donvi == ID).FirstOrDefault();
+            if (obj != null)
+            {   
+                dv.ID_Donvi = obj.ID_Donvi;
+                dv.Ten_Donvi = obj.Ten_Donvi;
+                dv.Nhom_Donvi = obj.Nhom_Donvi;
+                dv.Mota_Donvi = obj.Mota_Donvi;
+                dv.Thutu_Donvi = Convert.ToInt32( obj.Thutu_Donvi);
             }
+            return dv;
+        }
+        public bool UpdateDonvi(DonviInfo dvi)
+        {
+            bool status = false;
+
+            if (dvi != null)
+            {
+                if (dvi.ID_Donvi != 0)
+                {
+                    var obj = db.DonVis.Where(x => x.ID_Donvi == dvi.ID_Donvi).FirstOrDefault();
+                    obj.Ten_Donvi = dvi.Ten_Donvi;
+                    obj.Nhom_Donvi = dvi.Nhom_Donvi;
+                    obj.Mota_Donvi = dvi.Mota_Donvi;
+                    obj.Thutu_Donvi = Convert.ToInt32(dvi.Thutu_Donvi);
+                    db.SubmitChanges();
+                }
+                else
+                {
+                    DonVi obj = new DonVi();
+                    obj.Ten_Donvi = dvi.Ten_Donvi;
+                    obj.Nhom_Donvi = dvi.Nhom_Donvi;
+                    obj.Mota_Donvi = dvi.Mota_Donvi;
+                    obj.Thutu_Donvi = Convert.ToInt32(dvi.Thutu_Donvi);
+                    db.DonVis.InsertOnSubmit(obj);
+                    db.SubmitChanges();
+                }
+
+                status = true;
+            }
+            return status;
+
+            
         }
 
-    }
+        public bool DeleteDonvi(int ID)
+        {
+            bool status = false; 
+            if (ID != 0)
+            {
+                var lct = db.LichCongTacs.Where(x => x.Donvi_ID == ID).Count();
+                if(lct == 0)
+                {
+                    var Dv = db.DonVis.Where(x => x.ID_Donvi == ID).FirstOrDefault();
+                    if (Dv != null)
+                    {
+                        db.DonVis.DeleteOnSubmit(Dv);
+                        db.SubmitChanges();
+                        status = true;
+                    }
+                }
+                
+            }
+            return status;
+        }
+    } 
 }
 

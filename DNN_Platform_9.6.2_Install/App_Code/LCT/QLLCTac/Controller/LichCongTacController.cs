@@ -1,4 +1,4 @@
-﻿using DotNetNuke.Web.Api;
+using DotNetNuke.Web.Api;
 using LCT;
 using Newtonsoft.Json;
 using System;

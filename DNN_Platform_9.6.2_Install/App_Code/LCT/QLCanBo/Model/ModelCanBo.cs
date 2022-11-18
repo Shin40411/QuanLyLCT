@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,4 +15,5 @@ public class ModelCanBo
     public string Ghichu { get; set; }
     public string TenDV { get; set; }
     public int Donvi_ID { get; set; }
+
 }

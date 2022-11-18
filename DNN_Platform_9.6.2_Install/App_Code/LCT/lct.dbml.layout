@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 9.875" name="lct">
+
   <DataContextMoniker Name="/lctDataContext" />
   <nestedChildShapes>
-    <classShape Id="1c1956b6-1905-41d5-8933-27067949a117" absoluteBounds="1.25, 2.625, 2, 2.3478011067708344">
-      <DataClassMoniker Name="/lctDataContext/CanBo" />
+    <classShape Id="4f0274fa-9cbd-49f5-bb2a-f14e977f84e2" absoluteBounds="6.875, 1, 2, 2.5401025390625">
+      <DataClassMoniker Name="/lctDataContext/Vw_LichCongTac" />
       <nestedChildShapes>
-        <elementListCompartment Id="96168be3-7143-405f-8866-a0fd57e2dad9" absoluteBounds="1.2650000000000006, 3.085, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="daedb63d-fcad-4062-817e-16d59af34b57" absoluteBounds="6.8900000000000006, 1.46, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+
     <classShape Id="7637f8d1-447c-4466-897a-58621c904e61" absoluteBounds="4.875, 2.625, 2, 1.7708968098958335">
       <DataClassMoniker Name="/lctDataContext/DonVi" />
       <nestedChildShapes>
@@ -40,19 +42,22 @@
       </nodes>
     </associationConnector>
     <associationConnector edgePoints="[(3.25 : 4.71559895833333); (4.78125 : 4.71559895833333); (4.78125 : 5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+
       <AssociationMoniker Name="/lctDataContext/CanBo/CanBo_LichCongTac" />
       <nodes>
-        <classShapeMoniker Id="1c1956b6-1905-41d5-8933-27067949a117" />
-        <classShapeMoniker Id="07008843-249c-4adf-b11f-f324a73222e4" />
+        <classShapeMoniker Id="27ed1ab0-3258-4e99-a31a-1791e41d541e" />
+        <classShapeMoniker Id="1f88eeed-9024-45f1-a392-857dd68a60d0" />
       </nodes>
     </associationConnector>
     <associationConnector edgePoints="[(5.8125 : 4.39589680989583); (5.8125 : 5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/lctDataContext/DonVi/DonVi_LichCongTac" />
+
       <nodes>
-        <classShapeMoniker Id="7637f8d1-447c-4466-897a-58621c904e61" />
-        <classShapeMoniker Id="07008843-249c-4adf-b11f-f324a73222e4" />
+        <classShapeMoniker Id="764d92be-99a6-4c88-a778-a736c5c58dae" />
+        <classShapeMoniker Id="27ed1ab0-3258-4e99-a31a-1791e41d541e" />
       </nodes>
     </associationConnector>
+
     <associationConnector edgePoints="[(6.875 : 3.51044840494792); (7.875 : 3.51044840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/lctDataContext/DonVi/DonVi_UserInfo" />
       <nodes>
@@ -65,6 +70,7 @@
       <nodes>
         <classShapeMoniker Id="8f92a783-d075-4544-9bc1-001856cbd6ee" />
         <classShapeMoniker Id="53445a7e-4053-407e-8c77-931f27320946" />
+
       </nodes>
     </associationConnector>
   </nestedChildShapes>

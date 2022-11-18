@@ -1,0 +1,626 @@
+﻿
+<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+<style>
+    .v-data-table-header {
+        background-image: -webkit-linear-gradient(#c3d8f1, #2fa4e7 60%, #1d9ce5);
+    }
+
+    table tr > td {
+        border-left: 1px solid #dddddd;
+    }
+
+    table tr > th {
+        border-left: 1px solid #fff;
+    }
+
+/*    tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, .05);
+    }*/
+    table > tbody > tr > th {
+        background: #d7e6f7;
+    }
+
+</style>
+<!--:header-props="headerProps"-->
+<div id="app">
+    <v-app id="inspire">
+        <v-data-table :headers="headers"
+                      :items="items"
+                      :search="search"
+                      item-key="name"
+                      group-by="Ten_Donvi"
+                      sort-by="calories"
+                      class="elevation-1"
+                      :footer-props="footerProps">
+            <template v-slot:top>
+                <v-toolbar flat color="white">
+                    <v-text-field v-model="search"
+                                  append-icon="mdi-magnify"
+                                  label="Tìm kiếm"
+                                  single-line
+                                  hide-details></v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-dialog v-model="dialog" max-width="800px">
+                        <template v-slot:activator="{ on }">
+                            <v-btn color="primary" dark class="mb-2" @click="CreateND">Thêm mới</v-btn>
+                        </template>
+                        <v-card>
+                            <v-card-title>
+                                <span class="headline">{{ formTitle }}</span>
+                            </v-card-title>
+                            <v-form ref="form"
+                                    v-model="valid"
+                                    lazy-validation>
+                                <v-card-text>
+                                    <v-container fluid>
+                                        <v-row>
+                                            <v-col cols="6" sm="6" md="6">
+
+                                                <v-text-field v-model="editedItem.item_ndung.DisplayName"
+                                                              label="Họ và tên"
+                                                              :readonly="!editMode1"
+                                                              :rules="[v => !!v || 'Vui lòng nhập Họ tên']"
+                                                              required
+                                                              dense></v-text-field>
+                                            </v-col>
+                                            <v-col cols="6" sm="6" md="6">
+
+                                                <v-text-field v-model="editedItem.item_ndung.Username"
+                                                              label="Tên đăng nhập"
+                                                              :readonly="!editMode2"
+                                                              :rules="[v => !!v || 'Vui lòng nhập Tên đăng nhập']"
+                                                              required
+                                                              dense></v-text-field>
+                                            </v-col>
+                                            <v-col cols="6" sm="6" md="6">
+
+                                                <v-text-field v-model="vMatKhau"
+                                                              label="Mật khẩu"
+                                                              type="password"
+                                                             v-if="!isFormValid"
+                                                              :rules="[v => !!v || 'Vui lòng nhập Mật khẩu']"
+                                                              required
+                                                              dense></v-text-field>
+                                            </v-col>
+                                            <v-col cols="6" sm="6" md="6">
+
+                                                <v-text-field v-model="vXacNhanMatKhau"
+                                                              label="Xác nhận mật khẩu"
+                                                              v-if="!isFormValid" 
+                                                              type="password"
+                                                              :rules="[v => !!v || 'Vui lòng nhập Xác nhận mật khẩu']"
+                                                              required
+                                                              dense></v-text-field>
+                                            </v-col>
+
+                                            <v-col cols="6" sm="6" md="6">
+
+                                                <v-text-field v-model="editedItem.item_ndung.Email_nd"
+                                                              label="Email"
+                                                              v-if="!isValid"
+                                                              :rules="emailRules"
+                                                              type="email"
+                                                              required
+                                                              dense></v-text-field>
+                                            </v-col>
+                                            <v-col cols="6" sm="6" md="6">
+
+                                                <v-text-field v-model="editedItem.item_ndung.Sodienthoai_nd"
+                                                              label="Số điện thoại"
+                                                              :rules="phoneRules"
+                                                              v-if="!isValid"
+                                                              required
+                                                              dense></v-text-field>
+                                            </v-col>
+
+                                            <v-col cols="6" sm="6" md="6">
+                                                <v-select :items="itemnhomnd"
+                                                          v-model="editedItem.item_ndung.Nhom_nd"
+                                                          :rules="[v => !!v || 'Yêu cầu chọn nhóm người dùng']"
+                                                          v-if="!isValid"
+                                                          required
+                                                          label="Nhóm người dùng"
+                                                          outlined
+                                                          dense></v-select>
+                                            </v-col>
+
+                                            <v-col cols="6" sm="6" md="6">
+                                                <v-select
+                                                          :items="item_donvi"
+                                                          v-model="editedItem.item_ndung.ID_Donvi"
+                                                          v-if="!isValid"
+                                                          :rules="[v => !!v || 'Yêu cầu chọn nhóm đơn vị']"
+                                                          item-text="Ten_Donvi"
+                                                          item-value="ID_Donvi"
+                                                          required
+                                                          label="Đơn vị"
+                                                          outlined
+                                                          dense></v-select>
+                                            </v-col>
+
+                                            <v-col cols="6" sm="6" md="6">
+                                                <v-text-field v-model="editedItem.item_ndung.Chucvu_nd" v-if="!isValid" label="Chức vụ"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="6" sm="6" md="6">
+                                                <v-text-field v-model="editedItem.item_ndung.Phongban_nd" v-if="!isValid" label="Phòng ban"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="6" sm="6" md="6">
+                                                <v-text-field v-model="editedItem.item_ndung.Ghichu_nd" v-if="!isValid" label="Ghi chú"></v-text-field>
+                                            </v-col>
+
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                            </v-form>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="primary" v-on:click="save">Lưu</v-btn>
+                                <v-btn color="success" @click="close">Trở về</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                </v-toolbar>
+
+            </template>
+            <template v-slot:item.action="{ item }">
+                <template v-slot:group.header="{items, isOpen, toggle}">
+                    <th colspan="8">
+                        <v-icon small @click="toggle">
+                            small
+                            {{ isOpen ? 'mdi-minus' : 'mdi-plus' }}
+                        </v-icon>
+                        {{ items[0].TenDV }}
+                    </th>
+                </template>
+                <v-icon small
+                        class="mr-2"
+                        @click="editPw(item)">
+                    mdi-key
+                </v-icon>
+                <v-icon small
+                        class="mr-2"
+                        @click="editItem(item)">
+                    mdi-pencil
+                </v-icon>
+                <v-icon small
+                        @click="deleteItem(item)">
+                    mdi-delete
+                </v-icon>
+            </template>
+            <template v-slot:[`footer.rowsPerPageText`]="items">
+                Số dòng hiển thị:
+            </template>
+            <template v-slot:[`footer.page-text`]="items">
+                {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
+            </template>
+        </v-data-table>
+        <!--<v-container fluid>
+            <v-row>
+                <v-col cols="8">
+                    <v-text-field v-model="search"
+                                  append-icon="mdi-magnify"
+                                  label="Tìm kiếm"
+                                  single-line
+                                  hide-details></v-text-field>
+                </v-col>
+                <v-col cols="4 text-right" style="padding-top:9px">
+
+                    <v-btn color="primary" dark class="mb-2" v-on:click="CreateDV">Thêm mới</v-btn>
+
+                </v-col>
+
+            </v-row>
+            <br />
+        </v-container>
+        <v-data-table :headers="headers"
+                      :items="items"
+                      item-key="name"
+                      :items-per-page="10"
+                      :search="search"
+                      dense
+                      class="elevation-1"
+                      @click:row="handleClick"
+                      :footer-props="{'items-per-page-text':'Số dòng hiển thị'}">
+            <v-toolbar flat color="white">
+            <template v-slot:top>
+
+                <v-dialog v-model="dialog" max-width="800px">
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">{{ formTitle }}</span>
+                        </v-card-title>
+
+                        <v-card-text>
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.item_donvi.Ten_Donvi" label="Tên đơn vị"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.item_donvi.Mota_Donvi" label="Mô tả"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-select :items="itemnhom" label="Nhóm đơn vị" v-model="editedItem.item_donvi.Nhom_Donvi"></v-select>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.item_donvi.Thutu_Donvi" label="Thứ tự"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" text @click="save">Lưu</v-btn>
+                            <v-btn color="blue darken-1" text @click="close">Trở về</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                </v-toolbar>
+
+            </template>
+            <template v-slot:item.action="{ item }">
+                <v-icon small
+                        class="mr-2"
+                        @click="editItem(item)">
+                    sửa
+                </v-icon>
+                <v-icon small
+                        @click="deleteItem(item)">
+                    xóa
+                </v-icon>
+            </template>
+
+            <template v-slot:[`footer.page-text`]="items">
+                {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
+            </template>
+        </v-data-table>-->
+    </v-app>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
+<script src="https://unpkg.com/vue-toasted"></script>
+
+<script>
+    const toastOptions = {
+        position: 'bottom-right',
+        duration: 2000,
+        theme: "toasted-primary"
+    }
+    Vue.use(Toasted, toastOptions);
+    new Vue({
+        el: '#app',
+        vuetify: new Vuetify(
+            {
+                lang: {
+                    locales: {
+                        'vi': {
+                            "dataIterator": {
+                                "rowsPerPageText": "Tổng số trang:",
+                                "rowsPerPageAll": "Tất cả",
+                                "pageText": "{0}-{1} trong tổng số {2}",
+                                "noResultsText": "Không tìm thấy dữ liệu",
+                                "nextPage": "Trang tiếp theo",
+                                "prevPage": "Trang trước "
+                            },
+                            "dataTable": {
+                                "rowsPerPageText": "Số dòng hiển thị:"
+                            },
+                            "noDataText": "Dữ liệu chưa sẵn sàng",
+                        }
+                    },
+                    current: 'vi'
+                }
+            }),
+        data() {
+            return {
+                URL_API: "/DesktopModules/lct/api/LctAPI/",
+                dialog: false,
+                isFormValid: true,
+                isValid: false,
+                editMode: true,
+                search: '',               
+                headers: [
+                    {
+                        text: 'STT',
+                        align: 'left',
+                        sortable: false,
+                        value: 'STT_nd',
+                    },
+                    { text: 'Họ và tên', value: 'DisplayName' },
+                    { text: 'Tên đăng nhập', value: 'Username' },
+                    { text: 'Email', value: 'Email_nd' },
+                    { text: 'Số điện thoại', value: 'Sodienthoai_nd' },
+                    { text: 'Đơn vị', value: 'Ten_Donvi' },
+                    { text: 'Phòng ban', value: 'Phongban_nd' },
+                    { text: 'Chức vụ', value: 'Chucvu_nd' },
+                    { text: 'Ghi chú', value: 'Ghichu_nd' },
+                    { text: 'Hành động', value: 'action', width:'120px', sortable: false },
+                ],
+                phoneRules: [
+                    v => (v && v.length == 10) || 'Số điện thoại phải có 10 số',
+                ],
+                emailRules: [
+                    v => !!v || 'E-mail is required',
+                    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+                ],
+
+                itemnhomnd: ['Cá nhân', 'Đơn vị'],
+                items: [],
+                item_ndung: [],   
+                item_donvi:[],           
+                vMatKhau: '',
+                vXacNhanMatKhau: '',
+                editedIndex: -1,
+                editedItem: {
+                    DisplayName: '',
+                    Username: '',
+                    Email: '',
+                    Sodienthoai_User: '',
+                    Nhom_User: '',
+                    ID_Donvi: '',
+                    Chucvu_User: '',
+                    Phongban_User: '',
+                    Ghichu_User: '',
+                    item_ndung: {},                                
+                },
+                defaultItem: {
+                    DisplayName: '',
+                    Username: '',
+                    Email: '',
+                    Sodienthoai_User: '',
+                    Nhom_User: '',
+                    ID_Donvi: '',
+                    Chucvu_User: '',
+                    Phongban_User: '',
+                    Ghichu_User: '',
+                    item_ndung: {},
+
+                },
+                footerProps: {
+                    itemsPerPageOptions: [5, 10, 20, 30, -1],
+                    itemsPerPageText: 'Số dòng hiển thị:',
+                    itemsPerPageAllText: 'Tất cả',
+                    showFirstLastPage: true,
+                    showCurrentPage: true,
+                },
+
+
+            }
+        },
+        created() {
+            this.GetListUser();
+            this.GetListDonvi();
+        },
+
+        computed: {
+            formTitle() {
+                return this.editedIndex === -1 ? 'Thêm mới người dùng' : 'Cập nhật người dùng'
+            },
+        },
+
+        watch: {
+            dialog(val) {
+                val || this.close()
+            },
+
+        },
+
+        methods: {
+            async GetListUser() {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URL_API + 'GetListUser',
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.items = result.data;
+
+                /*  console.log = (result);*/
+
+            },
+            async GetListDonvi() {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URL_API + 'GetList',
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                this.item_donvi = result.data;
+                /*  console.log = (result);*/
+
+            },
+            async UpdateUser() {
+
+                this.loading = true;
+               
+                if (this.vMatKhau != this.vXacNhanMatKhau) {
+                    this.$toasted.error('Xác nhận mật khẩu không chính xác', toastOptions);
+                }
+                else {
+                    let result = await axios({
+                        method: 'post',
+                        url: this.URL_API + 'UpdateUser',
+                        data: {
+                            ID_Ndung: this.editedItem.item_ndung.ID_Ndung,
+                            DisplayName: this.editedItem.item_ndung.DisplayName,
+                            Username: this.editedItem.item_ndung.Username,
+                            Email_nd: this.editedItem.item_ndung.Email_nd,
+                            Sodienthoai_nd: this.editedItem.item_ndung.Sodienthoai_nd,
+                            Nhom_nd: this.editedItem.item_ndung.Nhom_nd,
+                            ID_Donvi: this.editedItem.item_ndung.ID_Donvi,
+                            Chucvu_nd: this.editedItem.item_ndung.Chucvu_nd,
+                            Phongban_nd: this.editedItem.item_ndung.Phongban_nd,
+                            Ghichu_nd: this.editedItem.item_ndung.Ghichu_nd,
+                            Matkhau_nd: this.vMatKhau,
+                        }
+                    }).then(function (response) {
+                        return response;
+                    });
+                    this.loading = false;
+                    //this.items = result.data;
+                    //console.log = (result);
+                    if (result.data == "FALSE") {
+                        this.$toasted.error('Xử lý thất bại', toastOptions);
+                    }
+                    else if (result.data == "TONTAI") {
+                        this.$toasted.error('Tên đăng nhập đã tồn tại trong hệ thống', toastOptions);
+                    }
+                    else {
+                        this.$toasted.success('Xử lý thành công', toastOptions);
+                        this.GetListUser();
+                        
+                    }
+                }
+            },
+            async UpdatePw() {
+
+                this.loading = true;
+
+                if (this.vMatKhau != this.vXacNhanMatKhau) {
+                    this.$toasted.error('Xác nhận mật khẩu không chính xác', toastOptions);
+                }
+                else {
+                    let result = await axios({
+                        method: 'post',
+                        url: this.URL_API + 'DoiMatKhau',
+                        data: {
+                            ID_Ndung: this.editedItem.item_ndung.ID_Ndung,
+                            DisplayName: this.editedItem.item_ndung.DisplayName,
+                            Username: this.editedItem.item_ndung.Username,
+                            Email_nd: this.editedItem.item_ndung.Email_nd,
+                            Sodienthoai_nd: this.editedItem.item_ndung.Sodienthoai_nd,
+                            Nhom_nd: this.editedItem.item_ndung.Nhom_nd,
+                            ID_Donvi: this.editedItem.item_ndung.ID_Donvi,
+                            Chucvu_nd: this.editedItem.item_ndung.Chucvu_nd,
+                            Phongban_nd: this.editedItem.item_ndung.Phongban_nd,
+                            Ghichu_nd: this.editedItem.item_ndung.Ghichu_nd,
+                            Matkhau_nd: this.vMatKhau,
+                        }
+                    }).then(function (response) {
+                        return response;
+                    });
+                    this.loading = false;
+                    //this.items = result.data;
+                    //console.log = (result);
+                    if (result.data == "FALSE") {
+                        this.$toasted.error('Đổi mật khẩu thất bại', toastOptions);
+                    }
+                    else {
+                        this.$toasted.success('Đổi mật khẩu thành công', toastOptions);
+                        this.GetListUser();
+
+                    }
+                }
+            },
+             async DeleteDonvi(item) {
+                this.loading = true;
+                let result = await axios({
+                    method: 'get',
+                    url: this.URL_API + 'DeleteUser?ID=' + item.ID_Ndung,
+                    data: {}
+                }).then(function (response) {
+                    return response;
+                });
+                this.loading = false;
+                /* this.items = result.data;*/
+                if (result.data == "FALSE") {
+                    this.$toasted.error('Xóa đơn vị thất bại', toastOptions);
+                    this.GetListUser();
+                }
+                else {
+                    this.$toasted.success('Xóa đơn vị thành công', toastOptions);
+                    this.GetListUser();
+                }
+            },
+            editItem(item) {
+                this.isFormValid = true;
+                this.isValid = false;
+                this.editMode1 = true;
+                this.editMode2 = false;
+
+                this.editedIndex = this.items.indexOf(item)
+                this.editedItem.item_ndung = Object.assign({}, item)
+                this.dialog = true
+              
+            },
+
+            editPw(item) {
+                this.isFormValid = false;
+                this.isValid = true;
+                this.editMode1 = false;
+                this.editMode2 = false;
+
+                this.editedIndex = this.items.indexOf(item)
+                this.editedItem.item_ndung = Object.assign({}, item)
+                this.dialog = true
+
+            },
+            CreateND() {
+
+                this.isFormValid = false;
+                this.isValid = false;
+                this.editMode1 = true;
+                this.editMode2 = true;
+
+                this.editedItem.item_ndung = {};
+                this.dialog = true
+                this.resetValidation();
+            },
+            deleteItem(item) {
+                const index = this.items.indexOf(item)
+                var i = confirm('Bạn có chắc chắn muốn xóa?') && this.items.splice(index, 1)
+                if (i != 0) {
+                    this.DeleteDonvi(item);
+                }
+
+            },
+            resetValidation() {
+                this.$refs.form.resetValidation()
+            },
+
+            close() {
+
+                this.resetValidation();
+                this.dialog = false
+
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedIndex = -1
+                }, 300)
+            },
+
+            save() {
+                
+                var validation = this.$refs.form.validate();
+                if (validation == true) {
+                    if (this.editedItem.item_ndung.ID_Ndung != 0 && this.editedItem.item_ndung.Matkhau_nd != "") {
+                        this.UpdatePw();
+                    }
+                    else {
+                        this.UpdateUser();
+                    }
+                    this.close();
+                }
+                else {
+                    this.$toasted.error('Vui lòng điền thông tin', toastOptions);
+                }
+            },
+           
+            handleClick(value) {
+                this.editedItem.item_ndung(value);
+            },
+        },
+        
+    })
+</script>

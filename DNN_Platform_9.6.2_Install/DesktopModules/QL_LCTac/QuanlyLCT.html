@@ -1,208 +1,301 @@
-﻿<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+<link
+  href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css"
+  rel="stylesheet"
+/>
 
 <style>
-    .v-data-table-header {
-        background-image: -webkit-linear-gradient(#c3d8f1, #2fa4e7 60%, #1d9ce5);
-    }
-    table tr > td {
-        border-left: 1px solid #dddddd;
-    }
+  .v-data-table-header {
+    background-image: -webkit-linear-gradient(#c3d8f1, #2fa4e7 60%, #1d9ce5);
+  }
+  table tr > td {
+    border-left: 1px solid #dddddd;
+  }
 
-    table tr > th {
-        border-left: 1px solid #fff;
-    }
-/*    tbody tr:nth-of-type(odd) {
+  table tr > th {
+    border-left: 1px solid #fff;
+  }
+  /*    tbody tr:nth-of-type(odd) {
         background-color: rgba(0, 0, 0, .05);
     }*/
 </style>
 
 <div id="app">
-    <v-app id="inspire">
-        <v-data-table :headers="headers"
-                      :items="lich"
-                      :search="search"
-                      item-key="name"
-                      class="elevation-1"
-                      :footer-props="footerProps"
-                      :header-props="headerProps">
-            <template v-slot:top>
-                <v-toolbar flat color="white">
-                    <v-container fluid>
-                        <v-row>
-                            <v-col cols="2 text-right" style="line-height:3">
-                                Từ ngày
-                            </v-col>
-                            <v-col cols="3">
-                                <v-menu ref="sort1" v-model="sort1" :close-on-content-click="false" transition="scale-transition" offset-y
-                                        max-width="290px" min-width="auto">
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field v-model="computedDateFormatted_from_date" append-icon="mdi-calendar" v-bind="attrs"
-                                                      @blur="from_date = parseDate(dateFormatted)" v-on="on" outlined dense></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="from_date" no-title @input="sort1 = false"></v-date-picker>
-                                </v-menu>
-                            </v-col>
-                            <v-col cols="2 text-right" style="line-height:3">
-                                Đến ngày
-                            </v-col>
-                            <v-col cols="3">
-                                <v-menu ref="sort2" v-model="sort2" :close-on-content-click="false" transition="scale-transition" offset-y
-                                        max-width="290px" min-width="auto">
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field v-model="computedDateFormatted_to_date" append-icon="mdi-calendar" v-bind="attrs"
-                                                      @blur="to_date = parseDate(dateFormatted)" v-on="on" outlined dense></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="to_date" no-title @input="sort2 = false"></v-date-picker>
-                                </v-menu>
-                            </v-col>
-                            <v-col cols="2">
-                                <v-btn style="text-transform:none;" color="#895B42" @click="filterDate">
-                                    <v-icon style="color:white">mdi-filter</v-icon>&nbsp;<span style="color:white">Lọc</span>
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-toolbar>
-                <v-toolbar flat color="white">
-                    <v-text-field v-model="search"
-                                  append-icon="mdi-magnify"
-                                  label="Tìm kiếm"
-                                  single-line
-                                  hide-details></v-text-field>
-                    <v-spacer></v-spacer>
-                    <v-dialog v-model="dialog" max-width="1000px">
-                        <template v-slot:activator="{ on }">
-                            <v-btn color="primary" dark class="mb-2" @click="createnew">Thêm mới</v-btn>
-                        </template>
-                        <v-card>
-                            <v-card-title>
-                                <span class="headline">{{ formTitle }}</span>
-                            </v-card-title>
-                            <v-form ref="form"
-                                    v-model="valid"
-                                    lazy-validation>
-                                <v-card-text>
-                                    <v-container fluid>
-                                        <v-row>
-                                            <v-col cols="4">
-                                                <v-col cols="12">
-                                                    <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" transition="scale-transition" offset-y
-                                                            max-width="350px" min-width="auto">
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-text-field v-model="Computed_dateFormatted"
-                                                                          label="Chọn ngày"
-                                                                          append-icon="mdi-calendar"
-                                                                          v-bind="attrs"
-                                                                          @blur="date = parseDate(dateFormatted)"
-                                                                          hint="Định dạng DD/MM/YYYY"
-                                                                          persistent-hint
-                                                                          v-on="on"
-                                                                          :rules="[v => !!v || 'Yêu cầu chọn ngày']"
-                                                                          required
-                                                                          readonly
-                                                                          outlined dense></v-text-field>
-                                                        </template>
-                                                        <v-date-picker v-model="editedItem.Ngay" no-title @input="menu1 = false"></v-date-picker>
-                                                    </v-menu>
-                                                </v-col>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-menu ref="menu"
-                                                        v-model="menu2"
-                                                        :close-on-content-click="false"
-                                                        :nudge-right="40"
-                                                        :return-value.sync="editedItem.Gio"
-                                                        transition="scale-transition"
-                                                        offset-y
-                                                        max-width="290px"
-                                                        min-width="290px">
-                                                    <template v-slot:activator="{ on, attrs }">
-                                                        <v-text-field v-model="editedItem.Gio"
-                                                                      label="Chọn giờ"
-                                                                      prepend-icon="mdi-clock-time-four-outline"
-                                                                      v-bind="attrs"
-                                                                      :rules="[v => !!v || 'Yêu cầu chọn giờ']"
-                                                                      required
-                                                                      readonly
-                                                                      v-on="on"></v-text-field>
-                                                    </template>
-                                                    <v-time-picker v-if="menu2"
-                                                                   v-model="editedItem.Gio"
-                                                                   full-width
-                                                                   @click:minute="$refs.menu.save(editedItem.Gio)"></v-time-picker>
-                                                </v-menu>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <!--<v-text-field v-model="editedItem.to_lichcongtac.NguoiChuTri" label="Người chủ trì"></v-text-field>-->
-                                                <v-text-field v-model="editedItem.DiaDiem" :counter="10" :rules="locationRules" required label="Địa điểm"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <!--<v-text-field v-model="editedItem.to_lichcongtac.TenDonVi" label="Đơn vị"></v-text-field>-->
-                                                <v-select :items="dv"
-                                                          v-model="editedItem.Donvi_ID"
-                                                          item-text="Ten_Donvi"
-                                                          item-value="ID_Donvi"
-                                                          :rules="[v => !!v || 'Yêu cầu chọn đơn vị']"
-                                                          required
-                                                          label="Đơn vị"
-                                                          outlined dense></v-select>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-select :items="nct"
-                                                          v-model="editedItem.CanBo_ID"
-                                                          item-text="HoVaten"
-                                                          item-value="ID_Canbo"
-                                                          :rules="[v => !!v || 'Yêu cầu chọn người chủ trì']"
-                                                          required
-                                                          label="Người chủ trì"
-                                                          outlined dense></v-select>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.NoiDung" :counter="100" :rules="contentRules" required label="Nội dung"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.ThanhPhan" :counter="50" :rules="componentRules" required label="Thành phần"></v-text-field>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                </v-card-text>
-                            </v-form>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="primary" v-on:click="save">Lưu</v-btn>
-                                <v-btn color="success" @click="close">Trở về</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                </v-toolbar>
-
+  <v-app id="inspire">
+    <v-data-table
+      :headers="headers"
+      :items="lich"
+      :search="search"
+      item-key="name"
+      class="elevation-1"
+      :footer-props="footerProps"
+      :header-props="headerProps"
+    >
+      <template v-slot:top>
+        <v-toolbar flat color="white">
+          <v-container fluid>
+            <v-row>
+              <v-col cols="2 text-right" style="line-height: 3">
+                Từ ngày
+              </v-col>
+              <v-col cols="3">
+                <v-menu
+                  ref="sort1"
+                  v-model="sort1"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="computedDateFormatted_from_date"
+                      append-icon="mdi-calendar"
+                      v-bind="attrs"
+                      @blur="from_date = parseDate(dateFormatted)"
+                      v-on="on"
+                      outlined
+                      dense
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="from_date"
+                    no-title
+                    @input="sort1 = false"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="2 text-right" style="line-height: 3">
+                Đến ngày
+              </v-col>
+              <v-col cols="3">
+                <v-menu
+                  ref="sort2"
+                  v-model="sort2"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="computedDateFormatted_to_date"
+                      append-icon="mdi-calendar"
+                      v-bind="attrs"
+                      @blur="to_date = parseDate(dateFormatted)"
+                      v-on="on"
+                      outlined
+                      dense
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="to_date"
+                    no-title
+                    @input="sort2 = false"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="2">
+                <v-btn
+                  style="text-transform: none"
+                  color="#895B42"
+                  @click="filterDate"
+                >
+                  <v-icon style="color: white">mdi-filter</v-icon>&nbsp;<span
+                    style="color: white"
+                    >Lọc</span
+                  >
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-toolbar>
+        <v-toolbar flat color="white">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Tìm kiếm"
+            single-line
+            hide-details
+          ></v-text-field>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="dialog" max-width="1000px">
+            <template v-slot:activator="{ on }">
+              <v-btn color="primary" dark class="mb-2" @click="createnew"
+                >Thêm mới</v-btn
+              >
             </template>
-            <template v-slot:item.action1="{ item }">
-                <v-icon small
-                        class="mr-2"
-                        @click="editItem(item)">
-                    mdi-pencil
-                </v-icon>
-            </template>
-            <template v-slot:item.action2="{ item }">
-                <v-icon small
-                        @click="deleteItem(item)">
-                    mdi-delete
-                </v-icon>
-            </template>
-            <!--<template v-slot:no-data>
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+              <v-form ref="form" v-model="valid" lazy-validation>
+                <v-card-text>
+                  <v-container fluid>
+                    <v-row>
+                      <v-col cols="4">
+                        <v-col cols="12">
+                          <v-menu
+                            ref="menu1"
+                            v-model="menu1"
+                            :close-on-content-click="false"
+                            transition="scale-transition"
+                            offset-y
+                            max-width="350px"
+                            min-width="auto"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="Computed_dateFormatted"
+                                label="Chọn ngày"
+                                append-icon="mdi-calendar"
+                                v-bind="attrs"
+                                @blur="date = parseDate(dateFormatted)"
+                                hint="Định dạng DD/MM/YYYY"
+                                persistent-hint
+                                v-on="on"
+                                :rules="[v => !!v || 'Yêu cầu chọn ngày']"
+                                required
+                                readonly
+                                outlined
+                                dense
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
+                              v-model="editedItem.Ngay"
+                              no-title
+                              @input="menu1 = false"
+                            ></v-date-picker>
+                          </v-menu>
+                        </v-col>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-menu
+                          ref="menu"
+                          v-model="menu2"
+                          :close-on-content-click="false"
+                          :nudge-right="40"
+                          :return-value.sync="editedItem.Gio"
+                          transition="scale-transition"
+                          offset-y
+                          max-width="290px"
+                          min-width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="editedItem.Gio"
+                              label="Chọn giờ"
+                              prepend-icon="mdi-clock-time-four-outline"
+                              v-bind="attrs"
+                              :rules="[v => !!v || 'Yêu cầu chọn giờ']"
+                              required
+                              readonly
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-time-picker
+                            v-if="menu2"
+                            v-model="editedItem.Gio"
+                            full-width
+                            @click:minute="$refs.menu.save(editedItem.Gio)"
+                          ></v-time-picker>
+                        </v-menu>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <!--<v-text-field v-model="editedItem.to_lichcongtac.NguoiChuTri" label="Người chủ trì"></v-text-field>-->
+                        <v-text-field
+                          v-model="editedItem.DiaDiem"
+                          :counter="10"
+                          :rules="locationRules"
+                          required
+                          label="Địa điểm"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <!--<v-text-field v-model="editedItem.to_lichcongtac.TenDonVi" label="Đơn vị"></v-text-field>-->
+                        <v-select
+                          :items="dv"
+                          v-model="editedItem.Donvi_ID"
+                          item-text="Ten_Donvi"
+                          item-value="ID_Donvi"
+                          :rules="[v => !!v || 'Yêu cầu chọn đơn vị']"
+                          required
+                          label="Đơn vị"
+                          outlined
+                          dense
+                        ></v-select>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-select
+                          :items="nct"
+                          v-model="editedItem.CanBo_ID"
+                          item-text="HoVaten"
+                          item-value="ID_Canbo"
+                          :rules="[v => !!v || 'Yêu cầu chọn người chủ trì']"
+                          required
+                          label="Người chủ trì"
+                          outlined
+                          dense
+                        ></v-select>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.NoiDung"
+                          :counter="100"
+                          :rules="contentRules"
+                          required
+                          label="Nội dung"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.ThanhPhan"
+                          :counter="50"
+                          :rules="componentRules"
+                          required
+                          label="Thành phần"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+              </v-form>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" v-on:click="save">Lưu</v-btn>
+                <v-btn color="success" @click="close">Trở về</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.action1="{ item }">
+        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+      </template>
+      <template v-slot:item.action2="{ item }">
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </template>
+      <!--<template v-slot:no-data>
         <v-btn color="primary" @click="initialize">Reset</v-btn>
     </template>-->
-            <template v-slot:[`footer.rowsPerPageText`]="items">
-                Số dòng hiển thị:
-            </template>
-            <template v-slot:[`footer.page-text`]="items">
-                {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
-            </template>
-        </v-data-table>
-    </v-app>
+      <template v-slot:[`footer.rowsPerPageText`]="items">
+        Số dòng hiển thị:
+      </template>
+      <template v-slot:[`footer.page-text`]="items">
+        {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{
+        items.itemsLength }}
+      </template>
+    </v-data-table>
+  </v-app>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
@@ -210,343 +303,357 @@
 <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script src="https://unpkg.com/vue-toasted"></script>
 <script>
-    const toastOptions = {
-        position: 'bottom-right',
-        duration: 2000,
-        theme: "toasted-primary"
-    }
-    Vue.use(Toasted, toastOptions);
-    new Vue({
-        el: '#app',
-        vuetify: new Vuetify(
-            {
-                lang: {
-                    locales: {
-                        'vi': {
-                            "dataIterator": {
-                                "rowsPerPageText": "Tổng số trang:",
-                                "rowsPerPageAll": "Tất cả",
-                                "pageText": "{0}-{1} trong tổng số {2}",
-                                "noResultsText": "Không tìm thấy dữ liệu",
-                                "nextPage": "Trang tiếp theo",
-                                "prevPage": "Trang trước "
-                            },
-                            "dataTable": {
-                                "rowsPerPageText": "Số dòng hiển thị:"
-                            },
-                            "noDataText": "Không có lịch công tác",
-                        }
-                    },
-                    current: 'vi'
-                }
-        }),
-        data() {
-            return {
-                headerProps: {
-                    sortByText: "Chọn sắp xếp"
-                },
-                /*edit panigation*/
-                footerProps: {
-                    itemsPerPageOptions: [5, 10, 20, 30, 50, -1],
-                    itemsPerPageText: 'Số dòng hiển thị:',
-                    itemsPerPageAllText: 'Tất cả',
-                    showFirstLastPage: true,
-                    showCurrentPage: true,
-                },
-                search: '',
-                menu1: null,
-                sort1: null,
-                menu2: false,
-                sort2: null,
-                date: null,
-                dialog: false,
-                valid: true,
-                locationRules: [
-                    v => !!v || 'Yêu cầu nhập địa điểm',
-                    v => (v && v.length <= 10) || 'Địa điểm phải nhỏ hơn 10 ký tự',
-                ],
-                contentRules: [
-                    v => !!v || 'Yêu cầu nhập nội dung',
-                    v => (v && v.length <= 100) || 'Nội dung phải nhỏ hơn 100 ký tự',
-                ],
-                componentRules: [
-                    v => !!v || 'Yêu cầu nhập thành phần',
-                    v => (v && v.length <= 50) || 'Thành phần phải nhỏ hơn 50 ký tự',
-                ],
-                headers: [
-                    {
-                        text: 'STT',
-                        align: 'center',
-                        sortable: false,
-                        value: 'STT',
-                    },
-                    { text: 'Ngày họp', align: 'center', value: 'Ngay' },
-                    { text: 'Giờ họp', align: 'center', value: 'Gio' },
-                    { text: 'Đơn vị', align: 'center', value: 'TenDonVi' },
-                    { text: 'Người chủ trì', align: 'center', value: 'NguoiChuTri' },
-                    { text: 'Địa điểm', align: 'center', value: 'DiaDiem' },
-                    { text: 'Nội dung', align: 'center', value: 'NoiDung' },
-                    { text: 'Thành phần', align: 'center', value: 'ThanhPhan' },
-                    { text: 'Sửa', align: 'center', value: 'action1', sortable: false },
-                    { text: 'Xóa', align: 'center', value: 'action2', sortable: false },
-                ],
-                lich: [],
-                dv: [],
-                nct: [],
-                from_date: '2022-11-1',
-                to_date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-                editedIndex: -1,
-                editedItem: {
-                        STT: null,
-                        ID_Lich: null,
-                        Ngay_Giohop: null,
-                        Ngay: null,
-                        Gio: null,
-                        TenDonVi: null,
-                        Donvi_ID: null, 
-                        CanBo_ID: null,
-                        NguoiChuTri: null,
-                        DiaDiem: null,
-                        NoiDung: null,
-                        ThanhPhan: null,
-                },
-                defaultItem: {
-                    STT:'',
-                    ID_Lich: '',
-                    Ngay_Giohop: '',
-                    Ngay: '',
-                    Gio: '',
-                    TenDonVi: '',
-                    Donvi_ID: '',
-                    CanBo_ID: '',
-                    NguoiChuTri: '',
-                    DiaDiem: '',
-                    NoiDung: '',
-                    ThanhPhan: '',
-                },
-                URL: "/Desktopmodules/lct/api/LichCongTac/",
-                URLdv: "/Desktopmodules/lct/api/Donvi/",
-                URLnct: "/Desktopmodules/lct/api/CanBo/",
-            }
+  const toastOptions = {
+    position: "bottom-right",
+    duration: 2000,
+    theme: "toasted-primary",
+  };
+  Vue.use(Toasted, toastOptions);
+  new Vue({
+    el: "#app",
+    vuetify: new Vuetify({
+      lang: {
+        locales: {
+          vi: {
+            dataIterator: {
+              rowsPerPageText: "Tổng số trang:",
+              rowsPerPageAll: "Tất cả",
+              pageText: "{0}-{1} trong tổng số {2}",
+              noResultsText: "Không tìm thấy dữ liệu",
+              nextPage: "Trang tiếp theo",
+              prevPage: "Trang trước ",
+            },
+            dataTable: {
+              rowsPerPageText: "Số dòng hiển thị:",
+            },
+            noDataText: "Không có lịch công tác",
+          },
         },
-
-        computed: {
-            formTitle() {
-                return this.editedIndex === -1 ? 'Thêm mới lịch công tác' : 'Cập nhật lịch công tác'
-            },
-            Computed_dateFormatted() {
-                return this.formatDate(this.editedItem.Ngay);
-            },
-            computedDateFormatted_from_date() {
-                return this.formatDate(this.from_date);
-            },
-            computedDateFormatted_to_date() {
-                return this.formatDate(this.to_date)
-            },
+        current: "vi",
+      },
+    }),
+    data() {
+      return {
+        headerProps: {
+          sortByText: "Chọn sắp xếp",
         },
-
-        watch: {
-            date(val) {
-                this.dateFormatted = this.formatDate(this.editedItem.Ngay)
-            },
-            from_date(val) {
-                this.dateFormatted = this.formatDate(this.from_date)
-            },
-            to_date(val) {
-                this.dateFormatted = this.formatDate(this.to_date)
-            },
-            dialog(val) {
-                val || this.close()
-            },
+        /*edit panigation*/
+        footerProps: {
+          itemsPerPageOptions: [5, 10, 20, 30, 50, -1],
+          itemsPerPageText: "Số dòng hiển thị:",
+          itemsPerPageAllText: "Tất cả",
+          showFirstLastPage: true,
+          showCurrentPage: true,
         },
-
-        created() {
-            this.getLCT();
-            this.GetListDonvi();
-            this.getCanBo();
+        search: "",
+        menu1: null,
+        sort1: null,
+        menu2: false,
+        sort2: null,
+        date: null,
+        dialog: false,
+        valid: true,
+        locationRules: [
+          (v) => !!v || "Yêu cầu nhập địa điểm",
+          (v) => (v && v.length <= 10) || "Địa điểm phải nhỏ hơn 10 ký tự",
+        ],
+        contentRules: [
+          (v) => !!v || "Yêu cầu nhập nội dung",
+          (v) => (v && v.length <= 100) || "Nội dung phải nhỏ hơn 100 ký tự",
+        ],
+        componentRules: [
+          (v) => !!v || "Yêu cầu nhập thành phần",
+          (v) => (v && v.length <= 50) || "Thành phần phải nhỏ hơn 50 ký tự",
+        ],
+        headers: [
+          {
+            text: "STT",
+            align: "center",
+            sortable: false,
+            value: "STT",
+          },
+          { text: "Ngày họp", align: "center", value: "Ngay" },
+          { text: "Giờ họp", align: "center", value: "Gio" },
+          { text: "Đơn vị", align: "center", value: "TenDonVi" },
+          { text: "Người chủ trì", align: "center", value: "NguoiChuTri" },
+          { text: "Địa điểm", align: "center", value: "DiaDiem" },
+          { text: "Nội dung", align: "center", value: "NoiDung" },
+          { text: "Thành phần", align: "center", value: "ThanhPhan" },
+          { text: "Sửa", align: "center", value: "action1", sortable: false },
+          { text: "Xóa", align: "center", value: "action2", sortable: false },
+        ],
+        lich: [],
+        dv: [],
+        nct: [],
+        from_date: "2022-11-1",
+        to_date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .substr(0, 10),
+        editedIndex: -1,
+        editedItem: {
+          STT: null,
+          ID_Lich: null,
+          Ngay_Giohop: null,
+          Ngay: null,
+          Gio: null,
+          TenDonVi: null,
+          Donvi_ID: null,
+          CanBo_ID: null,
+          NguoiChuTri: null,
+          DiaDiem: null,
+          NoiDung: null,
+          ThanhPhan: null,
         },
-
-        methods: {
-            filterDate() {
-                if (this.to_date != undefined && this.from_date != undefined) {
-                    this.getLCT();
-                }
-            },
-            filteredKeys() {
-                return this.from_date.filter(from_date)
-            },
-            async getLCT() {
-                this.loading = true;
-                let result = await axios({
-                    method: 'get',
-                    url: this.URL + 'getLCT?tungay=' + this.from_date + '&denngay=' + this.to_date,
-                    data: {}
-                }).then(function (response) {
-                    return response;
-                });
-                this.loading = false;
-                this.lich = result.data;
-            },
-            async getLCTchitiet(value) {
-                this.loading = true;
-                let result = await axios({
-                    method: 'get',
-                    url: this.URL + 'getLCTchitiet?lID=' + value.ID_Lich,
-                    data: {}
-                }).then(function (response) {
-                    return response;
-                });
-                this.loading = false;
-                this.editedItem = result.data;
-            },
-            async getCanBo() {
-                this.loading = true;
-                let result = await axios({
-                    method: 'get',
-                    url: this.URLnct + 'getCanBo',
-                    data: {}
-                }).then(function (response) {
-                    return response;
-                });
-                this.loading = false;
-                this.nct = result.data;
-                //this.nct = [];
-                //for (let i = 0; i < result.data.length; i++) {
-                //    this.nct.push(result.data[i].ID_Canbo);
-                //}
-            },
-            async GetListDonvi() {
-                this.loading = true;
-                let result = await axios({
-                    method: 'get',
-                    url: this.URLdv + 'GetListDonvi',
-                    data: {}
-                }).then(function (response) {
-                    return response;
-                });
-                this.loading = false;
-                this.dv = result.data;
-                //this.dv = [];
-                //for (let i = 0; i < result.data.length; i++) {
-                //    this.dv.push(result.data[i].ID_Donvi);
-                //}
-            },
-            async addLCT() {
-                this.loading = true;
-                let result = await axios({
-                    method: 'post',
-                    url: this.URL + 'addLCT',
-                    data: {
-                        Ngay: this.editedItem.Ngay,
-                        Gio: this.editedItem.Gio,
-                        Donvi_ID: this.editedItem.Donvi_ID,
-                        CanBo_ID: this.editedItem.CanBo_ID,
-                        DiaDiem: this.editedItem.DiaDiem,
-                        NoiDung: this.editedItem.NoiDung,
-                        ThanhPhan: this.editedItem.ThanhPhan,
-                    }
-                }).then(function (response) {
-                    return response;
-                });
-                this.loading = false;
-            },
-
-            async updateLCT() {
-                this.loading = true;
-
-                let result = await axios({
-                    method: 'post',
-                    url: this.URL + 'updateLCT',
-                    data: {
-                        ID_Lich: this.editedItem.ID_Lich,
-                        Ngay: this.editedItem.Ngay,
-                        Gio: this.editedItem.Gio,
-                        Donvi_ID: this.editedItem.Donvi_ID,
-                        CanBo_ID: this.editedItem.CanBo_ID,
-                        DiaDiem: this.editedItem.DiaDiem,
-                        NoiDung: this.editedItem.NoiDung,
-                        ThanhPhan: this.editedItem.ThanhPhan,
-                    }
-                }).then(function (response) {
-                    return response;
-                });
-                this.loading = false;
-            },
-            async deleteLCT(value) {
-                this.loading = true;
-                let result = await axios({
-                    method: 'post',
-                    url: this.URL + 'deleteLCT?lID=' + value.ID_Lich,
-                    data: {}
-                }).then(function (response) {
-                    return response;
-                });
-                this.loading = false;
-                this.lich = result.data;
-            },
-            formatDate(date) {
-                if (!date) return null
-                const [year, month, day] = date.split('-')
-                return `${day}/${month}/${year}`
-            },
-            parseDate(date) {
-                if (!date) return null
-                const [month, day, year] = date.split('-')
-                return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-            },
-            editItem(item) {
-                this.editedIndex = this.lich.indexOf(item);
-                this.getLCTchitiet(Object.assign({}, item));
-                /*this.editedItem = Object.assign({}, item);*/
-                this.dialog = true;
-            },
-
-            deleteItem(item) {
-                var del = confirm('Bạn có chắc chắn muốn xóa?');
-                if (del == true) {
-                    this.deleteLCT(item);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 300)
-                } else {
-                }
-                return del;
-            },
-            save() {
-                var validation = this.$refs.form.validate();
-                if (validation == true) {
-                    if (this.editedIndex > -1) {
-                        this.updateLCT();
-                        setTimeout(() => {
-                            location.reload();
-                        }, 500)
-                        this.$toasted.success('Cập nhật thành công. vui lòng đợi trong giây lát', toastOptions);
-                    } else {
-                        this.lich.push(this.editedItem)
-                        this.addLCT();
-                        setTimeout(() => {
-                            location.reload();
-                        }, 500)
-                        this.$toasted.success('Thêm thành công. vui lòng đợi trong giây lát', toastOptions);
-                    }
-                    this.close();
-                } else {
-                }
-            },
-            resetValidation() {
-                this.$refs.form.resetValidation()
-            },
-            createnew() {
-                this.dialog = true;
-                this.resetValidation();
-            },
-            close() {
-                this.dialog = false;
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
-                }, 300)
-            },
+        defaultItem: {
+          STT: "",
+          ID_Lich: "",
+          Ngay_Giohop: "",
+          Ngay: "",
+          Gio: "",
+          TenDonVi: "",
+          Donvi_ID: "",
+          CanBo_ID: "",
+          NguoiChuTri: "",
+          DiaDiem: "",
+          NoiDung: "",
+          ThanhPhan: "",
         },
-    })
+        URL: "/Desktopmodules/lct/api/LichCongTac/",
+        URLdv: "/Desktopmodules/lct/api/Donvi/",
+        URLnct: "/Desktopmodules/lct/api/CanBo/",
+      };
+    },
+
+    computed: {
+      formTitle() {
+        return this.editedIndex === -1
+          ? "Thêm mới lịch công tác"
+          : "Cập nhật lịch công tác";
+      },
+      Computed_dateFormatted() {
+        return this.formatDate(this.editedItem.Ngay);
+      },
+      computedDateFormatted_from_date() {
+        return this.formatDate(this.from_date);
+      },
+      computedDateFormatted_to_date() {
+        return this.formatDate(this.to_date);
+      },
+    },
+
+    watch: {
+      date(val) {
+        this.dateFormatted = this.formatDate(this.editedItem.Ngay);
+      },
+      from_date(val) {
+        this.dateFormatted = this.formatDate(this.from_date);
+      },
+      to_date(val) {
+        this.dateFormatted = this.formatDate(this.to_date);
+      },
+      dialog(val) {
+        val || this.close();
+      },
+    },
+
+    created() {
+      this.getLCT();
+      this.GetListDonvi();
+      this.getCanBo();
+    },
+
+    methods: {
+      filterDate() {
+        if (this.to_date != undefined && this.from_date != undefined) {
+          this.getLCT();
+        }
+      },
+      filteredKeys() {
+        return this.from_date.filter(from_date);
+      },
+      async getLCT() {
+        this.loading = true;
+        let result = await axios({
+          method: "get",
+          url:
+            this.URL +
+            "getLCT?tungay=" +
+            this.from_date +
+            "&denngay=" +
+            this.to_date,
+          data: {},
+        }).then(function (response) {
+          return response;
+        });
+        this.loading = false;
+        this.lich = result.data;
+      },
+      async getLCTchitiet(value) {
+        this.loading = true;
+        let result = await axios({
+          method: "get",
+          url: this.URL + "getLCTchitiet?lID=" + value.ID_Lich,
+          data: {},
+        }).then(function (response) {
+          return response;
+        });
+        this.loading = false;
+        this.editedItem = result.data;
+      },
+      async getCanBo() {
+        this.loading = true;
+        let result = await axios({
+          method: "get",
+          url: this.URLnct + "getCanBo",
+          data: {},
+        }).then(function (response) {
+          return response;
+        });
+        this.loading = false;
+        this.nct = result.data;
+        //this.nct = [];
+        //for (let i = 0; i < result.data.length; i++) {
+        //    this.nct.push(result.data[i].ID_Canbo);
+        //}
+      },
+      async GetListDonvi() {
+        this.loading = true;
+        let result = await axios({
+          method: "get",
+          url: this.URLdv + "GetListDonvi",
+          data: {},
+        }).then(function (response) {
+          return response;
+        });
+        this.loading = false;
+        this.dv = result.data;
+        //this.dv = [];
+        //for (let i = 0; i < result.data.length; i++) {
+        //    this.dv.push(result.data[i].ID_Donvi);
+        //}
+      },
+      async addLCT() {
+        this.loading = true;
+        let result = await axios({
+          method: "post",
+          url: this.URL + "addLCT",
+          data: {
+            Ngay: this.editedItem.Ngay,
+            Gio: this.editedItem.Gio,
+            Donvi_ID: this.editedItem.Donvi_ID,
+            CanBo_ID: this.editedItem.CanBo_ID,
+            DiaDiem: this.editedItem.DiaDiem,
+            NoiDung: this.editedItem.NoiDung,
+            ThanhPhan: this.editedItem.ThanhPhan,
+          },
+        }).then(function (response) {
+          return response;
+        });
+        this.loading = false;
+      },
+
+      async updateLCT() {
+        this.loading = true;
+
+        let result = await axios({
+          method: "post",
+          url: this.URL + "updateLCT",
+          data: {
+            ID_Lich: this.editedItem.ID_Lich,
+            Ngay: this.editedItem.Ngay,
+            Gio: this.editedItem.Gio,
+            Donvi_ID: this.editedItem.Donvi_ID,
+            CanBo_ID: this.editedItem.CanBo_ID,
+            DiaDiem: this.editedItem.DiaDiem,
+            NoiDung: this.editedItem.NoiDung,
+            ThanhPhan: this.editedItem.ThanhPhan,
+          },
+        }).then(function (response) {
+          return response;
+        });
+        this.loading = false;
+      },
+      async deleteLCT(value) {
+        this.loading = true;
+        let result = await axios({
+          method: "post",
+          url: this.URL + "deleteLCT?lID=" + value.ID_Lich,
+          data: {},
+        }).then(function (response) {
+          return response;
+        });
+        this.loading = false;
+        this.lich = result.data;
+      },
+      formatDate(date) {
+        if (!date) return null;
+        const [year, month, day] = date.split("-");
+        return `${day}/${month}/${year}`;
+      },
+      parseDate(date) {
+        if (!date) return null;
+        const [month, day, year] = date.split("-");
+        return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      },
+      editItem(item) {
+        this.editedIndex = this.lich.indexOf(item);
+        this.getLCTchitiet(Object.assign({}, item));
+        /*this.editedItem = Object.assign({}, item);*/
+        this.dialog = true;
+      },
+
+      deleteItem(item) {
+        var del = confirm("Bạn có chắc chắn muốn xóa?");
+        if (del == true) {
+          this.deleteLCT(item);
+          setTimeout(() => {
+            location.reload();
+          }, 300);
+        } else {
+        }
+        return del;
+      },
+      save() {
+        var validation = this.$refs.form.validate();
+        if (validation == true) {
+          if (this.editedIndex > -1) {
+            this.updateLCT();
+            setTimeout(() => {
+              location.reload();
+            }, 500);
+            this.$toasted.success(
+              "Cập nhật thành công. vui lòng đợi trong giây lát",
+              toastOptions
+            );
+          } else {
+            this.lich.push(this.editedItem);
+            this.addLCT();
+            setTimeout(() => {
+              location.reload();
+            }, 500);
+            this.$toasted.success(
+              "Thêm thành công. vui lòng đợi trong giây lát",
+              toastOptions
+            );
+          }
+          this.close();
+        } else {
+        }
+      },
+      resetValidation() {
+        this.$refs.form.resetValidation();
+      },
+      createnew() {
+        this.dialog = true;
+        this.resetValidation();
+      },
+      close() {
+        this.dialog = false;
+        setTimeout(() => {
+          this.editedItem = Object.assign({}, this.defaultItem);
+          this.editedIndex = -1;
+        }, 300);
+      },
+    },
+  });
 </script>
