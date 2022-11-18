@@ -47,7 +47,7 @@ font-weight:normal;
     }
 }
 
-@media (min-width: 1200px)
+/*@media (min-width: 1200px)
 {
     .container {
         width: 1200px;
@@ -58,7 +58,7 @@ font-weight:normal;
     .container {
         width: 1300px;
     }
-}
+}*/
 @media (min-width: 1600px) {
     .container {
         width: 1400px;
