@@ -332,17 +332,25 @@
                 });
                 this.loading = false;
             },
-            async deleteCanBo(value) {
+            async deleteCanBo(item) {
                 this.loading = true;
+                var cabo = item.ID_Canbo;
                 let result = await axios({
-                    method: 'post',
-                    url: this.URL + 'deleteCanBo?cID=' + value.ID_Canbo,
+                    method: 'get',
+                    url: this.URL + 'deleteCanBo?cID=' + item.ID_Canbo,
                     data: {}
                 }).then(function (response) {
                     return response;
                 });
                 this.loading = false;
-                this.canbo = result.data;
+                if (result.data == "FALSE") {
+                    this.$toasted.error('Xóa thất bại', toastOptions);
+                    this.getCanBo();
+                }
+                else {
+                    this.$toasted.success('Xóa thành công', toastOptions);
+                    this.getCanBo();
+                }
             },
             editItem(item) {
                 this.editedIndex = this.canbo.indexOf(item);
@@ -386,15 +394,15 @@
                 }
             },
             deleteItem(item) {
-                var del = confirm('Bạn có chắc chắn muốn xóa?');
-                if (del == true) {
+                const index = this.canbo.indexOf(item)
+                var i = confirm('Bạn có chắc chắn muốn xóa?') && this.canbo.splice(index, 1)
+                if (i != 0) {
                     this.deleteCanBo(item);
                     setTimeout(() => {
                         location.reload();
                     }, 300)
-                } else {
                 }
-                return del;
+
             },
         },
     })

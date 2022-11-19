@@ -21,7 +21,7 @@ namespace lct
             try
             {
                 int stt = 1;
-                List<CanBo> canBos = db.CanBos.OrderByDescending(x=>x.ID_Canbo).OrderBy(x=>x.Donvi_ID).ToList();
+                List<CanBo> canBos = db.CanBos.OrderByDescending(x => x.ID_Canbo).OrderBy(x => x.Donvi_ID).ToList();
                 List<ModelCanBo> lstcb = new List<ModelCanBo>();
 
                 foreach (var cb in canBos)
@@ -139,24 +139,28 @@ namespace lct
             }
         }
         [AllowAnonymous]
-        [HttpPost]
+        [HttpGet]
         public HttpResponseMessage deleteCanBo(int cID)
         {
-            try
+            string status = "FALSE";
+            if (cID != 0)
             {
-                var obj = db.CanBos.Where(x => x.ID_Canbo == cID).FirstOrDefault();
-                db.CanBos.DeleteOnSubmit(obj);
-                db.SubmitChanges();
+                var lct = db.LichCongTacs.Where(x => x.CanBo_ID == cID).Count();
+                if (lct == 0)
+                {
+                    var Cb = db.CanBos.Where(x => x.ID_Canbo == cID).FirstOrDefault();
+                    if (Cb != null)
+                    {
+                        db.CanBos.DeleteOnSubmit(Cb);
+                        db.SubmitChanges();
+                        status = "TRUE";
+                    }
+                }
 
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(obj), System.Text.Encoding.UTF8, "application/json");
-
-                return res;
             }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            var res = Request.CreateResponse(HttpStatusCode.OK);
+            res.Content = new StringContent(JsonConvert.SerializeObject(status), System.Text.Encoding.UTF8, "application/json");
+            return res;
         }
     }
 }
