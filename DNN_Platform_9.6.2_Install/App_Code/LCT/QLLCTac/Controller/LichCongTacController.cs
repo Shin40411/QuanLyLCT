@@ -61,7 +61,7 @@ namespace lct
             {
                 DateTime date_search = DateTime.ParseExact(Day, "d/MM/yyyy", CultureInfo.InvariantCulture);
                 int stt = 1;
-                List<LichCongTac> lichCongTacs = db.LichCongTacs.Where(x => x.Ngay_Giohop.Value.Date == date_search.Date).OrderByDescending(x=>x.Donvi_ID).ToList();
+                List<LichCongTac> lichCongTacs = db.LichCongTacs.Where(x => x.Ngay_Giohop.Value.Date == date_search.Date).OrderByDescending(x => x.Donvi_ID).ThenByDescending(x => x.CanBo_ID).ToList();
                 List<ModelLCT> lstlct = new List<ModelLCT>();
                 foreach (var lich in lichCongTacs)
                 {

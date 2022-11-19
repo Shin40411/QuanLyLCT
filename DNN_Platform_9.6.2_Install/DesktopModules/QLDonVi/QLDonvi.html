@@ -74,7 +74,7 @@
                                             <v-col cols="6" sm="6" md="6">
                                                 <v-text-field v-model="editedItem.item_donvi.Mota_Donvi" label="Mô tả"></v-text-field>
                                             </v-col>
-                                            
+
                                         </v-row>
                                     </v-container>
                                 </v-card-text>
@@ -89,22 +89,26 @@
                 </v-toolbar>
 
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:item.action1="{ item }">
                 <v-icon small
                         class="mr-2"
                         @click="editItem(item)">
                     mdi-pencil
                 </v-icon>
+            </template>
+            <template v-slot:item.action2="{ item }">
                 <v-icon small
                         @click="deleteItem(item)">
                     mdi-delete
                 </v-icon>
             </template>
             <template v-slot:[`footer.rowsPerPageText`]="items">
-                Số dòng hiển thị:
-            </template>
-            <template v-slot:[`footer.page-text`]="items">
-                {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
+                <template v-slot:[`footer.rowsPerPageText`]="items">
+                    Số dòng hiển thị:
+                </template>
+                <template v-slot:[`footer.page-text`]="items">
+                    {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
+                </template>
             </template>
         </v-data-table>
     </v-app>
@@ -162,7 +166,8 @@
                     { text: 'Nhóm', value: 'Nhom_Donvi' },
                     { text: 'Mô tả', value: 'Mota_Donvi' },
                     { text: 'Thứ tự', value: 'Thutu_Donvi' },
-                    { text: 'Hành động', value: 'action', sortable: false },
+                    { text: 'Sửa', align: 'center', value: 'action1', sortable: false, },
+                    { text: 'Xóa', align: 'center', value: 'action2', sortable: false, },
                 ],
                 itemnhom: ['Khối tỉnh', 'Khối huyện'],
                 items: [],

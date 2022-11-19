@@ -30,7 +30,7 @@
                       :items="items"
                       :search="search"
                       item-key="name"
-                      group-by="Ten_Donvi"
+                      group-by="ID_Donvi"
                       sort-by="calories"
                       class="elevation-1"
                       :footer-props="footerProps">
@@ -165,7 +165,7 @@
 
             </template>
             <template v-slot:group.header="{items, isOpen, toggle}">
-                <th colspan="11">
+                <th colspan="12">
                     <v-icon @click="toggle">
                         {{ isOpen ? 'mdi-menu-down' : 'mdi-menu-up' }}
                     </v-icon>
@@ -256,15 +256,15 @@
                         sortable: false,
                         value: 'STT_nd',
                     },
-                    { text: 'Họ và tên', value: 'DisplayName' },
+                    { text: 'Họ và tên', value: 'DisplayName', width: '150px'},
                     { text: 'Tên đăng nhập', value: 'Username' },
                     { text: 'Email', value: 'Email_nd' },
                     { text: 'Số điện thoại', value: 'Sodienthoai_nd' },
-                    { text: 'Đơn vị', value: 'Ten_Donvi' },
+                    //{ text: 'Đơn vị', value: 'Ten_Donvi' },
                     { text: 'Phòng ban', value: 'Phongban_nd' },
                     { text: 'Chức vụ', value: 'Chucvu_nd' },
                     { text: 'Ghi chú', value: 'Ghichu_nd' },
-                    { text: 'Đổi mật khẩu', align: 'center', value: 'action', sortable: false, },
+                    { text: 'Đổi mật khẩu', align: 'center', value: 'action', sortable: false, width: '80px' },
                     { text: 'Sửa', align: 'center', value: 'action1', sortable: false, },
                     { text: 'Xóa', align: 'center', value: 'action2', sortable: false, },
                 ],
@@ -328,13 +328,7 @@
             formTitle() {
                 return this.editedIndex === -1 ? 'Thêm mới người dùng' : 'Cập nhật người dùng'
             },
-            items() {
-                return this.items.map(
-                    (items, index) => ({
-                        ...items,
-                        index: index + 1
-                    }))
-            }
+            
         },
 
         watch: {

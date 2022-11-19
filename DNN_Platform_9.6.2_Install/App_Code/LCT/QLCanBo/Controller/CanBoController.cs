@@ -21,7 +21,7 @@ namespace lct
             try
             {
                 int stt = 1;
-                List<CanBo> canBos = db.CanBos.OrderByDescending(x=>x.ID_Canbo).ToList();
+                List<CanBo> canBos = db.CanBos.OrderByDescending(x=>x.ID_Canbo).OrderBy(x=>x.Donvi_ID).ToList();
                 List<ModelCanBo> lstcb = new List<ModelCanBo>();
 
                 foreach (var cb in canBos)
