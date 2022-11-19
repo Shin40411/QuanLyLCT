@@ -21,7 +21,7 @@ namespace lct
         public List<NdungInfo> GetListUser()
         {
             int stt = 1;
-            List<NguoiDungInfo> user = db.NguoiDungInfos.ToList();
+            List<NguoiDungInfo> user = db.NguoiDungInfos.OrderBy(x => x.ID_Donvi).ToList();
             List<NdungInfo> userInfo = new List<NdungInfo>();
             foreach (var i in user)
             {
