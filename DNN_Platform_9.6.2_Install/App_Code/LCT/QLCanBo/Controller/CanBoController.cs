@@ -36,6 +36,7 @@ namespace lct
                     modelCanBo.Chucvu = cb.Chucvu;
                     modelCanBo.Ghichu = cb.Ghichu;
                     modelCanBo.TenDV = cb.DonVi.Ten_Donvi;
+                    modelCanBo.Donvi_ID = cb.DonVi.ID_Donvi;
                     lstcb.Add(modelCanBo);
                 }
                 var res = Request.CreateResponse(HttpStatusCode.OK);
