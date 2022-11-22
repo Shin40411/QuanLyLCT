@@ -364,9 +364,6 @@
                 <v-btn color="success" @click="close">Trở về</v-btn>
               </v-card-actions>
             </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
       <template v-slot:item.action1="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       </template>
@@ -646,101 +643,6 @@
                 });
                 this.loading = false;
             },
-
-        // methods: {
-        //       filterDonvi() {
-        //           if (this.editedItem.Donvi_ID != undefined) {
-        //               this.getCanBobyID();
-        //           }
-        //       },
-        //       filterDate() {
-        //           if (this.to_date != undefined && this.from_date != undefined) {
-        //               this.getLCT();
-        //           }
-        //       },
-        //       filteredKeys() {
-        //           return this.from_date.filter(from_date);
-        //       },
-        //       async getLCT() {
-        //           this.loading = true;
-        //           let result = await axios({
-        //               method: "get",
-        //               url:
-        //                   this.URL +
-        //                   "getLCT?tungay=" +
-        //                   this.from_date +
-        //                   "&denngay=" +
-        //                   this.to_date,
-        //               data: {},
-        //           }).then(function (response) {
-        //               return response;
-        //           });
-        //           this.loading = false;
-        //           this.lich = result.data;
-        //       },
-        //       async getLCTchitiet(value) {
-        //           this.loading = true;
-        //           let result = await axios({
-        //               method: "get",
-        //               url: this.URL + "getLCTchitiet?lID=" + value.ID_Lich,
-        //               data: {},
-        //           }).then(function (response) {
-        //               return response;
-        //           });
-        //           this.loading = false;
-        //           this.editedItem = result.data;
-        //       },
-        //       async getCanBobyID() {
-        //           this.loading = true;
-        //           let result = await axios({
-        //               method: "get",
-        //               url: this.URLnct + "getCanBobyID?dID=" + this.editedItem.Donvi_ID,
-        //               data: {},
-        //           }).then(function (response) {
-        //               return response;
-        //           });
-        //           this.loading = false;
-        //           this.nct = result.data;
-        //           //this.nct = [];
-        //           //for (let i = 0; i < result.data.length; i++) {
-        //           //    this.nct.push(result.data[i].ID_Canbo);
-        //           //}
-        //       },
-        //       async GetListDonvi() {
-        //           this.loading = true;
-        //           let result = await axios({
-        //               method: "get",
-        //               url: this.URLdv + "GetList",
-        //               data: {},
-        //           }).then(function (response) {
-        //               return response;
-        //           });
-        //           this.loading = false;
-        //           this.dv = result.data;
-        //           //this.dv = [];
-        //           //for (let i = 0; i < result.data.length; i++) {
-        //           //    this.dv.push(result.data[i].ID_Donvi);
-        //           //}
-        //       },
-        //       async addLCT() {
-            //       this.loading = true;
-            //       let result = await axios({
-            //           method: "post",
-            //           url: this.URL + "addLCT",
-            //           data: {
-            //               Ngay: this.editedItem.Ngay,
-            //               Gio: this.editedItem.Gio,
-            //               Donvi_ID: this.editedItem.Donvi_ID,
-            //               CanBo_ID: this.editedItem.CanBo_ID,
-            //               DiaDiem: this.editedItem.DiaDiem,
-            //               NoiDung: this.editedItem.NoiDung,
-            //               ThanhPhan: this.editedItem.ThanhPhan,
-            //           },
-            //       }).then(function (response) {
-            //           return response;
-            //       });
-            //       this.loading = false;
-            //   },
 
               async updateLCT() {
                   this.loading = true;

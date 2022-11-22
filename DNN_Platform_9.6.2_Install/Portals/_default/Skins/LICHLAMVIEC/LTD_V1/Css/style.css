@@ -3,6 +3,7 @@
     border-right: 1px solid #eee;
     background: #f1f1f1;
     margin-left: 0px;
+    margin-top: 10px;
 }
 .nontir-container-panel-da .nav-g.director-overview {
     background-color: white;
@@ -131,13 +132,13 @@
     bottom: 68px;
     cursor: pointer;
     display: none;
-    height: 35px;
+    height: 46px;
     position: fixed;
     right: 23px;
     width: 44px;
     z-index: 1000;
     background-color: #db261b;
-    padding: 8px;
+    padding: 13px;
     padding-right: 14px;
     border-radius: 3px;
 }
@@ -279,6 +280,7 @@
 }
 
 #dnn_ContentPane > div {
+
 }
 /*.box-container{
     display:flex;

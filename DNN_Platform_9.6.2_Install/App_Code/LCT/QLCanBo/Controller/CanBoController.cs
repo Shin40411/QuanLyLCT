@@ -109,6 +109,8 @@ namespace lct
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet]
         public HttpResponseMessage getCanBochitiet(int cID)
         {
             try
