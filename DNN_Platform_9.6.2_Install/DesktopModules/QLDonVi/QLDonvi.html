@@ -3,9 +3,6 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
 <style>
-    tbody tr:nth-of-type(odd) {
-        background-color: rgba(0, 0, 0, .05);
-    }
     .v-data-table-header {
         background-image: -webkit-linear-gradient(#c3d8f1, #2fa4e7 60%, #1d9ce5);
     }
@@ -60,13 +57,12 @@
                                             </v-col>
 
                                             <v-col cols="6" sm="6" md="6">
-                                                <v-select :items="itemnhom"
+                                                <v-autocomplete :items="itemnhom"
                                                           v-model="editedItem.item_donvi.Nhom_Donvi"
                                                           :rules="[v => !!v || 'Yêu cầu chọn nhóm đơn vị']"
                                                           required
                                                           label="Nhóm đơn vị"
-                                                          outlined
-                                                          dense></v-select>
+                                                          dense></v-autocomplete>
                                             </v-col>
                                             <v-col cols="6" sm="6" md="6">
                                                 <v-text-field v-model="editedItem.item_donvi.Thutu_Donvi" label="Thứ tự"></v-text-field>
@@ -103,12 +99,10 @@
                 </v-icon>
             </template>
             <template v-slot:[`footer.rowsPerPageText`]="items">
-                <template v-slot:[`footer.rowsPerPageText`]="items">
-                    Số dòng hiển thị:
-                </template>
-                <template v-slot:[`footer.page-text`]="items">
-                    {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
-                </template>
+                Số dòng hiển thị:
+            </template>
+            <template v-slot:[`footer.page-text`]="items">
+                {{ items.pageStart }} - {{ items.pageStop }} Trong tổng số {{ items.itemsLength }}
             </template>
         </v-data-table>
     </v-app>
