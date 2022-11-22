@@ -253,7 +253,7 @@
         },
         created() {
             this.getCanBo();
-            this.GetListDonvi();
+            this.GetListDonviByUser();
         },
         methods: {
             async getCanBo() {
@@ -280,11 +280,11 @@
                 this.loading = false;
                 this.editedItem = result.data;
             },
-            async GetListDonvi() {
+            async GetListDonviByUser() {
                 this.loading = true;
                 let result = await axios({
                     method: 'get',
-                    url: this.URLdv + 'GetList',
+                    url: this.URLdv + 'GetListByUser',
                     data: {}
                 }).then(function (response) {
                     return response;
@@ -355,6 +355,7 @@
             editItem(item) {
                 this.editedIndex = this.canbo.indexOf(item);
                 this.getCanBochitiet(Object.assign({}, item));
+                this.editedItem.Donvi_ID = item.Donvi_ID;
                 this.dialog = true;
             },
             close() {
