@@ -73,10 +73,10 @@
                                                 <v-text-field v-model="editedItem.Chucvu" :counter="50" :rules="roleRules" required label="Chức vụ"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.Phongban" :counter="50" :rules="pbRules" required label="Phòng ban"></v-text-field>
+                                                <v-text-field v-model="editedItem.Phongban" label="Phòng ban"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="12" md="12">
-                                                <v-text-field v-model="editedItem.Ghichu" :rules="noteRules" required label="Ghi chú"></v-text-field>
+                                                <v-text-field v-model="editedItem.Ghichu" label="Ghi chú"></v-text-field>
                                             </v-col>
                                         </v-row>
                                     </v-container>
@@ -200,13 +200,13 @@
                     v => !!v || 'Yêu cầu nhập chức vụ',
                     v => (v && v.length <= 50) || 'Chức vụ phải nhỏ hơn 50 ký tự',
                 ],
-                pbRules: [
-                    v => !!v || 'Yêu cầu nhập phòng ban',
-                    v => (v && v.length <= 50) || 'Phòng ban phải nhỏ hơn 50 ký tự',
-                ],
-                noteRules: [
-                    v => !!v || 'Yêu cầu nhập ghi chú',
-                ],
+                //pbRules: [
+                //    v => !!v || 'Yêu cầu nhập phòng ban',
+                //    v => (v && v.length <= 50) || 'Phòng ban phải nhỏ hơn 50 ký tự',
+                //],
+                //noteRules: [
+                //    v => !!v || 'Yêu cầu nhập ghi chú',
+                //],
                 canbo: [],
                 dv: [],
                 editedIndex: -1,

@@ -1,361 +1,627 @@
-﻿<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
-<link type='text/css' rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css' />
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js" charset="UTF-8"></script>
+﻿<link
+  href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css"
+  rel="stylesheet"
+/>
+<link
+  type="text/css"
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css"
+/>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"
+  charset="UTF-8"
+></script>
 <style>
-    table tr > td {
-        border-left: 1px solid #dddddd;
-    }
+  table tr > td {
+    border-left: 1px solid #dddddd;
+  }
 
-    table tr > th {
-        border-left: 1px solid #fff;
-    }
+  table tr > th {
+    border-left: 1px solid #fff;
+  }
 
-    .v-data-table-header {
-        background-image: -webkit-linear-gradient(#c3d8f1, #2fa4e7 60%, #1d9ce5);
-    }
+  .v-data-table-header {
+    background-image: -webkit-linear-gradient(#c3d8f1, #2fa4e7 60%, #1d9ce5);
+  }
 
-    .v-banner__text {
-        text-align: center;
-        font-size: 24px;
-        font-weight: 900;
-        padding-top: 5px;
-        color: #0d638f;
-        height: 30px;
-    }
+  .v-banner__text {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 900;
+    padding-top: 5px;
+    color: #0d638f;
+    height: 30px;
+  }
 
-    .v-data-table-header th {
-        white-space: nowrap;
-    }
+  .v-data-table-header th {
+    white-space: nowrap;
+  }
 
-    .theme--dark.v-tabs > .v-tabs-bar .v-tab:not(.v-tab--active) {
-        color: #000;
-        background-color: #e7ebeb7a;
-        border: 1px solid #46484933;
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
-    }
+  .theme--dark.v-tabs > .v-tabs-bar .v-tab:not(.v-tab--active) {
+    color: #000;
+    background-color: #e7ebeb7a;
+    border: 1px solid #46484933;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+  }
 
-    a.v-tab.v-tab--active {
-        background-image: -webkit-linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
-    }
+  a.v-tab.v-tab--active {
+    background-image: -webkit-linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+  }
 
-    .v-input {
-        flex: none !important;
-    }
+  .v-input {
+    flex: none !important;
+  }
 
-    .btn.btn-default.day-width {
-        width: calc(100% /7);
-    }
+  .btn.btn-default.day-width {
+    width: calc(100% / 7);
+  }
 
-    .btn.btn-primary.day-width {
-        width: calc(100% /7);
-    }
+  .btn.btn-primary.day-width {
+    width: calc(100% / 7);
+  }
 
-    .row {
-        flex: none;
-    }
+  .row {
+    flex: none;
+  }
 </style>
 
 <div id="app">
-    <v-app id="inspire">
-        <v-banner color="default">LỊCH CÔNG TÁC CÁC CƠ QUAN NHÀ NƯỚC TỈNH VĨNH LONG</v-banner>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="col-md-7">
-                    <v-text-field v-model="search"
-                                  append-icon="mdi-magnify"
-                                  label="Vui lòng nhập tên người chủ trì, nội dung"
-                                  solo
-                                  hide-details></v-text-field>
-                </div>
-                <div class="col-md-5 right">
-                    <button id="prevWeek" class="btn btn-primary text-right">Tuần trước</button>
-                    <input type="text" class="btn btn-default text-center" autocomplete="off" id="weekpicker">
-                    <button id="nextWeek" class="btn btn-primary text-right ">Tuần sau</button>
-                </div>
-            </div>
+  <v-app id="inspire">
+    <v-banner color="default"
+      >LỊCH CÔNG TÁC CÁC CƠ QUAN NHÀ NƯỚC TỈNH VĨNH LONG</v-banner
+    >
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="col-md-7">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Vui lòng nhập tên người chủ trì, nội dung"
+            solo
+            hide-details
+          ></v-text-field>
         </div>
+        <div class="col-md-5 right">
+          <button id="prevWeek" class="btn btn-primary text-right">
+            Tuần trước
+          </button>
+          <input
+            type="text"
+            class="btn btn-default text-center"
+            autocomplete="off"
+            id="weekpicker"
+          />
+          <button id="nextWeek" class="btn btn-primary text-right">
+            Tuần sau
+          </button>
+        </div>
+      </div>
+    </div>
 
-        <div class="row ins">
-            <div class="col-sm">
-                <template v-for="(lich, index) in NgayDanhSach">
-                    <div @click="getLichCongTacByNgay(lich)" :class="`${Ngay == lich ? 'btn btn-primary day-width' : 'btn btn-default day-width'}`" style="border-radius: 4px 4px 0px 0px;">
-                        {{index ==0?'Thứ hai':index ==1?'Thứ ba':index ==2?'Thứ tư':index ==3?'Thứ năm':index ==4?'Thứ sáu':index ==5?'Thứ bảy':'Chủ nhật'}} <br />
-                        {{lich}}
-                    </div>
-                </template>
-            </div>
-        </div>
+    <div class="row ins">
+      <div class="col-sm">
+        <template v-for="(lich, index) in NgayDanhSach">
+          <div
+            @click="getLichCongTacByNgay(lich)"
+            :class="`${Ngay == lich ? 'btn btn-primary day-width' : 'btn btn-default day-width'}`"
+            style="border-radius: 4px 4px 0px 0px"
+          >
+            {{index ==0?'Thứ hai':index ==1?'Thứ ba':index ==2?'Thứ tư':index
+            ==3?'Thứ năm':index ==4?'Thứ sáu':index ==5?'Thứ bảy':'Chủ nhật'}}
+            <br />
+            {{lich}}
+          </div>
+        </template>
+      </div>
+    </div>
 
-        <div class="row" style="margin-top: unset">
-            <div class="col-sm" style="padding-top: 0px">
-                <v-data-table :headers="headers"
-                              :items="lich"
-                              :search="search"
-                              :hide-default-footer="true"
-                              id="lichcongtactable"
-                              hide-action
-                              class="elevation-1">
-                </v-data-table>
-            </div>
-        </div>
-    </v-app>
+    <div class="row" style="margin-top: unset">
+      <div class="col-sm" style="padding-top: 0px">
+        <v-data-table
+          :headers="headers"
+          :items="lich"
+          :search="search"
+          :hide-default-footer="true"
+          id="lichcongtactable"
+          hide-action
+          class="elevation-1"
+        >
+        </v-data-table>
+      </div>
+    </div>
+  </v-app>
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script type="text/javascript">
-    new Vue({
-        el: '#app',
-        vuetify: new Vuetify({
-            lang: {
-                locales: {
-                    'en': {
-                        "dataIterator": {
-                            "rowsPerPageText": "Tổng số trang:",
-                            "rowsPerPageAll": "Tất cả",
-                            "pageText": "{0}-{1} trong tổng số {2}",
-                            "noResultsText": "Không tìm thấy dữ liệu",
-                            "nextPage": "Trang tiếp theo",
-                            "prevPage": "Trang trước "
-                        },
-                        "dataTable": {
-                            "rowsPerPageText": "Số dòng hiển thị:"
-                        },
-                        "noDataText": "Không có lịch công tác",
-                    }
-                },
-                current: 'en'
-            }
-        }),
-        data: () => ({
-            headers: [
-                { text: 'Đơn vị', align: 'center', value: 'TenDonVi', sortable: false },
-                { text: 'Người chủ trì', align: 'center', value: 'NguoiChuTri', sortable: false },
-                { text: 'Thời gian', align: 'center', value: 'Gio', sortable: false, },
-                { text: 'Nội dung', align: 'center', value: 'NoiDung', sortable: false },
-                { text: 'Địa điểm', align: 'center', value: 'DiaDiem', sortable: false },
-                { text: 'Thành phần', align: 'center', value: 'ThanhPhan', sortable: false },
-            ],
-            lich: [],
-            search: '',
-            TuNgay: '',
-            DenNgay: '',
-            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-            NgayDanhSach: [],
-            menu: false,
-            defaultItem: {
-                ID_Lich: '',
-                Ngay_Giohop: '',
-                Ngay: '',
-                Gio: '',
-                TenDonVi: '',
-                Donvi_ID: '',
-                CanBo_ID: '',
-                NguoiChuTri: '',
-                DiaDiem: '',
-                NoiDung: '',
-                ThanhPhan: '',
+  new Vue({
+    el: "#app",
+    vuetify: new Vuetify({
+      lang: {
+        locales: {
+          en: {
+            dataIterator: {
+              rowsPerPageText: "Tổng số trang:",
+              rowsPerPageAll: "Tất cả",
+              pageText: "{0}-{1} trong tổng số {2}",
+              noResultsText: "Không tìm thấy dữ liệu",
+              nextPage: "Trang tiếp theo",
+              prevPage: "Trang trước ",
             },
-            URL: "/Desktopmodules/lct/api/LichCongTac/",
-        }),
-        created() {
-            const date = new Date();
-            this.Ngay = ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
-
-            var startDate = new Date(date.getFullYear(), ('0' + (date.getMonth() + 1)).slice(-2), ('0' + date.getDate()).slice(-2) - date.getDay() + 1);
-            var endDate = new Date(date.getFullYear(), ('0' + (date.getMonth() + 1)).slice(-2), ('0' + date.getDate()).slice(-2) - date.getDay() + 7);
-            this.NgayDanhSach.push(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear());
-            for (var i = 2; i < 7; i++) {
-                var startDate_Temp = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + i);
-                this.NgayDanhSach.push(startDate_Temp.getDate() + '/' + (startDate_Temp.getMonth() + 1) + '/' + startDate_Temp.getFullYear());
-
-            }
-            this.NgayDanhSach.push(endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear());
-
-            this.TuNgay = startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear();
-            this.DenNgay = endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear();
-            this.getLichCongTac();
-        },
-        computed: {},
-        updated() {
-            if (this.Donvi_ID == -1) {
-                var indexOfColumnToRowSpan = 0;
-                var $table = $('#lichphonghoptable');
-                //this is the code to do spanning, should work for any table
-                var rowSpanMap = {};
-                $table.find('tr').each(function () {
-                    var valueOfTheSpannableCell = $($(this).children('td')[indexOfColumnToRowSpan]).text();
-                    $($(this).children('td')[indexOfColumnToRowSpan]).attr('data-original-value', valueOfTheSpannableCell);
-                    rowSpanMap[valueOfTheSpannableCell] = true;
-                });
-
-                for (var rowGroup in rowSpanMap) {
-                    var $cellsToSpan = $('td[data-original-value="' + rowGroup + '"]');
-                    var numberOfRowsToSpan = $cellsToSpan.length;
-                    $cellsToSpan.each(function (index) {
-                        if (index == 0) {
-                            $(this).attr('rowspan', numberOfRowsToSpan);
-                        } else {
-                            $(this).hide();
-                        }
-                    });
-                }
-
-            }
-            else {
-                var indexOfColumnToRowSpan = 0;
-                var $table = $('#lichcongtactable');
-                //this is the code to do spanning, should work for any table
-                var rowSpanMap = {};
-                $table.find('tr').each(function () {
-                    var valueOfTheSpannableCell = $($(this).children('td')[indexOfColumnToRowSpan]).text();
-                    $($(this).children('td')[indexOfColumnToRowSpan]).attr('data-original-value', valueOfTheSpannableCell);
-                    rowSpanMap[valueOfTheSpannableCell] = true;
-                });
-
-                for (var rowGroup in rowSpanMap) {
-                    if (rowGroup != "") {
-                        var $cellsToSpan = $('td[data-original-value="' + rowGroup + '"]');
-                        var numberOfRowsToSpan = $cellsToSpan.length;
-                        $cellsToSpan.each(function (index) {
-                            if (index == 0) {
-                                $(this).attr('rowspan', numberOfRowsToSpan);
-                            } else {
-                                $(this).hide();
-                            }
-                        });
-                    }
-
-                }
-
-                indexOfColumnToRowSpan = 1;
-                //this is the code to do spanning, should work for any table
-                var rowSpanMap1 = {};
-                $table.find('tr').each(function () {
-                    var valueOfTheSpannableCell1 = $($(this).children('td')[indexOfColumnToRowSpan]).text();
-                    $($(this).children('td')[indexOfColumnToRowSpan]).attr('data-original-value', valueOfTheSpannableCell1);
-                    rowSpanMap1[valueOfTheSpannableCell1] = true;
-                });
-
-                for (var rowGroup in rowSpanMap1) {
-                    if (rowGroup != "") {
-                        var $cellsToSpan = $('td[data-original-value="' + rowGroup + '"]');
-                        var numberOfRowsToSpan = $cellsToSpan.length;
-                        $cellsToSpan.each(function (index) {
-                            if (index == 0) {
-                                $(this).attr('rowspan', numberOfRowsToSpan);
-                            } else {
-                                $(this).hide();
-                            }
-                        });
-                    }
-                }
-            }
-        },
-        methods: {
-            async getLichCongTac() {
-                this.loading = true;
-                let result = await axios({
-                    method: 'get',
-                    url: this.URL + 'getLichCongTac?Day=' + this.Ngay,
-                    data: {}
-                }).then(function (response) {
-                    return response;
-                });
-                this.loading = false;
-                this.lich = result.data;
+            dataTable: {
+              rowsPerPageText: "Số dòng hiển thị:",
             },
-            getLichCongTacByNgay(ngay) {
-                this.Ngay = ngay;
-                this.getLichCongTac();
-            },
+            noDataText: "Không có lịch công tác",
+          },
         },
-        mounted: function () {
-            const self = this;
-            $.fn.datepicker.dates['vi'] = {
-                days: ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"],
-                daysShort: ["CN", "T2", "T3", "T4", "T5", "T6", "T7", "CN"],
-                daysMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7", "CN"],
-                months: ["Tháng Một", "Tháng Hai", "Tháng Ba", "Tháng Tư", "Tháng Năm", "Tháng Sáu", "Tháng Bảy", "Tháng Tám", "Tháng Chín", "Tháng Mười", "Tháng Mười Một", "Tháng Mười Hai"],
-                monthsShort: ["Th.1", "Th.2", "Th.3", "Th.4", "Th.5", "Th.6", "Th.7", "Th.8", "Th.9", "Th.10", "Th.11", "Th.12"],
-                today: "Hôm Nay",
-                suffix: [],
-                meridiem: ["Sáng", "Chiều"],
-                weekStart: 1,
-                format: "dd/mm/yyyy hh:ii"
-            };
-            $('#weekpicker').datepicker({
-                autoclose: true,
-                format: 'dd/mm/yyyy',
-                forceParse: false,
-                todayHighlight: true,
-                language: 'vi-VN',
-                weekStart: 1 // Start with Monday
-            }).on("changeDate", function (e) {
-                var date = e.date;
-
-                startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
-                endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
-                //$('#weekpicker').datepicker("setDate", startDate);
-                $('#weekpicker').datepicker('update', startDate);
-                $('#weekpicker').val(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear() + ' - ' + endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear());
-
-                var dateCurrent = new Date();
-                const diffTime = dateCurrent - startDate;
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                if (diffDays > 0 && diffDays < 8) {
-                    startDate_Temp = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + diffDays);
-                    self.Ngay = startDate_Temp.getDate() + '/' + (startDate_Temp.getMonth() + 1) + '/' + startDate_Temp.getFullYear();
-                }
-                else {
-                    self.Ngay = startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear();
-                }
-                /* self.Ngay = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();*/
-
-                self.NgayDanhSach = [];
-                self.NgayDanhSach.push(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear());
-                for (var i = 2; i < 7; i++) {
-                    var startDate_Temp = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + i);
-                    self.NgayDanhSach.push(startDate_Temp.getDate() + '/' + (startDate_Temp.getMonth() + 1) + '/' + startDate_Temp.getFullYear());
-
-                }
-                self.NgayDanhSach.push(endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear());
-                self.getLichCongTacByNgay(self.Ngay);
-            });
-            $('#prevWeek').click(function (e) {
-                var date = $('#weekpicker').datepicker('getDate');
-                //dateFormat = "dd/mm/yyyy"; //$.datepicker._defaults.dateFormat;
-                startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() - 7);
-                endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() - 1);
-                $('#weekpicker').datepicker("setDate", new Date(startDate));
-                $('#weekpicker').val(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear() + ' - ' + endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear());
-
-                return false;
-            });
-            $('#nextWeek').click(function () {
-                var date = $('#weekpicker').datepicker('getDate');
-                //dateFormat = "dd/mm/yyyy"; // $.datepicker._defaults.dateFormat;
-                startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
-                endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 13);
-                $('#weekpicker').datepicker("setDate", new Date(startDate));
-                $('#weekpicker').val(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear() + ' - ' + endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear());
-
-                return false;
-            });
-            var date = new Date();
-            startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
-            endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
-            $('#weekpicker').datepicker("setDate", startDate);
-            $('#weekpicker').val(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear() + ' - ' + endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear());
+        current: "en",
+      },
+    }),
+    data: () => ({
+      headers: [
+        { text: "Đơn vị", align: "center", value: "TenDonVi", sortable: false },
+        {
+          text: "Người chủ trì",
+          align: "center",
+          value: "NguoiChuTri",
+          sortable: false,
         },
-        watch: {}
-    })
+        { text: "Thời gian", align: "center", value: "Gio", sortable: false },
+        {
+          text: "Nội dung",
+          align: "center",
+          value: "NoiDung",
+          sortable: false,
+        },
+        {
+          text: "Địa điểm",
+          align: "center",
+          value: "DiaDiem",
+          sortable: false,
+        },
+        {
+          text: "Thành phần",
+          align: "center",
+          value: "ThanhPhan",
+          sortable: false,
+        },
+      ],
+      lich: [],
+      search: "",
+      TuNgay: "",
+      DenNgay: "",
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      NgayDanhSach: [],
+      menu: false,
+      defaultItem: {
+        ID_Lich: "",
+        Ngay_Giohop: "",
+        Ngay: "",
+        Gio: "",
+        TenDonVi: "",
+        Donvi_ID: "",
+        CanBo_ID: "",
+        NguoiChuTri: "",
+        DiaDiem: "",
+        NoiDung: "",
+        ThanhPhan: "",
+      },
+      URL: "/Desktopmodules/lct/api/LichCongTac/",
+    }),
+    created() {
+      const date = new Date();
+      this.Ngay =
+        ("0" + date.getDate()).slice(-2) +
+        "/" +
+        ("0" + (date.getMonth() + 1)).slice(-2) +
+        "/" +
+        date.getFullYear();
 
+      var startDate = new Date(
+        date.getFullYear(),
+        ("0" + (date.getMonth() + 1)).slice(-2),
+        ("0" + date.getDate()).slice(-2) - date.getDay() + 1
+      );
+      var endDate = new Date(
+        date.getFullYear(),
+        ("0" + (date.getMonth() + 1)).slice(-2),
+        ("0" + date.getDate()).slice(-2) - date.getDay() + 7
+      );
+      this.NgayDanhSach.push(
+        startDate.getDate() +
+          "/" +
+          (startDate.getMonth() + 1) +
+          "/" +
+          startDate.getFullYear()
+      );
+      for (var i = 2; i < 7; i++) {
+        var startDate_Temp = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() - date.getDay() + i
+        );
+        this.NgayDanhSach.push(
+          startDate_Temp.getDate() +
+            "/" +
+            (startDate_Temp.getMonth() + 1) +
+            "/" +
+            startDate_Temp.getFullYear()
+        );
+      }
+      this.NgayDanhSach.push(
+        endDate.getDate() +
+          "/" +
+          (endDate.getMonth() + 1) +
+          "/" +
+          endDate.getFullYear()
+      );
+
+      this.TuNgay =
+        startDate.getDate() +
+        "/" +
+        (startDate.getMonth() + 1) +
+        "/" +
+        startDate.getFullYear();
+      this.DenNgay =
+        endDate.getDate() +
+        "/" +
+        (endDate.getMonth() + 1) +
+        "/" +
+        endDate.getFullYear();
+      this.getLichCongTac();
+    },
+    computed: {},
+    updated() {
+      if (this.Donvi_ID == -1) {
+        var indexOfColumnToRowSpan = 0;
+        var $table = $("#lichphonghoptable");
+        //this is the code to do spanning, should work for any table
+        var rowSpanMap = {};
+        $table.find("tr").each(function () {
+          var valueOfTheSpannableCell = $(
+            $(this).children("td")[indexOfColumnToRowSpan]
+          ).text();
+          $($(this).children("td")[indexOfColumnToRowSpan]).attr(
+            "data-original-value",
+            valueOfTheSpannableCell
+          );
+          rowSpanMap[valueOfTheSpannableCell] = true;
+        });
+
+        for (var rowGroup in rowSpanMap) {
+          var $cellsToSpan = $('td[data-original-value="' + rowGroup + '"]');
+          var numberOfRowsToSpan = $cellsToSpan.length;
+          $cellsToSpan.each(function (index) {
+            if (index == 0) {
+              $(this).attr("rowspan", numberOfRowsToSpan);
+            } else {
+              $(this).hide();
+            }
+          });
+        }
+      } else {
+        var indexOfColumnToRowSpan = 0;
+        var $table = $("#lichcongtactable");
+        //this is the code to do spanning, should work for any table
+        var rowSpanMap = {};
+        $table.find("tr").each(function () {
+          var valueOfTheSpannableCell = $(
+            $(this).children("td")[indexOfColumnToRowSpan]
+          ).text();
+          $($(this).children("td")[indexOfColumnToRowSpan]).attr(
+            "data-original-value",
+            valueOfTheSpannableCell
+          );
+          rowSpanMap[valueOfTheSpannableCell] = true;
+        });
+
+        for (var rowGroup in rowSpanMap) {
+          if (rowGroup != "") {
+            var $cellsToSpan = $('td[data-original-value="' + rowGroup + '"]');
+            var numberOfRowsToSpan = $cellsToSpan.length;
+            $cellsToSpan.each(function (index) {
+              if (index == 0) {
+                $(this).attr("rowspan", numberOfRowsToSpan);
+              } else {
+                $(this).hide();
+              }
+            });
+          }
+        }
+
+        indexOfColumnToRowSpan = 1;
+        //this is the code to do spanning, should work for any table
+        var rowSpanMap1 = {};
+        $table.find("tr").each(function () {
+          var valueOfTheSpannableCell1 = $(
+            $(this).children("td")[indexOfColumnToRowSpan]
+          ).text();
+          $($(this).children("td")[indexOfColumnToRowSpan]).attr(
+            "data-original-value",
+            valueOfTheSpannableCell1
+          );
+          rowSpanMap1[valueOfTheSpannableCell1] = true;
+        });
+
+        for (var rowGroup in rowSpanMap1) {
+          if (rowGroup != "") {
+            var $cellsToSpan = $('td[data-original-value="' + rowGroup + '"]');
+            var numberOfRowsToSpan = $cellsToSpan.length;
+            $cellsToSpan.each(function (index) {
+              if (index == 0) {
+                $(this).attr("rowspan", numberOfRowsToSpan);
+              } else {
+                $(this).hide();
+              }
+            });
+          }
+        }
+      }
+    },
+    methods: {
+      async getLichCongTac() {
+        this.loading = true;
+        let result = await axios({
+          method: "get",
+          url: this.URL + "getLichCongTac?Day=" + this.Ngay,
+          data: {},
+        }).then(function (response) {
+          return response;
+        });
+        this.loading = false;
+        this.lich = result.data;
+      },
+      getLichCongTacByNgay(ngay) {
+        this.Ngay = ngay;
+        this.getLichCongTac();
+      },
+    },
+
+    mounted: function () {
+      const self = this;
+      $.fn.datepicker.dates["vi"] = {
+        days: [
+          "Chủ Nhật",
+          "Thứ Hai",
+          "Thứ Ba",
+          "Thứ Tư",
+          "Thứ Năm",
+          "Thứ Sáu",
+          "Thứ Bảy",
+          "Chủ Nhật",
+        ],
+        daysShort: ["CN", "T2", "T3", "T4", "T5", "T6", "T7", "CN"],
+        daysMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7", "CN"],
+        months: [
+          "Tháng Một",
+          "Tháng Hai",
+          "Tháng Ba",
+          "Tháng Tư",
+          "Tháng Năm",
+          "Tháng Sáu",
+          "Tháng Bảy",
+          "Tháng Tám",
+          "Tháng Chín",
+          "Tháng Mười",
+          "Tháng Mười Một",
+          "Tháng Mười Hai",
+        ],
+        monthsShort: [
+          "Th.1",
+          "Th.2",
+          "Th.3",
+          "Th.4",
+          "Th.5",
+          "Th.6",
+          "Th.7",
+          "Th.8",
+          "Th.9",
+          "Th.10",
+          "Th.11",
+          "Th.12",
+        ],
+        today: "Hôm Nay",
+        suffix: [],
+        meridiem: ["Sáng", "Chiều"],
+        weekStart: 1,
+        format: "dd/mm/yyyy hh:ii",
+      };
+      $("#weekpicker")
+        .datepicker({
+          autoclose: true,
+          format: "dd/mm/yyyy",
+          forceParse: false,
+          todayHighlight: true,
+          language: "vi-VN",
+          weekStart: 1, // Start with Monday
+        })
+        .on("changeDate", function (e) {
+          var date = e.date;
+
+          startDate = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate() - date.getDay() + 1
+          );
+          endDate = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate() - date.getDay() + 7
+          );
+          //$('#weekpicker').datepicker("setDate", startDate);
+          $("#weekpicker").datepicker("update", startDate);
+          $("#weekpicker").val(
+            startDate.getDate() +
+              "/" +
+              (startDate.getMonth() + 1) +
+              "/" +
+              startDate.getFullYear() +
+              " - " +
+              endDate.getDate() +
+              "/" +
+              (endDate.getMonth() + 1) +
+              "/" +
+              endDate.getFullYear()
+          );
+
+          var dateCurrent = new Date();
+          const diffTime = dateCurrent - startDate;
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          if (diffDays > 0 && diffDays < 8) {
+            startDate_Temp = new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate() - date.getDay() + diffDays
+            );
+            self.Ngay =
+              startDate_Temp.getDate() +
+              "/" +
+              (startDate_Temp.getMonth() + 1) +
+              "/" +
+              startDate_Temp.getFullYear();
+          } else {
+            self.Ngay =
+              startDate.getDate() +
+              "/" +
+              (startDate.getMonth() + 1) +
+              "/" +
+              startDate.getFullYear();
+          }
+          /* self.Ngay = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();*/
+
+          self.NgayDanhSach = [];
+          self.NgayDanhSach.push(
+            startDate.getDate() +
+              "/" +
+              (startDate.getMonth() + 1) +
+              "/" +
+              startDate.getFullYear()
+          );
+          for (var i = 2; i < 7; i++) {
+            var startDate_Temp = new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate() - date.getDay() + i
+            );
+            self.NgayDanhSach.push(
+              startDate_Temp.getDate() +
+                "/" +
+                (startDate_Temp.getMonth() + 1) +
+                "/" +
+                startDate_Temp.getFullYear()
+            );
+          }
+          self.NgayDanhSach.push(
+            endDate.getDate() +
+              "/" +
+              (endDate.getMonth() + 1) +
+              "/" +
+              endDate.getFullYear()
+          );
+          self.getLichCongTacByNgay(self.Ngay);
+        });
+      $("#prevWeek").click(function (e) {
+        var date = $("#weekpicker").datepicker("getDate");
+        //dateFormat = "dd/mm/yyyy"; //$.datepicker._defaults.dateFormat;
+        startDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() - date.getDay() - 7
+        );
+        endDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() - date.getDay() - 1
+        );
+        $("#weekpicker").datepicker("setDate", new Date(startDate));
+        $("#weekpicker").val(
+          startDate.getDate() +
+            "/" +
+            (startDate.getMonth() + 1) +
+            "/" +
+            startDate.getFullYear() +
+            " - " +
+            endDate.getDate() +
+            "/" +
+            (endDate.getMonth() + 1) +
+            "/" +
+            endDate.getFullYear()
+        );
+
+        return false;
+      });
+      $("#nextWeek").click(function () {
+        var date = $("#weekpicker").datepicker("getDate");
+        //dateFormat = "dd/mm/yyyy"; // $.datepicker._defaults.dateFormat;
+        startDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() - date.getDay() + 7
+        );
+        endDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() - date.getDay() + 13
+        );
+        $("#weekpicker").datepicker("setDate", new Date(startDate));
+        $("#weekpicker").val(
+          startDate.getDate() +
+            "/" +
+            (startDate.getMonth() + 1) +
+            "/" +
+            startDate.getFullYear() +
+            " - " +
+            endDate.getDate() +
+            "/" +
+            (endDate.getMonth() + 1) +
+            "/" +
+            endDate.getFullYear()
+        );
+
+        return false;
+      });
+      var date = new Date();
+      startDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate() - date.getDay() + 1
+      );
+      endDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate() - date.getDay() + 7
+      );
+      $("#weekpicker").datepicker("setDate", startDate);
+      $("#weekpicker").val(
+        startDate.getDate() +
+          "/" +
+          (startDate.getMonth() + 1) +
+          "/" +
+          startDate.getFullYear() +
+          " - " +
+          endDate.getDate() +
+          "/" +
+          (endDate.getMonth() + 1) +
+          "/" +
+          endDate.getFullYear()
+      );
+    },
+    watch: {},
+  });
 </script>

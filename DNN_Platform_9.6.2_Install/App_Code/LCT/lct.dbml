@@ -83,7 +83,7 @@
       <Column Name="Chucvu_User" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="Phongban_User" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="Ghichu_User" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="Sodienthoai_User" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Sodienthoai_User" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
       <Column Name="Stt_User" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="DonVi_NguoiDungInfo" Member="DonVi" ThisKey="ID_Donvi" OtherKey="ID_Donvi" Type="DonVi" IsForeignKey="true" />
     </Type>

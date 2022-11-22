@@ -15,6 +15,7 @@
   .v-data-table-header {
     background-image: -webkit-linear-gradient(#c3d8f1, #2fa4e7 60%, #1d9ce5);
   }
+
   table tr > td {
     border-left: 1px solid #dddddd;
   }
@@ -227,6 +228,7 @@
                           v-model="editedItem.Donvi_ID"
                           item-text="Ten_Donvi"
                           item-value="ID_Donvi"
+                          v-on:change="filterDonvi"
                           :rules="[v => !!v || 'Yêu cầu chọn đơn vị']"
                           required
                           label="Đơn vị"
@@ -250,18 +252,12 @@
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
                           v-model="editedItem.NoiDung"
-                          :counter="100"
-                          :rules="contentRules"
-                          required
                           label="Nội dung"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
                           v-model="editedItem.ThanhPhan"
-                          :counter="50"
-                          :rules="componentRules"
-                          required
                           label="Thành phần"
                         ></v-text-field>
                       </v-col>
@@ -285,8 +281,8 @@
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <!--<template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>-->
+                <v-btn color="primary" @click="initialize">Reset</v-btn>
+            </template>-->
       <template v-slot:[`footer.rowsPerPageText`]="items">
         Số dòng hiển thị:
       </template>
@@ -303,357 +299,363 @@
 <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script src="https://unpkg.com/vue-toasted"></script>
 <script>
-  const toastOptions = {
-    position: "bottom-right",
-    duration: 2000,
-    theme: "toasted-primary",
-  };
-  Vue.use(Toasted, toastOptions);
-  new Vue({
-    el: "#app",
-    vuetify: new Vuetify({
-      lang: {
-        locales: {
-          vi: {
-            dataIterator: {
-              rowsPerPageText: "Tổng số trang:",
-              rowsPerPageAll: "Tất cả",
-              pageText: "{0}-{1} trong tổng số {2}",
-              noResultsText: "Không tìm thấy dữ liệu",
-              nextPage: "Trang tiếp theo",
-              prevPage: "Trang trước ",
-            },
-            dataTable: {
-              rowsPerPageText: "Số dòng hiển thị:",
-            },
-            noDataText: "Không có lịch công tác",
-          },
-        },
-        current: "vi",
-      },
-    }),
-    data() {
-      return {
-        headerProps: {
-          sortByText: "Chọn sắp xếp",
-        },
-        /*edit panigation*/
-        footerProps: {
-          itemsPerPageOptions: [5, 10, 20, 30, 50, -1],
-          itemsPerPageText: "Số dòng hiển thị:",
-          itemsPerPageAllText: "Tất cả",
-          showFirstLastPage: true,
-          showCurrentPage: true,
-        },
-        search: "",
-        menu1: null,
-        sort1: null,
-        menu2: false,
-        sort2: null,
-        date: null,
-        dialog: false,
-        valid: true,
-        locationRules: [
-          (v) => !!v || "Yêu cầu nhập địa điểm",
-          (v) => (v && v.length <= 10) || "Địa điểm phải nhỏ hơn 10 ký tự",
-        ],
-        contentRules: [
-          (v) => !!v || "Yêu cầu nhập nội dung",
-          (v) => (v && v.length <= 100) || "Nội dung phải nhỏ hơn 100 ký tự",
-        ],
-        componentRules: [
-          (v) => !!v || "Yêu cầu nhập thành phần",
-          (v) => (v && v.length <= 50) || "Thành phần phải nhỏ hơn 50 ký tự",
-        ],
-        headers: [
-          {
-            text: "STT",
-            align: "center",
-            sortable: false,
-            value: "STT",
-          },
-            { text: "Ngày họp", align: "center", width: "11%", value: "Ngay" },
-            { text: "Giờ họp", align: "center", width: "10%", value: "Gio" },
-            { text: "Đơn vị", align: "center", value: "TenDonVi" },
-            { text: "Người chủ trì", align: "center", width: "13%", value: "NguoiChuTri" },
-            { text: "Địa điểm", align: "center", width: "11%", value: "DiaDiem" },
-            { text: "Nội dung", align: "center", value: "NoiDung" },
-            { text: "Thành phần", align: "center", value: "ThanhPhan" },
-            { text: "Sửa", align: "center", value: "action1", sortable: false },
-            { text: "Xóa", align: "center", value: "action2", sortable: false },
-        ],
-        lich: [],
-        dv: [],
-        nct: [],
-        from_date: "2022-11-1",
-        to_date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-          .toISOString()
-          .substr(0, 10),
-        editedIndex: -1,
-        editedItem: {
-          STT: null,
-          ID_Lich: null,
-          Ngay_Giohop: null,
-          Ngay: null,
-          Gio: null,
-          TenDonVi: null,
-          Donvi_ID: null,
-          CanBo_ID: null,
-          NguoiChuTri: null,
-          DiaDiem: null,
-          NoiDung: null,
-          ThanhPhan: null,
-        },
-        defaultItem: {
-          STT: "",
-          ID_Lich: "",
-          Ngay_Giohop: "",
-          Ngay: "",
-          Gio: "",
-          TenDonVi: "",
-          Donvi_ID: "",
-          CanBo_ID: "",
-          NguoiChuTri: "",
-          DiaDiem: "",
-          NoiDung: "",
-          ThanhPhan: "",
-        },
-        URL: "/Desktopmodules/lct/api/LichCongTac/",
-        URLdv: "/DesktopModules/lct/api/LctAPI/",
-        URLnct: "/Desktopmodules/lct/api/CanBo/",
+      const toastOptions = {
+          position: "bottom-right",
+          duration: 2000,
+          theme: "toasted-primary",
       };
-    },
-
-    computed: {
-      formTitle() {
-        return this.editedIndex === -1
-          ? "Thêm mới lịch công tác"
-          : "Cập nhật lịch công tác";
-      },
-      Computed_dateFormatted() {
-        return this.formatDate(this.editedItem.Ngay);
-      },
-      computedDateFormatted_from_date() {
-        return this.formatDate(this.from_date);
-      },
-      computedDateFormatted_to_date() {
-        return this.formatDate(this.to_date);
-      },
-    },
-
-    watch: {
-      date(val) {
-        this.dateFormatted = this.formatDate(this.editedItem.Ngay);
-      },
-      from_date(val) {
-        this.dateFormatted = this.formatDate(this.from_date);
-      },
-      to_date(val) {
-        this.dateFormatted = this.formatDate(this.to_date);
-      },
-      dialog(val) {
-        val || this.close();
-      },
-    },
-
-    created() {
-      this.getLCT();
-      this.GetListDonvi();
-      this.getCanBo();
-    },
-
-    methods: {
-      filterDate() {
-        if (this.to_date != undefined && this.from_date != undefined) {
-          this.getLCT();
-        }
-      },
-      filteredKeys() {
-        return this.from_date.filter(from_date);
-      },
-      async getLCT() {
-        this.loading = true;
-        let result = await axios({
-          method: "get",
-          url:
-            this.URL +
-            "getLCT?tungay=" +
-            this.from_date +
-            "&denngay=" +
-            this.to_date,
-          data: {},
-        }).then(function (response) {
-          return response;
-        });
-        this.loading = false;
-        this.lich = result.data;
-      },
-      async getLCTchitiet(value) {
-        this.loading = true;
-        let result = await axios({
-          method: "get",
-          url: this.URL + "getLCTchitiet?lID=" + value.ID_Lich,
-          data: {},
-        }).then(function (response) {
-          return response;
-        });
-        this.loading = false;
-        this.editedItem = result.data;
-      },
-      async getCanBo() {
-        this.loading = true;
-        let result = await axios({
-          method: "get",
-          url: this.URLnct + "getCanBo",
-          data: {},
-        }).then(function (response) {
-          return response;
-        });
-        this.loading = false;
-        this.nct = result.data;
-        //this.nct = [];
-        //for (let i = 0; i < result.data.length; i++) {
-        //    this.nct.push(result.data[i].ID_Canbo);
-        //}
-      },
-      async GetListDonvi() {
-        this.loading = true;
-        let result = await axios({
-          method: "get",
-            url: this.URLdv + "GetList",
-          data: {},
-        }).then(function (response) {
-          return response;
-        });
-        this.loading = false;
-        this.dv = result.data;
-        //this.dv = [];
-        //for (let i = 0; i < result.data.length; i++) {
-        //    this.dv.push(result.data[i].ID_Donvi);
-        //}
-      },
-      async addLCT() {
-        this.loading = true;
-        let result = await axios({
-          method: "post",
-          url: this.URL + "addLCT",
-          data: {
-            Ngay: this.editedItem.Ngay,
-            Gio: this.editedItem.Gio,
-            Donvi_ID: this.editedItem.Donvi_ID,
-            CanBo_ID: this.editedItem.CanBo_ID,
-            DiaDiem: this.editedItem.DiaDiem,
-            NoiDung: this.editedItem.NoiDung,
-            ThanhPhan: this.editedItem.ThanhPhan,
+      Vue.use(Toasted, toastOptions);
+      new Vue({
+          el: "#app",
+          vuetify: new Vuetify({
+              lang: {
+                  locales: {
+                      vi: {
+                          dataIterator: {
+                              rowsPerPageText: "Tổng số trang:",
+                              rowsPerPageAll: "Tất cả",
+                              pageText: "{0}-{1} trong tổng số {2}",
+                              noResultsText: "Không tìm thấy dữ liệu",
+                              nextPage: "Trang tiếp theo",
+                              prevPage: "Trang trước ",
+                          },
+                          dataTable: {
+                              rowsPerPageText: "Số dòng hiển thị:",
+                          },
+                          noDataText: "Không có dữ liệu",
+                      },
+                  },
+                  current: "vi",
+              },
+          }),
+          data() {
+              return {
+                  headerProps: {
+                      sortByText: "Chọn sắp xếp",
+                  },
+                  /*edit panigation*/
+                  footerProps: {
+                      itemsPerPageOptions: [5, 10, 20, 30, 50, -1],
+                      itemsPerPageText: "Số dòng hiển thị:",
+                      itemsPerPageAllText: "Tất cả",
+                      showFirstLastPage: true,
+                      showCurrentPage: true,
+                  },
+                  search: "",
+                  menu1: null,
+                  sort1: null,
+                  menu2: false,
+                  sort2: null,
+                  date: null,
+                  dialog: false,
+                  valid: true,
+                  locationRules: [
+                      (v) => !!v || "Yêu cầu nhập địa điểm",
+                      (v) => (v && v.length <= 10) || "Địa điểm phải nhỏ hơn 10 ký tự",
+                  ],
+                  //contentRules: [
+                  //    (v) => !!v || "Yêu cầu nhập nội dung",
+                  //    (v) => (v && v.length <= 100) || "Nội dung phải nhỏ hơn 100 ký tự",
+                  //],
+                  //componentRules: [
+                  //    (v) => !!v || "Yêu cầu nhập thành phần",
+                  //    (v) => (v && v.length <= 50) || "Thành phần phải nhỏ hơn 50 ký tự",
+                  //],
+                  headers: [
+                      {
+                          text: "STT",
+                          align: "center",
+                          sortable: false,
+                          value: "STT",
+                      },
+                      { text: "Ngày họp", align: "center", width: "11%", value: "Ngay" },
+                      { text: "Giờ họp", align: "center", width: "10%", value: "Gio" },
+                      { text: "Đơn vị", align: "center", value: "TenDonVi" },
+                      { text: "Người chủ trì", align: "center", width: "13%", value: "NguoiChuTri" },
+                      { text: "Địa điểm", align: "center", width: "11%", value: "DiaDiem" },
+                      { text: "Nội dung", align: "center", value: "NoiDung" },
+                      { text: "Thành phần", align: "center", value: "ThanhPhan" },
+                      { text: "Sửa", align: "center", value: "action1", sortable: false },
+                      { text: "Xóa", align: "center", value: "action2", sortable: false },
+                  ],
+                  lich: [],
+                  dv: [],
+                  nct: [],
+                  from_date: "2022-11-1",
+                  to_date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                      .toISOString()
+                      .substr(0, 10),
+                  editedIndex: -1,
+                  editedItem: {
+                      STT: null,
+                      ID_Lich: null,
+                      Ngay_Giohop: null,
+                      Ngay: null,
+                      Gio: null,
+                      TenDonVi: null,
+                      Donvi_ID: null,
+                      CanBo_ID: null,
+                      NguoiChuTri: null,
+                      DiaDiem: null,
+                      NoiDung: null,
+                      ThanhPhan: null,
+                  },
+                  defaultItem: {
+                      STT: "",
+                      ID_Lich: "",
+                      Ngay_Giohop: "",
+                      Ngay: "",
+                      Gio: "",
+                      TenDonVi: "",
+                      Donvi_ID: "",
+                      CanBo_ID: "",
+                      NguoiChuTri: "",
+                      DiaDiem: "",
+                      NoiDung: "",
+                      ThanhPhan: "",
+                  },
+                  URL: "/Desktopmodules/lct/api/LichCongTac/",
+                  URLdv: "/DesktopModules/lct/api/LctAPI/",
+                  URLnct: "/Desktopmodules/lct/api/CanBo/",
+              };
           },
-        }).then(function (response) {
-          return response;
-        });
-        this.loading = false;
-      },
 
-      async updateLCT() {
-        this.loading = true;
-
-        let result = await axios({
-          method: "post",
-          url: this.URL + "updateLCT",
-          data: {
-            ID_Lich: this.editedItem.ID_Lich,
-            Ngay: this.editedItem.Ngay,
-            Gio: this.editedItem.Gio,
-            Donvi_ID: this.editedItem.Donvi_ID,
-            CanBo_ID: this.editedItem.CanBo_ID,
-            DiaDiem: this.editedItem.DiaDiem,
-            NoiDung: this.editedItem.NoiDung,
-            ThanhPhan: this.editedItem.ThanhPhan,
+          computed: {
+              formTitle() {
+                  return this.editedIndex === -1
+                      ? "Thêm mới lịch công tác"
+                      : "Cập nhật lịch công tác";
+              },
+              Computed_dateFormatted() {
+                  return this.formatDate(this.editedItem.Ngay);
+              },
+              computedDateFormatted_from_date() {
+                  return this.formatDate(this.from_date);
+              },
+              computedDateFormatted_to_date() {
+                  return this.formatDate(this.to_date);
+              },
           },
-        }).then(function (response) {
-          return response;
-        });
-        this.loading = false;
-      },
-      async deleteLCT(value) {
-        this.loading = true;
-        let result = await axios({
-          method: "post",
-          url: this.URL + "deleteLCT?lID=" + value.ID_Lich,
-          data: {},
-        }).then(function (response) {
-          return response;
-        });
-        this.loading = false;
-        this.lich = result.data;
-      },
-      formatDate(date) {
-        if (!date) return null;
-        const [year, month, day] = date.split("-");
-        return `${day}/${month}/${year}`;
-      },
-      parseDate(date) {
-        if (!date) return null;
-        const [month, day, year] = date.split("-");
-        return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-      },
-      editItem(item) {
-        this.editedIndex = this.lich.indexOf(item);
-        this.getLCTchitiet(Object.assign({}, item));
-        /*this.editedItem = Object.assign({}, item);*/
-        this.dialog = true;
-      },
 
-      deleteItem(item) {
-        var del = confirm("Bạn có chắc chắn muốn xóa?");
-        if (del == true) {
-          this.deleteLCT(item);
-          setTimeout(() => {
-            location.reload();
-          }, 300);
-        } else {
-        }
-        return del;
-      },
-      save() {
-        var validation = this.$refs.form.validate();
-        if (validation == true) {
-          if (this.editedIndex > -1) {
-            this.updateLCT();
-            setTimeout(() => {
-              location.reload();
-            }, 500);
-            this.$toasted.success(
-              "Cập nhật thành công. vui lòng đợi trong giây lát",
-              toastOptions
-            );
-          } else {
-            this.lich.push(this.editedItem);
-            this.addLCT();
-            setTimeout(() => {
-              location.reload();
-            }, 500);
-            this.$toasted.success(
-              "Thêm thành công. vui lòng đợi trong giây lát",
-              toastOptions
-            );
-          }
-          this.close();
-        } else {
-        }
-      },
-      resetValidation() {
-        this.$refs.form.resetValidation();
-      },
-      createnew() {
-        this.dialog = true;
-        this.resetValidation();
-      },
-      close() {
-        this.dialog = false;
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem);
-          this.editedIndex = -1;
-        }, 300);
-      },
-    },
-  });
+          watch: {
+              date(val) {
+                  this.dateFormatted = this.formatDate(this.editedItem.Ngay);
+              },
+              from_date(val) {
+                  this.dateFormatted = this.formatDate(this.from_date);
+              },
+              to_date(val) {
+                  this.dateFormatted = this.formatDate(this.to_date);
+              },
+              dialog(val) {
+                  val || this.close();
+              },
+          },
+
+          created() {
+              this.getLCT();
+              this.GetListDonvi();
+          },
+
+
+          methods: {
+              filterDonvi() {
+                  if (this.editedItem.Donvi_ID != undefined) {
+                      this.getCanBobyID();
+                  }
+              },
+              filterDate() {
+                  if (this.to_date != undefined && this.from_date != undefined) {
+                      this.getLCT();
+                  }
+              },
+              filteredKeys() {
+                  return this.from_date.filter(from_date);
+              },
+              async getLCT() {
+                  this.loading = true;
+                  let result = await axios({
+                      method: "get",
+                      url:
+                          this.URL +
+                          "getLCT?tungay=" +
+                          this.from_date +
+                          "&denngay=" +
+                          this.to_date,
+                      data: {},
+                  }).then(function (response) {
+                      return response;
+                  });
+                  this.loading = false;
+                  this.lich = result.data;
+              },
+              async getLCTchitiet(value) {
+                  this.loading = true;
+                  let result = await axios({
+                      method: "get",
+                      url: this.URL + "getLCTchitiet?lID=" + value.ID_Lich,
+                      data: {},
+                  }).then(function (response) {
+                      return response;
+                  });
+                  this.loading = false;
+                  this.editedItem = result.data;
+              },
+              async getCanBobyID() {
+                  this.loading = true;
+                  let result = await axios({
+                      method: "get",
+                      url: this.URLnct + "getCanBobyID?dID=" + this.editedItem.Donvi_ID,
+                      data: {},
+                  }).then(function (response) {
+                      return response;
+                  });
+                  this.loading = false;
+                  this.nct = result.data;
+                  //this.nct = [];
+                  //for (let i = 0; i < result.data.length; i++) {
+                  //    this.nct.push(result.data[i].ID_Canbo);
+                  //}
+              },
+              async GetListDonvi() {
+                  this.loading = true;
+                  let result = await axios({
+                      method: "get",
+                      url: this.URLdv + "GetList",
+                      data: {},
+                  }).then(function (response) {
+                      return response;
+                  });
+                  this.loading = false;
+                  this.dv = result.data;
+                  //this.dv = [];
+                  //for (let i = 0; i < result.data.length; i++) {
+                  //    this.dv.push(result.data[i].ID_Donvi);
+                  //}
+              },
+              async addLCT() {
+                  this.loading = true;
+                  let result = await axios({
+                      method: "post",
+                      url: this.URL + "addLCT",
+                      data: {
+                          Ngay: this.editedItem.Ngay,
+                          Gio: this.editedItem.Gio,
+                          Donvi_ID: this.editedItem.Donvi_ID,
+                          CanBo_ID: this.editedItem.CanBo_ID,
+                          DiaDiem: this.editedItem.DiaDiem,
+                          NoiDung: this.editedItem.NoiDung,
+                          ThanhPhan: this.editedItem.ThanhPhan,
+                      },
+                  }).then(function (response) {
+                      return response;
+                  });
+                  this.loading = false;
+              },
+
+              async updateLCT() {
+                  this.loading = true;
+
+                  let result = await axios({
+                      method: "post",
+                      url: this.URL + "updateLCT",
+                      data: {
+                          ID_Lich: this.editedItem.ID_Lich,
+                          Ngay: this.editedItem.Ngay,
+                          Gio: this.editedItem.Gio,
+                          Donvi_ID: this.editedItem.Donvi_ID,
+                          CanBo_ID: this.editedItem.CanBo_ID,
+                          DiaDiem: this.editedItem.DiaDiem,
+                          NoiDung: this.editedItem.NoiDung,
+                          ThanhPhan: this.editedItem.ThanhPhan,
+                      },
+                  }).then(function (response) {
+                      return response;
+                  });
+                  this.loading = false;
+              },
+              async deleteLCT(value) {
+                  this.loading = true;
+                  let result = await axios({
+                      method: "post",
+                      url: this.URL + "deleteLCT?lID=" + value.ID_Lich,
+                      data: {},
+                  }).then(function (response) {
+                      return response;
+                  });
+                  this.loading = false;
+                  this.lich = result.data;
+              },
+              formatDate(date) {
+                  if (!date) return null;
+                  const [year, month, day] = date.split("-");
+                  return `${day}/${month}/${year}`;
+              },
+              parseDate(date) {
+                  if (!date) return null;
+                  const [month, day, year] = date.split("-");
+                  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+              },
+              editItem(item) {
+                  this.editedIndex = this.lich.indexOf(item);
+                  this.getLCTchitiet(Object.assign({}, item));
+                  this.editedItem.Donvi_ID = item.Donvi_ID;
+                  this.getCanBobyID();
+                  this.dialog = true;
+              },
+
+              deleteItem(item) {
+                  var del = confirm("Bạn có chắc chắn muốn xóa?");
+                  if (del == true) {
+                      this.deleteLCT(item);
+                      setTimeout(() => {
+                          location.reload();
+                      }, 300);
+                  } else {
+                  }
+                  return del;
+              },
+              save() {
+                  var validation = this.$refs.form.validate();
+                  if (validation == true) {
+                      if (this.editedIndex > -1) {
+                          this.updateLCT();
+                          setTimeout(() => {
+                              location.reload();
+                          }, 500);
+                          this.$toasted.success(
+                              "Cập nhật thành công. vui lòng đợi trong giây lát",
+                              toastOptions
+                          );
+                      } else {
+                          this.lich.push(this.editedItem);
+                          this.addLCT();
+                          setTimeout(() => {
+                              location.reload();
+                          }, 500);
+                          this.$toasted.success(
+                              "Thêm thành công. vui lòng đợi trong giây lát",
+                              toastOptions
+                          );
+                      }
+                      this.close();
+                  } else {
+                  }
+              },
+              resetValidation() {
+                  this.$refs.form.resetValidation();
+              },
+              createnew() {
+                  this.dialog = true;
+                  this.resetValidation();
+              },
+              close() {
+                  this.dialog = false;
+                  setTimeout(() => {
+                      this.editedItem = Object.assign({}, this.defaultItem);
+                      this.editedIndex = -1;
+                  }, 300);
+              },
+          },
+      });
 </script>

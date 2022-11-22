@@ -16,7 +16,7 @@ namespace lct
         public List<DonviInfo> GetListDonvi()
         {
             int stt = 1;
-            List<DonVi> donvi = db.DonVis.ToList();
+            List<DonVi> donvi = db.DonVis.OrderBy(x => x.Thutu_Donvi).ThenByDescending(x => x.ID_Donvi).ToList();
             List<DonviInfo> donviInfo = new List<DonviInfo>();
             foreach (var i in donvi)
             {   

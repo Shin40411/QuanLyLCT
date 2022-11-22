@@ -1775,7 +1775,7 @@ namespace LCT
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sodienthoai_User", DbType="NVarChar(10)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sodienthoai_User", DbType="NVarChar(12)")]
 		public string Sodienthoai_User
 		{
 			get

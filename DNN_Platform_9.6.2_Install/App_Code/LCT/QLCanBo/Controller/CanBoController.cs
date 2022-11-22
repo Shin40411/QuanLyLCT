@@ -49,6 +49,38 @@ namespace lct
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public HttpResponseMessage getCanBobyID(int dID)
+        {
+            try
+            {
+                List<CanBo> canBos = db.CanBos.Where(x => x.Donvi_ID == dID).ToList();
+                List<ModelCanBo> lstcb = new List<ModelCanBo>();
+                foreach (var cb in canBos)
+                {
+                    ModelCanBo modelCanBo = new ModelCanBo();
+                    modelCanBo.ID_Canbo = cb.ID_Canbo;
+                    modelCanBo.HoVaten = cb.Hovaten;
+                    modelCanBo.Email = cb.Email;
+                    modelCanBo.Sodienthoai = cb.Sodienthoai;
+                    modelCanBo.Phongban = cb.Phongban;
+                    modelCanBo.Chucvu = cb.Chucvu;
+                    modelCanBo.Ghichu = cb.Ghichu;
+                    modelCanBo.TenDV = cb.DonVi.Ten_Donvi;
+                    modelCanBo.Donvi_ID = cb.DonVi.ID_Donvi;
+                    lstcb.Add(modelCanBo);
+                }
+                var res = Request.CreateResponse(HttpStatusCode.OK);
+                res.Content = new StringContent(JsonConvert.SerializeObject(lstcb), System.Text.Encoding.UTF8, "application/json");
+                return res;
+            }
+            catch (Exception Ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+            }
+        }
+
         public HttpResponseMessage getCanBochitiet(int cID)
         {
             try
