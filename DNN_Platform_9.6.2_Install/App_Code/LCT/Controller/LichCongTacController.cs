@@ -1,29 +1,19 @@
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Web.Api;
 using LCT;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
 
 namespace lct
 {
-    public class LichCongTacController : DnnApiController
+    public class LichCongTacController 
     {
         lctDataContext db = new lctDataContext();
         UserInfo _currentUser = UserController.Instance.GetCurrentUserInfo();
 
-        [AllowAnonymous]
-        [HttpGet]
-        public HttpResponseMessage getLCT(string tungay, string denngay)
+        public List<ModelLCT> getLCT(string tungay, string denngay)
         {
-            try
-            {
 
                 int Userid = _currentUser.UserID;
                 var objND = db.NguoiDungInfos.Where(x => x.UserID == _currentUser.UserID).FirstOrDefault();
@@ -77,22 +67,12 @@ namespace lct
                         lstlct.Add(modelLCT);
                     }
                 }
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(lstlct), System.Text.Encoding.UTF8, "application/json");
-                return res;
-            }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            return lstlct;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public HttpResponseMessage getLichCongTac(string Day)
+        public List<ModelLCT> getLichCongTac(string Day)
         {
-            try
-            {
+
                 DateTime date_search = DateTime.ParseExact(Day, "d/MM/yyyy", CultureInfo.InvariantCulture);
                 int stt = 1;
                 List<LichCongTac> lichCongTacs = db.LichCongTacs.Where(x => x.Ngay_Giohop.Value.Date == date_search.Date).OrderByDescending(x => x.Donvi_ID).ThenBy(x=>x.CanBo_ID).ToList();
@@ -114,23 +94,11 @@ namespace lct
                     modelLCT.ThanhPhan = lich.ThanhPhan;
                     lstlct.Add(modelLCT);
                 }
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(lstlct), System.Text.Encoding.UTF8, "application/json");
-                return res;
-            }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            return lstlct;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public HttpResponseMessage getLCTchitiet(int lID)
+        public ModelLCT getLCTchitiet(int lID)
         {
-            try
-            {
-                    
 
                 var chitietlich = db.LichCongTacs.Where(x => x.ID_Lich == lID).FirstOrDefault();
 
@@ -149,25 +117,15 @@ namespace lct
                         lstlctCT.NoiDung = chitietlich.Noidung;
                         lstlctCT.ThanhPhan = chitietlich.ThanhPhan;
                     }
-
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(lstlctCT), System.Text.Encoding.UTF8, "application/json");
-                return res;
-            }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            return lstlctCT;
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        public HttpResponseMessage addLCT([FromBody] ModelLCT objLichCongTac)
-        {
-            try
-            {
 
-                if (objLichCongTac != null)
+        public bool addLCT(ModelLCT objLichCongTac)
+        {
+            bool status = false;
+
+            if (objLichCongTac != null)
                 {
                         LichCongTac lich = new LichCongTac();
                         lich.ID_Lich = objLichCongTac.ID_Lich;
@@ -180,26 +138,15 @@ namespace lct
                         lich.ThanhPhan = objLichCongTac.ThanhPhan;
                         db.LichCongTacs.InsertOnSubmit(lich);
                         db.SubmitChanges();
+                        status = true;
                 }
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(objLichCongTac), System.Text.Encoding.UTF8, "application/json");
-
-                return res;
-            }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+                return status;
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        public HttpResponseMessage updateLCT([FromBody] ModelLCT objLichCongTac)
+        public bool updateLCT(ModelLCT objLichCongTac)
         {
-            try
-            {
-
-                if (objLichCongTac != null)
+            bool status = false;
+            if (objLichCongTac != null)
                 {
                     LichCongTac lichCongTac = db.LichCongTacs.Where(x => x.ID_Lich == objLichCongTac.ID_Lich).FirstOrDefault();
                     lichCongTac.ID_Lich = objLichCongTac.ID_Lich;
@@ -211,45 +158,21 @@ namespace lct
                     lichCongTac.Noidung = objLichCongTac.NoiDung;
                     lichCongTac.ThanhPhan = objLichCongTac.ThanhPhan;
                     db.SubmitChanges();
-                }
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(objLichCongTac), System.Text.Encoding.UTF8, "application/json");
-
-                return res;
+                status = true;
             }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            return status;
         }
 
-
-        [AllowAnonymous]
-        [HttpPost]
-        public HttpResponseMessage deleteLCT(int lID)
+        public bool deleteLCT(int lID)
         {
-            try
+            bool status = false;
+            if (lID != 0)
             {
                 var obj = db.LichCongTacs.Where(x => x.ID_Lich == lID).FirstOrDefault();
                 db.LichCongTacs.DeleteOnSubmit(obj);
                 db.SubmitChanges();
-
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(obj), System.Text.Encoding.UTF8, "application/json");
-
-                return res;
             }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
-        }
-        public class RouteMapper : IServiceRouteMapper
-        {
-            public void RegisterRoutes(IMapRoute mapRouteManager)
-            {
-                mapRouteManager.MapHttpRoute("lct", "default", "{controller}/{action}", new[] { "lct" });
-            }
+            return status;
         }
     }
 }

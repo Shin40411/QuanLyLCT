@@ -1,28 +1,20 @@
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Web.Api;
 using LCT;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
 
 namespace lct
 {
-    public class CanBoController : DnnApiController
+    public class CanBoController
     {
         lctDataContext db = new lctDataContext();
         UserInfo _currentUser = UserController.Instance.GetCurrentUserInfo();
 
-        [AllowAnonymous]
-        [HttpGet]
-        public HttpResponseMessage getCanBo()
+        public List<ModelCanBo> getCanBo()
         {
-            try
-            {
+
                 int Userid = _currentUser.UserID;
                 var objND = db.NguoiDungInfos.Where(x => x.UserID == _currentUser.UserID).FirstOrDefault();
                 int stt = 1;
@@ -67,22 +59,12 @@ namespace lct
                         lstcb.Add(modelCanBo);
                     }
                 }
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(lstcb), System.Text.Encoding.UTF8, "application/json");
-                return res;
-            }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            return lstcb;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public HttpResponseMessage getCanBobyID(int dID)
+        public List<ModelCanBo> getCanBobyID(int dID)
         {
-            try
-            {
+      
                 List<CanBo> canBos = db.CanBos.Where(x => x.Donvi_ID == dID).ToList();
                 List<ModelCanBo> lstcb = new List<ModelCanBo>();
                 foreach (var cb in canBos)
@@ -99,22 +81,11 @@ namespace lct
                     modelCanBo.Donvi_ID = cb.DonVi.ID_Donvi;
                     lstcb.Add(modelCanBo);
                 }
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(lstcb), System.Text.Encoding.UTF8, "application/json");
-                return res;
-            }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            return lstcb;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public HttpResponseMessage getCanBochitiet(int cID)
+        public ModelCanBo getCanBochitiet(int cID)
         {
-            try
-            {
                 var chitietcb = db.CanBos.Where(x => x.ID_Canbo == cID).FirstOrDefault();
                 ModelCanBo modelCan = new ModelCanBo();
                 if (chitietcb != null)
@@ -130,24 +101,13 @@ namespace lct
                     modelCan.Donvi_ID = Convert.ToInt32(chitietcb.Donvi_ID);
                 }
 
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(modelCan), System.Text.Encoding.UTF8, "application/json");
-                return res;
-            }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            return modelCan;
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        public HttpResponseMessage addCanBo([FromBody] ModelCanBo objCB)
+        public bool addCanBo(ModelCanBo objCB)
         {
-            try
-            {
-
-                if (objCB != null)
+            bool status = false;
+            if (objCB != null)
                 {
                     CanBo canbo = new CanBo();
                     canbo.Hovaten = objCB.HoVaten;
@@ -159,26 +119,15 @@ namespace lct
                     canbo.Ghichu = objCB.Ghichu;
                     db.CanBos.InsertOnSubmit(canbo);
                     db.SubmitChanges();
-                }
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(objCB), System.Text.Encoding.UTF8, "application/json");
-
-                return res;
+                    status = true;
             }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            return status;
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        public HttpResponseMessage updateCanBo([FromBody] ModelCanBo objCB)
+        public bool updateCanBo(ModelCanBo objCB)
         {
-            try
-            {
-
-                if (objCB != null)
+            bool status = false;
+            if (objCB != null)
                 {
                     CanBo canbo = db.CanBos.Where(x => x.ID_Canbo == objCB.ID_Canbo).FirstOrDefault();
                     canbo.ID_Canbo = objCB.ID_Canbo;
@@ -190,22 +139,14 @@ namespace lct
                     canbo.Phongban = objCB.Phongban;
                     canbo.Ghichu = objCB.Ghichu;
                     db.SubmitChanges();
+                    status = true;
                 }
-                var res = Request.CreateResponse(HttpStatusCode.OK);
-                res.Content = new StringContent(JsonConvert.SerializeObject(objCB), System.Text.Encoding.UTF8, "application/json");
-
-                return res;
-            }
-            catch (Exception Ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
-            }
+            return status;
         }
-        [AllowAnonymous]
-        [HttpGet]
-        public HttpResponseMessage deleteCanBo(int cID)
+
+        public bool deleteCanBo(int cID)
         {
-            string status = "FALSE";
+            bool status = false;
             if (cID != 0)
             {
                 var lct = db.LichCongTacs.Where(x => x.CanBo_ID == cID).Count();
@@ -216,14 +157,12 @@ namespace lct
                     {
                         db.CanBos.DeleteOnSubmit(Cb);
                         db.SubmitChanges();
-                        status = "TRUE";
+                        status = true;
+
                     }
                 }
-
             }
-            var res = Request.CreateResponse(HttpStatusCode.OK);
-            res.Content = new StringContent(JsonConvert.SerializeObject(status), System.Text.Encoding.UTF8, "application/json");
-            return res;
+            return status;
         }
     }
 }

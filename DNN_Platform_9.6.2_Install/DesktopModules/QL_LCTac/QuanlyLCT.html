@@ -505,9 +505,7 @@
                     NoiDung: "",
                     ThanhPhan: "",
                 },
-                URL: "/Desktopmodules/lct/api/LichCongTac/",
-                URLdv: "/DesktopModules/lct/api/LctAPI/",
-                URLnct: "/Desktopmodules/lct/api/CanBo/",
+                URL: "/DesktopModules/lct/api/LctAPI/",
             };
         },
 
@@ -547,6 +545,7 @@
         created() {
             this.getLCT();
             this.GetListDonviByUser();
+            this.getCanBobyID();
         },
 
         methods: {
@@ -567,12 +566,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: "get",
-                    url:
-                        this.URL +
-                        "getLCT?tungay=" +
-                        this.from_date +
-                        "&denngay=" +
-                        this.to_date,
+                    url: this.URL + "GetLCT?tungay=" + this.from_date + "&denngay=" + this.to_date,
                     data: {},
                 }).then(function (response) {
                     return response;
@@ -584,7 +578,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: "get",
-                    url: this.URL + "getLCTchitiet?lID=" + value.ID_Lich,
+                    url: this.URL + "GetlichCT?lID=" + value.ID_Lich,
                     data: {},
                 }).then(function (response) {
                     return response;
@@ -596,7 +590,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: "get",
-                    url: this.URLnct + "getCanBobyID?dID=" + this.editedItem.Donvi_ID,
+                    url: this.URL + "GetCanBoByID?dID=" + this.editedItem.Donvi_ID,
                     data: {},
                 }).then(function (response) {
                     return response;
@@ -612,7 +606,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: "get",
-                    url: this.URLdv + "GetListByUser",
+                    url: this.URL + "GetListByUser",
                     data: {},
                 }).then(function (response) {
                     return response;
@@ -628,7 +622,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: "post",
-                    url: this.URL + "addLCT",
+                    url: this.URL + "AddLct",
                     data: {
                         Ngay: this.editedItem.Ngay,
                         Gio: this.editedItem.Gio,
@@ -642,6 +636,11 @@
                     return response;
                 });
                 this.loading = false;
+                if (result.data.status == "FALSE") {
+
+                } else {
+                    this.getLCT();
+                }
             },
 
               async updateLCT() {
@@ -649,7 +648,7 @@
 
                   let result = await axios({
                       method: "post",
-                      url: this.URL + "updateLCT",
+                      url: this.URL + "UpdateLct",
                       data: {
                           ID_Lich: this.editedItem.ID_Lich,
                           Ngay: this.editedItem.Ngay,
@@ -664,18 +663,31 @@
                       return response;
                   });
                   this.loading = false;
+                  if (result.data.status == "FALSE") {
+
+                  } else {
+                      this.getLCT();
+                  }
               },
               async deleteLCT(value) {
                   this.loading = true;
                   let result = await axios({
-                      method: "post",
-                      url: this.URL + "deleteLCT?lID=" + value.ID_Lich,
+                      method: "get",
+                      url: this.URL + "DeleteLCT?lID=" + value.ID_Lich,
                       data: {},
                   }).then(function (response) {
                       return response;
                   });
                   this.loading = false;
-                  this.lich = result.data;
+                  if (result.data == "FALSE") {
+                      this.$toasted.success('Xóa thành công', toastOptions);
+                      this.getLCT();
+                  }
+                  else {
+                      this.$toasted.error('Xóa thất bại', toastOptions);
+                      this.getLCT();
+                  }
+                  this.dialog = false
               },
               formatDate(date) {
                   if (!date) return null;
@@ -697,11 +709,11 @@
 
               deleteItem(item) {
                   var del = confirm("Bạn có chắc chắn muốn xóa?");
-                  if (del == true) {
+                  if (del != 0) {
                       this.deleteLCT(item);
-                      setTimeout(() => {
-                          location.reload();
-                      }, 300);
+                      //setTimeout(() => {
+                      //    location.reload();
+                      //}, 300);
                   } else {
                   }
                   return del;
