@@ -135,7 +135,7 @@
                                                                           :rules="[v => !!v || 'Yêu cầu chọn ngày']"
                                                                           required
                                                                           readonly
-                                                                          outlined
+                                                                          single-line
                                                                           dense></v-text-field>
                                                         </template>
                                                         <v-date-picker v-model="editedItem.Ngay"
@@ -180,7 +180,7 @@
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
                                                 <!--<v-text-field v-model="editedItem.to_lichcongtac.TenDonVi" label="Đơn vị"></v-text-field>-->
-                                                <v-select :items="dv"
+                                                <v-autocomplete :items="dv"
                                                           v-model="editedItem.Donvi_ID"
                                                           item-text="Ten_Donvi"
                                                           item-value="ID_Donvi"
@@ -188,19 +188,17 @@
                                                           :rules="[v => !!v || 'Yêu cầu chọn đơn vị']"
                                                           required
                                                           label="Đơn vị"
-                                                          outlined
-                                                          dense></v-select>
+                                                          single-line></v-autocomplete>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-select :items="nct"
+                                                <v-autocomplete :items="nct"
                                                           v-model="editedItem.CanBo_ID"
                                                           item-text="HoVaten"
                                                           item-value="ID_Canbo"
                                                           :rules="[v => !!v || 'Yêu cầu chọn người chủ trì']"
                                                           required
                                                           label="Người chủ trì"
-                                                          outlined
-                                                          dense></v-select>
+                                                          single-line></v-autocomplete>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
                                                 <v-text-field v-model="editedItem.NoiDung"
@@ -260,7 +258,7 @@
         vuetify: new Vuetify({
             lang: {
                 locales: {
-                    en: {
+                    vi: {
                         dataIterator: {
                             rowsPerPageText: "Tổng số trang:",
                             rowsPerPageAll: "Tất cả",
@@ -275,7 +273,7 @@
                         noDataText: "Không có dữ liệu",
                     },
                 },
-                current: "en",
+                current: "vi",
             },
         }),
         data() {
@@ -323,8 +321,8 @@
                     { text: "Đơn vị", align: "center", value: "TenDonVi" },
                     { text: "Người chủ trì", align: "center", width: "13%", value: "NguoiChuTri" },
                     { text: "Địa điểm", align: "center", width: "11%", value: "DiaDiem" },
-                    { text: "Nội dung", align: "center", value: "NoiDung" },
-                    { text: "Thành phần", align: "center", value: "ThanhPhan" },
+                    { text: "Nội dung", align: "center", width: "11%", value: "NoiDung" },
+                    { text: "Thành phần", align: "center", width: "12%", value: "ThanhPhan" },
                     { text: "Sửa", align: "center", value: "action1", sortable: false },
                     { text: "Xóa", align: "center", value: "action2", sortable: false },
                 ],
@@ -404,7 +402,7 @@
 
         created() {
             this.getLCT();
-            this.GetListDonvi();
+            this.GetListDonviByUser();
         },
 
         methods: {
@@ -466,11 +464,11 @@
                 //    this.nct.push(result.data[i].ID_Canbo);
                 //}
             },
-            async GetListDonvi() {
+            async GetListDonviByUser() {
                 this.loading = true;
                 let result = await axios({
                     method: "get",
-                    url: this.URLdv + "GetList",
+                    url: this.URLdv + "GetListByUser",
                     data: {},
                 }).then(function (response) {
                     return response;

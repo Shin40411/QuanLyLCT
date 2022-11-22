@@ -134,8 +134,25 @@ namespace lct {
         {
             try
             {
-
                 var Dv = donviController.GetListDonvi();
+                var res = Request.CreateResponse(HttpStatusCode.OK);
+                res.Content = new StringContent(JsonConvert.SerializeObject(Dv), System.Text.Encoding.UTF8, "application/json");
+
+                return res;
+            }
+            catch (Exception Ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, Ex.Message, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public HttpResponseMessage GetListByUser()
+        {
+            try
+            {
+                var Dv = donviController.GetListDonviByUser();
                 var res = Request.CreateResponse(HttpStatusCode.OK);
                 res.Content = new StringContent(JsonConvert.SerializeObject(Dv), System.Text.Encoding.UTF8, "application/json");
 

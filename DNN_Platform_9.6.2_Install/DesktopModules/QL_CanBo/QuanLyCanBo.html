@@ -60,14 +60,14 @@
                                                 <v-text-field v-model="editedItem.Sodienthoai" :counter="12" :rules="phoneRules" required label="Số điện thoại"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-select :items="dv"
+                                                <v-autocomplete :items="dv"
                                                           v-model="editedItem.Donvi_ID"
                                                           item-text="Ten_Donvi"
                                                           item-value="ID_Donvi"
                                                           :rules="[v => !!v || 'Yêu cầu chọn đơn vị']"
                                                           required
                                                           label="Đơn vị"
-                                                          outlined dense></v-select>
+                                                          single-line dense></v-autocomplete>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
                                                 <v-text-field v-model="editedItem.Chucvu" :counter="50" :rules="roleRules" required label="Chức vụ"></v-text-field>
