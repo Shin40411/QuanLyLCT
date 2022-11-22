@@ -235,8 +235,7 @@
                     Ghichu: '',
                 },
                 dialog: false,
-                URL: "/Desktopmodules/lct/api/CanBo/",
-                URLdv: "/DesktopModules/lct/api/LctAPI/",
+                URL: "/DesktopModules/lct/api/LctAPI/",
             }
         },
 
@@ -260,7 +259,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: 'get',
-                    url: this.URL + 'getCanBo',
+                    url: this.URL + 'GetCanBo',
                     data: {}
                 }).then(function (response) {
                     return response;
@@ -272,7 +271,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: 'get',
-                    url: this.URL + 'getCanBochitiet?cID=' + value.ID_Canbo,
+                    url: this.URL + 'GetCanBoCT?cID=' + value.ID_Canbo,
                     data: {}
                 }).then(function (response) {
                     return response;
@@ -284,7 +283,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: 'get',
-                    url: this.URLdv + 'GetListByUser',
+                    url: this.URL + 'GetListByUser',
                     data: {}
                 }).then(function (response) {
                     return response;
@@ -297,7 +296,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: 'post',
-                    url: this.URL + 'addCanBo',
+                    url: this.URL + 'AddCB',
                     data: {
                         HoVaten: this.editedItem.HoVaten,
                         Email: this.editedItem.Email,
@@ -316,7 +315,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: 'post',
-                    url: this.URL + 'updateCanBo',
+                    url: this.URL + 'UpdateCB',
                     data: {
                         ID_Canbo: this.editedItem.ID_Canbo,
                         HoVaten: this.editedItem.HoVaten,
@@ -334,10 +333,9 @@
             },
             async deleteCanBo(item) {
                 this.loading = true;
-                var cabo = item.ID_Canbo;
                 let result = await axios({
                     method: 'get',
-                    url: this.URL + 'deleteCanBo?cID=' + item.ID_Canbo,
+                    url: this.URL + 'DeleteCB?cID=' + item.ID_Canbo,
                     data: {}
                 }).then(function (response) {
                     return response;
@@ -399,9 +397,9 @@
                 var i = confirm('Bạn có chắc chắn muốn xóa?') && this.canbo.splice(index, 1)
                 if (i != 0) {
                     this.deleteCanBo(item);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 300)
+                    //setTimeout(() => {
+                    //    location.reload();
+                    //}, 300)
                 }
 
             },

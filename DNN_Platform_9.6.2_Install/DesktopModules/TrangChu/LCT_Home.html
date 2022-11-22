@@ -196,7 +196,7 @@
                 NoiDung: "",
                 ThanhPhan: "",
             },
-            URL: "/Desktopmodules/lct/api/LichCongTac/",
+            URL: "/DesktopModules/lct/api/LctAPI/",
         }),
         created() {
             const date = new Date();
@@ -342,7 +342,7 @@
                 this.loading = true;
                 let result = await axios({
                     method: "get",
-                    url: this.URL + "getLichCongTac?Day=" + this.Ngay,
+                    url: this.URL + "GetTrangChu?Day=" + this.Ngay,
                     data: {},
                 }).then(function (response) {
                     return response;
