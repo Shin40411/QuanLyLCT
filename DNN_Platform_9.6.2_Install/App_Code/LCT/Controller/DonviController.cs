@@ -1,3 +1,4 @@
+using DotNetNuke.Entities.Users;
 using LCT;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace lct
     public class DonviController
     {
         lctDataContext db = new lctDataContext();
+        UserInfo _currentUser = UserController.Instance.GetCurrentUserInfo();
         public List<DonviInfo> GetListDonvi()
         {
             int stt = 1;
@@ -32,6 +34,46 @@ namespace lct
 
             return donviInfo;
         }
+        public List<DonviInfo> GetListDonviByUser()
+        {
+            if (_currentUser.IsInRole("NGUOIDUNG") && !_currentUser.IsSuperUser)
+            {
+                int Userid = _currentUser.UserID;
+                var objND = db.NguoiDungInfos.Where(x => x.UserID == _currentUser.UserID).FirstOrDefault();
+
+                List<DonVi> donvi = db.DonVis.Where(x => x.ID_Donvi == objND.ID_Donvi).ToList();
+                List<DonviInfo> donviInfo = new List<DonviInfo>();
+
+                foreach (var i in donvi)
+                {
+                    DonviInfo dv = new DonviInfo();
+                    dv.ID_Donvi = i.ID_Donvi;
+                    dv.Ten_Donvi = i.Ten_Donvi;
+                    dv.Nhom_Donvi = i.Nhom_Donvi;
+                    dv.Mota_Donvi = i.Mota_Donvi;
+                    dv.Thutu_Donvi = Convert.ToInt32(i.Thutu_Donvi);
+                    donviInfo.Add(dv);
+                }
+                return donviInfo;
+            }
+            else
+            {
+                List<DonVi> donvi = db.DonVis.ToList();
+                List<DonviInfo> donviInfo = new List<DonviInfo>();
+                foreach (var i in donvi)
+                {
+                    DonviInfo dv = new DonviInfo();
+                    dv.ID_Donvi = i.ID_Donvi;
+                    dv.Ten_Donvi = i.Ten_Donvi;
+                    dv.Nhom_Donvi = i.Nhom_Donvi;
+                    dv.Mota_Donvi = i.Mota_Donvi;
+                    dv.Thutu_Donvi = Convert.ToInt32(i.Thutu_Donvi);
+                    donviInfo.Add(dv);
+                }
+                return donviInfo;
+            }
+        }
+
         public DonviInfo GetDonvi(int ID)
         {
             DonviInfo dv = new DonviInfo();

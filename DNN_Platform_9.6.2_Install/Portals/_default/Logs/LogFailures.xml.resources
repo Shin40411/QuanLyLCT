@@ -30,3 +30,4 @@
    at System.Web.Security.Membership.GetUser(String username, Boolean userIsOnline)
    at DotNetNuke.Security.Membership.AspNetMembershipProvider.GetMembershipUserCallBack(CacheItemArgs cacheItemArgs)
    at DotNetNuke.Common.Utilities.DataCache.GetCachedDataFromRuntimeCache(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)</StackTrace><InnerMessage /><InnerStackTrace /><Source>.Net SqlClient Data Provider</Source><FileName /><FileLineNumber>0</FileLineNumber><FileColumnNumber>0</FileColumnNumber><Method /></Exception></log></logs>
+

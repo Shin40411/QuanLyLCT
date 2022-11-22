@@ -1,3 +1,4 @@
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Web.Api;
 using LCT;
 using Newtonsoft.Json;
@@ -14,30 +15,57 @@ namespace lct
     public class CanBoController : DnnApiController
     {
         lctDataContext db = new lctDataContext();
+        UserInfo _currentUser = UserController.Instance.GetCurrentUserInfo();
+
         [AllowAnonymous]
         [HttpGet]
         public HttpResponseMessage getCanBo()
         {
             try
             {
+                int Userid = _currentUser.UserID;
+                var objND = db.NguoiDungInfos.Where(x => x.UserID == _currentUser.UserID).FirstOrDefault();
                 int stt = 1;
-                List<CanBo> canBos = db.CanBos.OrderByDescending(x => x.ID_Canbo).OrderBy(x => x.Donvi_ID).ToList();
                 List<ModelCanBo> lstcb = new List<ModelCanBo>();
-
-                foreach (var cb in canBos)
+                if (_currentUser.IsInRole("NGUOIDUNG") && !_currentUser.IsSuperUser)
                 {
-                    ModelCanBo modelCanBo = new ModelCanBo();
-                    modelCanBo.STT = Convert.ToInt32(stt++);
-                    modelCanBo.ID_Canbo = cb.ID_Canbo;
-                    modelCanBo.HoVaten = cb.Hovaten;
-                    modelCanBo.Email = cb.Email;
-                    modelCanBo.Sodienthoai = cb.Sodienthoai;
-                    modelCanBo.Phongban = cb.Phongban;
-                    modelCanBo.Chucvu = cb.Chucvu;
-                    modelCanBo.Ghichu = cb.Ghichu;
-                    modelCanBo.TenDV = cb.DonVi.Ten_Donvi;
-                    modelCanBo.Donvi_ID = cb.DonVi.ID_Donvi;
-                    lstcb.Add(modelCanBo);
+                    List<CanBo> canBos = db.CanBos.Where(x => x.Donvi_ID == objND.ID_Donvi).OrderByDescending(x => x.ID_Canbo).OrderBy(x => x.Donvi_ID).ToList();
+
+                    foreach (var cb in canBos)
+                    {
+                        ModelCanBo modelCanBo = new ModelCanBo();
+                        modelCanBo.STT = Convert.ToInt32(stt++);
+                        modelCanBo.ID_Canbo = cb.ID_Canbo;
+                        modelCanBo.HoVaten = cb.Hovaten;
+                        modelCanBo.Email = cb.Email;
+                        modelCanBo.Sodienthoai = cb.Sodienthoai;
+                        modelCanBo.Phongban = cb.Phongban;
+                        modelCanBo.Chucvu = cb.Chucvu;
+                        modelCanBo.Ghichu = cb.Ghichu;
+                        modelCanBo.TenDV = cb.DonVi.Ten_Donvi;
+                        modelCanBo.Donvi_ID = cb.DonVi.ID_Donvi;
+                        lstcb.Add(modelCanBo);
+                    }
+                }
+                else
+                {
+                    List<CanBo> canBos = db.CanBos.OrderByDescending(x => x.ID_Canbo).OrderBy(x => x.Donvi_ID).ToList();
+
+                    foreach (var cb in canBos)
+                    {
+                        ModelCanBo modelCanBo = new ModelCanBo();
+                        modelCanBo.STT = Convert.ToInt32(stt++);
+                        modelCanBo.ID_Canbo = cb.ID_Canbo;
+                        modelCanBo.HoVaten = cb.Hovaten;
+                        modelCanBo.Email = cb.Email;
+                        modelCanBo.Sodienthoai = cb.Sodienthoai;
+                        modelCanBo.Phongban = cb.Phongban;
+                        modelCanBo.Chucvu = cb.Chucvu;
+                        modelCanBo.Ghichu = cb.Ghichu;
+                        modelCanBo.TenDV = cb.DonVi.Ten_Donvi;
+                        modelCanBo.Donvi_ID = cb.DonVi.ID_Donvi;
+                        lstcb.Add(modelCanBo);
+                    }
                 }
                 var res = Request.CreateResponse(HttpStatusCode.OK);
                 res.Content = new StringContent(JsonConvert.SerializeObject(lstcb), System.Text.Encoding.UTF8, "application/json");
